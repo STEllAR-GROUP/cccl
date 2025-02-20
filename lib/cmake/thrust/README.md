@@ -229,8 +229,8 @@ on-demand by calls to `create_thrust_target`, or when explicitly requested via
 As mentioned, the basic Thrust interface is described by the `Thrust::Thrust`
 target.
 
-Each backend system (`CPP`, `CUDA`, `TBB`, `OMP`) is described by multiple
-targets:
+Each backend system (`CPP`, `CUDA`, `TBB`, `OMP`, `HPX`) is described by
+multiple targets:
 
 - `Thrust::${system}`
   - Specifies an interface configured to build against all
