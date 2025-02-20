@@ -39,6 +39,7 @@ function(thrust_configure_multiconfig)
     # Systems:
     option(THRUST_MULTICONFIG_ENABLE_SYSTEM_CPP "Generate build configurations that use CPP." ON)
     option(THRUST_MULTICONFIG_ENABLE_SYSTEM_CUDA "Generate build configurations that use CUDA." ON)
+    option(THRUST_MULTICONFIG_ENABLE_SYSTEM_HPX "Generate build configurations that use HPX." OFF)
     option(THRUST_MULTICONFIG_ENABLE_SYSTEM_OMP "Generate build configurations that use OpenMP." OFF)
     option(THRUST_MULTICONFIG_ENABLE_SYSTEM_TBB "Generate build configurations that use TBB." OFF)
 
@@ -57,9 +58,11 @@ function(thrust_configure_multiconfig)
     # Config   | Workloads | Value      | Expense   | Note
     # ---------|-----------|------------|-----------|-----------------------------
     # CPP/CUDA | F L M S   | Essential  | Expensive | Validates CUDA against CPP
+    # CPP/HPX  | F L M S   | Essential  | Cheap     | Validates HPX against CPP
     # CPP/OMP  | F L M S   | Essential  | Cheap     | Validates OMP against CPP
     # CPP/TBB  | F L M S   | Essential  | Cheap     | Validates TBB against CPP
     # CPP/CPP  | F L M     | Important  | Cheap     | Tests CPP as device
+    # HPX/HPX  | F L M     | Important  | Cheap     | Tests HPX as host
     # OMP/OMP  | F L M     | Important  | Cheap     | Tests OMP as host
     # TBB/TBB  | F L M     | Important  | Cheap     | Tests TBB as host
     # TBB/CUDA | F L       | Important  | Expensive | Validates TBB/CUDA interop
@@ -76,12 +79,12 @@ function(thrust_configure_multiconfig)
       SMALL MEDIUM LARGE FULL
     )
     set(THRUST_MULTICONFIG_WORKLOAD_SMALL_CONFIGS
-      CPP_OMP CPP_TBB CPP_CUDA
+      CPP_OMP CPP_TBB CPP_CUDA CPP_HPX
       CACHE INTERNAL "Host/device combos enabled for SMALL workloads." FORCE
     )
     set(THRUST_MULTICONFIG_WORKLOAD_MEDIUM_CONFIGS
       ${THRUST_MULTICONFIG_WORKLOAD_SMALL_CONFIGS}
-      CPP_CPP TBB_TBB OMP_OMP
+      CPP_CPP TBB_TBB OMP_OMP HPX_HPX
       CACHE INTERNAL "Host/device combos enabled for MEDIUM workloads." FORCE
     )
     set(THRUST_MULTICONFIG_WORKLOAD_LARGE_CONFIGS

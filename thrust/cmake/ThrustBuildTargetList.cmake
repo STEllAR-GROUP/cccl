@@ -17,8 +17,8 @@
 #   - <prop_var> is any valid cmake identifier.
 #   - <target_name> is the name of a thrust target.
 #   - <prop> is one of the following:
-#     - HOST: The host system. Valid values: CPP, OMP, TBB.
-#     - DEVICE: The device system. Valid values: CUDA, CPP, OMP, TBB.
+#     - HOST: The host system. Valid values: CPP, HPX, OMP, TBB.
+#     - DEVICE: The device system. Valid values: CUDA, CPP, HPX, OMP, TBB.
 #     - DIALECT: The C++ dialect. Valid values: 11, 14, 17, 20.
 #     - PREFIX: A unique prefix that should be used to name all
 #       targets/tests/examples that use this configuration.
@@ -35,12 +35,12 @@
 #     `thrust_clone_target_properties(${my_thrust_test} ${some_thrust_target})`
 
 define_property(TARGET PROPERTY _THRUST_HOST
-  BRIEF_DOCS "A target's host system: CPP, TBB, or OMP."
-  FULL_DOCS "A target's host system: CPP, TBB, or OMP."
+  BRIEF_DOCS "A target's host system: CPP, TBB, OMP, or HPX."
+  FULL_DOCS "A target's host system: CPP, TBB, OMP, or HPX."
 )
 define_property(TARGET PROPERTY _THRUST_DEVICE
-  BRIEF_DOCS "A target's device system: CUDA, CPP, TBB, or OMP."
-  FULL_DOCS "A target's device system: CUDA, CPP, TBB, or OMP."
+  BRIEF_DOCS "A target's device system: CUDA, CPP, TBB, OMP, or HPX."
+  FULL_DOCS "A target's device system: CUDA, CPP, TBB, OMP, or HPX."
 )
 define_property(TARGET PROPERTY _THRUST_DIALECT
   BRIEF_DOCS "A target's C++ dialect: 11, 14, or 17."
