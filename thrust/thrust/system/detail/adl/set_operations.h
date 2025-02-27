@@ -38,6 +38,7 @@
 #if 0
 #  include <thrust/system/cpp/detail/set_operations.h>
 #  include <thrust/system/cuda/detail/set_operations.h>
+#  include <thrust/system/hpx/detail/set_operations.h>
 #  include <thrust/system/omp/detail/set_operations.h>
 #  include <thrust/system/tbb/detail/set_operations.h>
 #endif

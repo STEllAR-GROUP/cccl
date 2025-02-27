@@ -38,6 +38,7 @@
 #if 0
 #  include <thrust/system/cpp/detail/replace.h>
 #  include <thrust/system/cuda/detail/replace.h>
+#  include <thrust/system/hpx/detail/replace.h>
 #  include <thrust/system/omp/detail/replace.h>
 #  include <thrust/system/tbb/detail/replace.h>
 #endif

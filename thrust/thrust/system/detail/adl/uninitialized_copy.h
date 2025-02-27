@@ -38,6 +38,7 @@
 #if 0
 #  include <thrust/system/cpp/detail/uninitialized_copy.h>
 #  include <thrust/system/cuda/detail/uninitialized_copy.h>
+#  include <thrust/system/hpx/detail/uninitialized_copy.h>
 #  include <thrust/system/omp/detail/uninitialized_copy.h>
 #  include <thrust/system/tbb/detail/uninitialized_copy.h>
 #endif

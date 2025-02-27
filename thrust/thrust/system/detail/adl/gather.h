@@ -38,6 +38,7 @@
 #if 0
 #  include <thrust/system/cpp/detail/gather.h>
 #  include <thrust/system/cuda/detail/gather.h>
+#  include <thrust/system/hpx/detail/gather.h>
 #  include <thrust/system/omp/detail/gather.h>
 #  include <thrust/system/tbb/detail/gather.h>
 #endif
