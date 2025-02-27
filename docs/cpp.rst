@@ -43,8 +43,8 @@ be better served by unifying them into a single repository.
   parallel algorithms to the C++ Standard Library. Thrust's high-level
   interface greatly enhances programmer productivity while enabling performance
   portability between GPUs and multicore CPUs via configurable backends that
-  allow using multiple parallel programming frameworks (such as CUDA, TBB, and
-  OpenMP).
+  allow using multiple parallel programming frameworks (such as CUDA, TBB, HPX
+  and OpenMP).
 
 - :doc:`Cuda Experimental <cudax/index>`
   is a library of experimental features that are still in the design process.

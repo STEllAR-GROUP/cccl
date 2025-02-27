@@ -45,6 +45,9 @@ The CMake options are divided into these categories:
 5. `TBB Specific CMake Options <#tbb-specific-cmake-options>`__
    Options that control TBB compilation. Only available when one or
    more configurations targets the TBB system.
+6. `HPX Specific CMake Options <#hpx-specific-cmake-options>`__
+   Options that control HPX compilation. Only available when one or
+   more configurations targets the HPX system.
 
 Generic CMake Options
 ---------------------
@@ -96,11 +99,11 @@ Generic CMake Options
 Single Config CMake Options
 ---------------------------
 
--  ``THRUST_HOST_SYSTEM={CPP, TBB, OMP}``
+-  ``THRUST_HOST_SYSTEM={CPP, TBB, HPX, OMP}``
 
    -  Selects the host system. Default: ``CPP``
 
--  ``THRUST_DEVICE_SYSTEM={CUDA, TBB, OMP, CPP}``
+-  ``THRUST_DEVICE_SYSTEM={CUDA, TBB, HPX, OMP, CPP}``
 
    -  Selects the device system. Default: ``CUDA``
 
@@ -123,22 +126,22 @@ Multi Config CMake Options
 -  ``THRUST_MULTICONFIG_ENABLE_SYSTEM_XXXX={ON, OFF}``
 
    -  Toggle whether a specific system will be targeted.
-   -  Possible values of ``XXXX`` are ``{CPP, CUDA, TBB, OMP}``
+   -  Possible values of ``XXXX`` are ``{CPP, CUDA, TBB, HPX, OMP}``
    -  By default, only ``CPP`` and ``CUDA`` are enabled.
 
 -  ``THRUST_MULTICONFIG_WORKLOAD={SMALL, MEDIUM, LARGE, FULL}``
 
    -  Restricts the host/device combinations that will be targeted.
    -  By default, the ``SMALL`` workload is used.
-   -  The full cross product of ``host x device`` systems results in 12
+   -  The full cross product of ``host x device`` systems results in 14
       configurations, some of which are more important than others. This
       option can be used to prune some of the less important ones.
-   -  ``SMALL``: (3 configs) Minimal coverage and validation of each
+   -  ``SMALL``: (4 configs) Minimal coverage and validation of each
       device system against the ``CPP`` host.
-   -  ``MEDIUM``: (6 configs) Cheap extended coverage.
-   -  ``LARGE``: (8 configs) Expensive extended coverage. Includes all
+   -  ``MEDIUM``: (8 configs) Cheap extended coverage.
+   -  ``LARGE``: (10 configs) Expensive extended coverage. Includes all
       useful build configurations.
-   -  ``FULL``: (12 configs) The complete cross product of all possible
+   -  ``FULL``: (14 configs) The complete cross product of all possible
       build configurations.
 
 ======== =========== ========== ========= ============================
@@ -146,9 +149,11 @@ Config   Workloads   Value      Expense   Note
 ======== =========== ========== ========= ============================
 CPP/CUDA ``F L M S`` Essential  Expensive Validates CUDA against CPP
 CPP/OMP  ``F L M S`` Essential  Cheap     Validates OMP against CPP
+CPP/HPX  ``F L M S`` Essential  Cheap     Validates HPX against CPP
 CPP/TBB  ``F L M S`` Essential  Cheap     Validates TBB against CPP
 CPP/CPP  ``F L M``   Important  Cheap     Tests CPP as device
 OMP/OMP  ``F L M``   Important  Cheap     Tests OMP as host
+HPX/HPX  ``F L M``   Important  Cheap     Tests HPX as host
 TBB/TBB  ``F L M``   Important  Cheap     Tests TBB as host
 TBB/CUDA ``F L``     Important  Expensive Validates TBB/CUDA interop
 OMP/CUDA ``F L``     Important  Expensive Validates OMP/CUDA interop
@@ -181,3 +186,12 @@ When using TBB as a host or device system, Thrust will automatically find and
 link against an installed Intel TBB. The TBB installation is discovered through
 CMake's standard ``find_package(TBB)`` mechanism. No additional Thrust-specific
 options are provided for TBB configuration.
+
+HPX Specific CMake Options
+--------------------------
+
+When using HPX as a host or device system, Thrust will automatically find and
+link against an installed HPX. The HPX installation is discovered through
+CMake's standard ``find_package(HPX)`` mechanism. No additional Thrust-specific
+options are provided for HPX configuration.
+

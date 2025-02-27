@@ -443,7 +443,7 @@ CUB and `Thrust <https://nvidia.github.io/cccl/thrust/>`_ share some
 similarities in that they both provide similar device-wide primitives for CUDA.
 However, they target different abstraction layers for parallel computing.
 Thrust abstractions are agnostic of any particular parallel framework (e.g.,
-CUDA, TBB, OpenMP, sequential  CPU, etc.).  While Thrust has a "backend"
+CUDA, TBB, OpenMP, HPX, sequential  CPU, etc.).  While Thrust has a "backend"
 for CUDA devices, Thrust interfaces themselves are not CUDA-specific and
 do not explicitly expose CUDA-specific details (e.g., ``cudaStream_t`` parameters).
 
