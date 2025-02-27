@@ -14,6 +14,10 @@
  *  limitations under the License.
  */
 
+/*! \file equal.h
+ *  \brief HPX implementation of equal.
+ */
+
 #pragma once
 
 #include <thrust/detail/config.h>
@@ -25,6 +29,35 @@
 #elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)
 #  pragma system_header
 #endif // no system header
+#include <thrust/system/hpx/detail/execution_policy.h>
 
-// this system inherits equal
-#include <thrust/system/cpp/detail/equal.h>
+#include <hpx/parallel/algorithms/equal.hpp>
+
+THRUST_NAMESPACE_BEGIN
+namespace system
+{
+namespace hpx
+{
+namespace detail
+{
+
+template <typename DerivedPolicy, typename InputIterator1, typename InputIterator2>
+bool equal(execution_policy<DerivedPolicy>&, InputIterator1 first1, InputIterator1 last1, InputIterator2 first2)
+{
+  return ::hpx::equal(first1, last1, first2);
+}
+
+template <typename DerivedPolicy, typename InputIterator1, typename InputIterator2, typename BinaryPredicate>
+bool equal(execution_policy<DerivedPolicy>&,
+           InputIterator1 first1,
+           InputIterator1 last1,
+           InputIterator2 first2,
+           BinaryPredicate binary_pred)
+{
+  return ::hpx::equal(first1, last1, first2, binary_pred);
+}
+
+} // end namespace detail
+} // end namespace hpx
+} // end namespace system
+THRUST_NAMESPACE_END
