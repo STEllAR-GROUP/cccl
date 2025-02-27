@@ -14,6 +14,10 @@
  *  limitations under the License.
  */
 
+/*! \file copy.h
+ *  \brief HPX implementation of copy/copy_n.
+ */
+
 #pragma once
 
 #include <thrust/detail/config.h>
@@ -25,6 +29,31 @@
 #elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)
 #  pragma system_header
 #endif // no system header
+#include <thrust/system/hpx/detail/execution_policy.h>
 
-// this system inherits copy
-#include <thrust/system/cpp/detail/copy.h>
+#include <hpx/parallel/algorithms/copy.hpp>
+
+THRUST_NAMESPACE_BEGIN
+namespace system
+{
+namespace hpx
+{
+namespace detail
+{
+
+template <typename DerivedPolicy, typename InputIterator, typename OutputIterator>
+OutputIterator copy(execution_policy<DerivedPolicy>&, InputIterator first, InputIterator last, OutputIterator result)
+{
+  return ::hpx::copy(first, last, result);
+}
+
+template <typename DerivedPolicy, typename InputIterator, typename Size, typename OutputIterator>
+OutputIterator copy_n(execution_policy<DerivedPolicy>&, InputIterator first, Size n, OutputIterator result)
+{
+  return ::hpx::copy_n(first, n, result);
+}
+
+} // end namespace detail
+} // end namespace hpx
+} // end namespace system
+THRUST_NAMESPACE_END
