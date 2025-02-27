@@ -38,6 +38,7 @@
 #if 0
 #  include <thrust/system/cpp/detail/partition.h>
 #  include <thrust/system/cuda/detail/partition.h>
+#  include <thrust/system/hpx/detail/partition.h>
 #  include <thrust/system/omp/detail/partition.h>
 #  include <thrust/system/tbb/detail/partition.h>
 #endif

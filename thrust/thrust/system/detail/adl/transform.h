@@ -38,6 +38,7 @@
 #if 0
 #  include <thrust/system/cpp/detail/transform.h>
 #  include <thrust/system/cuda/detail/transform.h>
+#  include <thrust/system/hpx/detail/transform.h>
 #  include <thrust/system/omp/detail/transform.h>
 #  include <thrust/system/tbb/detail/transform.h>
 #endif

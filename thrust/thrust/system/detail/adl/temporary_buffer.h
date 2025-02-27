@@ -38,6 +38,7 @@
 #if 0
 #  include <thrust/system/cpp/detail/temporary_buffer.h>
 #  include <thrust/system/cuda/detail/temporary_buffer.h>
+#  include <thrust/system/hpx/detail/temporary_buffer.h>
 #  include <thrust/system/omp/detail/temporary_buffer.h>
 #  include <thrust/system/tbb/detail/temporary_buffer.h>
 #endif

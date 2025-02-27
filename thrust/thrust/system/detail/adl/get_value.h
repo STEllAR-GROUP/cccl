@@ -38,6 +38,7 @@
 #if 0
 #  include <thrust/system/cpp/detail/get_value.h>
 #  include <thrust/system/cuda/detail/get_value.h>
+#  include <thrust/system/hpx/detail/get_value.h>
 #  include <thrust/system/omp/detail/get_value.h>
 #  include <thrust/system/tbb/detail/get_value.h>
 #endif

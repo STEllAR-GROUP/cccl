@@ -38,6 +38,7 @@
 #if 0
 #  include <thrust/system/cpp/detail/inner_product.h>
 #  include <thrust/system/cuda/detail/inner_product.h>
+#  include <thrust/system/hpx/detail/inner_product.h>
 #  include <thrust/system/omp/detail/inner_product.h>
 #  include <thrust/system/tbb/detail/inner_product.h>
 #endif

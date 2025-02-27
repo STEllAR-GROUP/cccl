@@ -38,6 +38,7 @@
 #if 0
 #  include <thrust/system/cpp/detail/swap_ranges.h>
 #  include <thrust/system/cuda/detail/swap_ranges.h>
+#  include <thrust/system/hpx/detail/swap_ranges.h>
 #  include <thrust/system/omp/detail/swap_ranges.h>
 #  include <thrust/system/tbb/detail/swap_ranges.h>
 #endif

@@ -38,6 +38,7 @@
 #if 0
 #  include <thrust/system/cpp/detail/scan_by_key.h>
 #  include <thrust/system/cuda/detail/scan_by_key.h>
+#  include <thrust/system/hpx/detail/scan_by_key.h>
 #  include <thrust/system/omp/detail/scan_by_key.h>
 #  include <thrust/system/tbb/detail/scan_by_key.h>
 #endif

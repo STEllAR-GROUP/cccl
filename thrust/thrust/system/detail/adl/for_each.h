@@ -38,6 +38,7 @@
 #if 0
 #  include <thrust/system/cpp/detail/for_each.h>
 #  include <thrust/system/cuda/detail/for_each.h>
+#  include <thrust/system/hpx/detail/for_each.h>
 #  include <thrust/system/omp/detail/for_each.h>
 #  include <thrust/system/tbb/detail/for_each.h>
 #endif

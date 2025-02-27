@@ -38,6 +38,7 @@
 #if 0
 #  include <thrust/system/cpp/detail/scan.h>
 #  include <thrust/system/cuda/detail/scan.h>
+#  include <thrust/system/hpx/detail/scan.h>
 #  include <thrust/system/omp/detail/scan.h>
 #  include <thrust/system/tbb/detail/scan.h>
 #endif

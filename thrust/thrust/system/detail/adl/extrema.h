@@ -38,6 +38,7 @@
 #if 0
 #  include <thrust/system/cpp/detail/extrema.h>
 #  include <thrust/system/cuda/detail/extrema.h>
+#  include <thrust/system/hpx/detail/extrema.h>
 #  include <thrust/system/omp/detail/extrema.h>
 #  include <thrust/system/tbb/detail/extrema.h>
 #endif

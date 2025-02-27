@@ -38,6 +38,7 @@
 #if 0
 #  include <thrust/system/cpp/detail/scatter.h>
 #  include <thrust/system/cuda/detail/scatter.h>
+#  include <thrust/system/hpx/detail/scatter.h>
 #  include <thrust/system/omp/detail/scatter.h>
 #  include <thrust/system/tbb/detail/scatter.h>
 #endif

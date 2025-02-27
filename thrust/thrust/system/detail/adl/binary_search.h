@@ -38,6 +38,7 @@
 #if 0
 #  include <thrust/system/cpp/detail/binary_search.h>
 #  include <thrust/system/cuda/detail/binary_search.h>
+#  include <thrust/system/hpx/detail/binary_search.h>
 #  include <thrust/system/omp/detail/binary_search.h>
 #  include <thrust/system/tbb/detail/binary_search.h>
 #endif
