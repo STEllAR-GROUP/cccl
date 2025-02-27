@@ -14,6 +14,10 @@
  *  limitations under the License.
  */
 
+/*! \file adjacent_difference.h
+ *  \brief HPX implementation of adjacent_difference.
+ */
+
 #pragma once
 
 #include <thrust/detail/config.h>
@@ -25,6 +29,30 @@
 #elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)
 #  pragma system_header
 #endif // no system header
+#include <thrust/system/hpx/detail/execution_policy.h>
 
-// this system inherits adjacent_difference
-#include <thrust/system/cpp/detail/adjacent_difference.h>
+#include <hpx/parallel/algorithms/adjacent_difference.hpp>
+
+THRUST_NAMESPACE_BEGIN
+namespace system
+{
+namespace hpx
+{
+namespace detail
+{
+
+template <typename DerivedPolicy, typename InputIterator, typename OutputIterator, typename BinaryFunction>
+OutputIterator adjacent_difference(
+  execution_policy<DerivedPolicy>&,
+  InputIterator first,
+  InputIterator last,
+  OutputIterator result,
+  BinaryFunction binary_op)
+{
+  return ::hpx::adjacent_difference(first, last, result, binary_op);
+}
+
+} // end namespace detail
+} // end namespace hpx
+} // end namespace system
+THRUST_NAMESPACE_END
