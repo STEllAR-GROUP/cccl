@@ -14,6 +14,10 @@
  *  limitations under the License.
  */
 
+/*! \file count.h
+ *  \brief HPX implementation of count/count_if.
+ */
+
 #pragma once
 
 #include <thrust/detail/config.h>
@@ -25,6 +29,33 @@
 #elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)
 #  pragma system_header
 #endif // no system header
+#include <thrust/system/hpx/detail/execution_policy.h>
 
-// this system inherits count
-#include <thrust/system/cpp/detail/count.h>
+#include <hpx/parallel/algorithms/count.hpp>
+
+THRUST_NAMESPACE_BEGIN
+namespace system
+{
+namespace hpx
+{
+namespace detail
+{
+
+template <typename DerivedPolicy, typename InputIterator, typename EqualityComparable>
+typename thrust::iterator_traits<InputIterator>::difference_type
+count(execution_policy<DerivedPolicy>&, InputIterator first, InputIterator last, const EqualityComparable& value)
+{
+  return ::hpx::count(first, last, value);
+}
+
+template <typename DerivedPolicy, typename InputIterator, typename Predicate>
+typename thrust::iterator_traits<InputIterator>::difference_type
+count_if(execution_policy<DerivedPolicy>&, InputIterator first, InputIterator last, Predicate pred)
+{
+  return ::hpx::count_if(first, last, pred);
+}
+
+} // end namespace detail
+} // end namespace hpx
+} // end namespace system
+THRUST_NAMESPACE_END
