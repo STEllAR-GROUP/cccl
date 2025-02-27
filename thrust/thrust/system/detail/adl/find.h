@@ -38,6 +38,7 @@
 #if 0
 #  include <thrust/system/cpp/detail/find.h>
 #  include <thrust/system/cuda/detail/find.h>
+#  include <thrust/system/hpx/detail/find.h>
 #  include <thrust/system/omp/detail/find.h>
 #  include <thrust/system/tbb/detail/find.h>
 #endif

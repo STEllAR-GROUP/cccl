@@ -38,6 +38,7 @@
 #if 0
 #  include <thrust/system/cpp/detail/sort.h>
 #  include <thrust/system/cuda/detail/sort.h>
+#  include <thrust/system/hpx/detail/sort.h>
 #  include <thrust/system/omp/detail/sort.h>
 #  include <thrust/system/tbb/detail/sort.h>
 #endif

@@ -38,6 +38,7 @@
 #if 0
 #  include <thrust/system/cpp/detail/reverse.h>
 #  include <thrust/system/cuda/detail/reverse.h>
+#  include <thrust/system/hpx/detail/reverse.h>
 #  include <thrust/system/omp/detail/reverse.h>
 #  include <thrust/system/tbb/detail/reverse.h>
 #endif

@@ -38,6 +38,7 @@
 #if 0
 #  include <thrust/system/cpp/detail/malloc_and_free.h>
 #  include <thrust/system/cuda/detail/malloc_and_free.h>
+#  include <thrust/system/hpx/detail/malloc_and_free.h>
 #  include <thrust/system/omp/detail/malloc_and_free.h>
 #  include <thrust/system/tbb/detail/malloc_and_free.h>
 #endif
