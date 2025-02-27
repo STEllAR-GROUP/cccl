@@ -14,6 +14,10 @@
  *  limitations under the License.
  */
 
+/*! \file find.h
+ *  \brief HPX implementation of find/find_if/find_if_not.
+ */
+
 #pragma once
 
 #include <thrust/detail/config.h>
@@ -25,6 +29,37 @@
 #elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)
 #  pragma system_header
 #endif // no system header
+#include <thrust/system/hpx/detail/execution_policy.h>
 
-// this system inherits find
-#include <thrust/system/cpp/detail/find.h>
+#include <hpx/parallel/algorithms/find.hpp>
+
+THRUST_NAMESPACE_BEGIN
+namespace system
+{
+namespace hpx
+{
+namespace detail
+{
+
+template <typename DerivedPolicy, typename InputIterator, typename T>
+InputIterator find(execution_policy<DerivedPolicy>&, InputIterator first, InputIterator last, const T& value)
+{
+  return ::hpx::find(first, last, value);
+}
+
+template <typename DerivedPolicy, typename InputIterator, typename Predicate>
+InputIterator find_if(execution_policy<DerivedPolicy>&, InputIterator first, InputIterator last, Predicate pred)
+{
+  return ::hpx::find_if(first, last, pred);
+}
+
+template <typename DerivedPolicy, typename InputIterator, typename Predicate>
+InputIterator find_if_not(execution_policy<DerivedPolicy>&, InputIterator first, InputIterator last, Predicate pred)
+{
+  return ::hpx::find_if_not(first, last, pred);
+}
+
+} // end namespace detail
+} // end namespace hpx
+} // end namespace system
+THRUST_NAMESPACE_END
