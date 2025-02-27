@@ -38,6 +38,7 @@
 #if 0
 #  include <thrust/system/cpp/detail/mismatch.h>
 #  include <thrust/system/cuda/detail/mismatch.h>
+#  include <thrust/system/hpx/detail/mismatch.h>
 #  include <thrust/system/omp/detail/mismatch.h>
 #  include <thrust/system/tbb/detail/mismatch.h>
 #endif

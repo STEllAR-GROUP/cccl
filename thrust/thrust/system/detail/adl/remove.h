@@ -38,6 +38,7 @@
 #if 0
 #  include <thrust/system/cpp/detail/remove.h>
 #  include <thrust/system/cuda/detail/remove.h>
+#  include <thrust/system/hpx/detail/remove.h>
 #  include <thrust/system/omp/detail/remove.h>
 #  include <thrust/system/tbb/detail/remove.h>
 #endif

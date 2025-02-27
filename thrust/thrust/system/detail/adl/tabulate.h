@@ -38,6 +38,7 @@
 #if 0
 #  include <thrust/system/cpp/detail/tabulate.h>
 #  include <thrust/system/cuda/detail/tabulate.h>
+#  include <thrust/system/hpx/detail/tabulate.h>
 #  include <thrust/system/omp/detail/tabulate.h>
 #  include <thrust/system/tbb/detail/tabulate.h>
 #endif

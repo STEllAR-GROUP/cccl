@@ -38,6 +38,7 @@
 #if 0
 #  include <thrust/system/cpp/detail/transform_reduce.h>
 #  include <thrust/system/cuda/detail/transform_reduce.h>
+#  include <thrust/system/hpx/detail/transform_reduce.h>
 #  include <thrust/system/omp/detail/transform_reduce.h>
 #  include <thrust/system/tbb/detail/transform_reduce.h>
 #endif

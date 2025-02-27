@@ -38,6 +38,7 @@
 #if 0
 #  include <thrust/system/cpp/detail/generate.h>
 #  include <thrust/system/cuda/detail/generate.h>
+#  include <thrust/system/hpx/detail/generate.h>
 #  include <thrust/system/omp/detail/generate.h>
 #  include <thrust/system/tbb/detail/generate.h>
 #endif
