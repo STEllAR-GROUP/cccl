@@ -14,6 +14,10 @@
  *  limitations under the License.
  */
 
+/*! \file fill.h
+ *  \brief HPX implementation of fill/fill_n.
+ */
+
 #pragma once
 
 #include <thrust/detail/config.h>
@@ -25,6 +29,31 @@
 #elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)
 #  pragma system_header
 #endif // no system header
+#include <thrust/system/hpx/detail/execution_policy.h>
 
-// this system inherits fill
-#include <thrust/system/cpp/detail/fill.h>
+#include <hpx/parallel/algorithms/fill.hpp>
+
+THRUST_NAMESPACE_BEGIN
+namespace system
+{
+namespace hpx
+{
+namespace detail
+{
+
+template <typename DerivedPolicy, typename ForwardIterator, typename T>
+void fill(execution_policy<DerivedPolicy>&, ForwardIterator first, ForwardIterator last, const T& value)
+{
+  return ::hpx::fill(first, last, value);
+}
+
+template <typename DerivedPolicy, typename OutputIterator, typename Size, typename T>
+OutputIterator fill_n(execution_policy<DerivedPolicy>&, OutputIterator first, Size n, const T& value)
+{
+  return ::hpx::fill_n(first, n, value);
+}
+
+} // end namespace detail
+} // end namespace hpx
+} // end namespace system
+THRUST_NAMESPACE_END
