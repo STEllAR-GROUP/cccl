@@ -14,6 +14,10 @@
  *  limitations under the License.
  */
 
+/*! \file generate.h
+ *  \brief HPX implementation of generate/generate_n.
+ */
+
 #pragma once
 
 #include <thrust/detail/config.h>
@@ -25,6 +29,31 @@
 #elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)
 #  pragma system_header
 #endif // no system header
+#include <thrust/system/hpx/detail/execution_policy.h>
 
-// this system inherits generate
-#include <thrust/system/cpp/detail/generate.h>
+#include <hpx/parallel/algorithms/generate.hpp>
+
+THRUST_NAMESPACE_BEGIN
+namespace system
+{
+namespace hpx
+{
+namespace detail
+{
+
+template <typename ExecutionPolicy, typename ForwardIterator, typename Generator>
+void generate(execution_policy<ExecutionPolicy>&, ForwardIterator first, ForwardIterator last, Generator gen)
+{
+  return (void)::hpx::generate(first, last, gen);
+}
+
+template <typename ExecutionPolicy, typename OutputIterator, typename Size, typename Generator>
+OutputIterator generate_n(execution_policy<ExecutionPolicy>&, OutputIterator first, Size n, Generator gen)
+{
+  return ::hpx::generate_n(first, n, gen);
+}
+
+} // end namespace detail
+} // end namespace hpx
+} // end namespace system
+THRUST_NAMESPACE_END
