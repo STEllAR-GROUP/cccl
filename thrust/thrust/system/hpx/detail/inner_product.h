@@ -14,6 +14,10 @@
  *  limitations under the License.
  */
 
+/*! \file inner_product.h
+ *  \brief HPX implementation of inner_product.
+ */
+
 #pragma once
 
 #include <thrust/detail/config.h>
@@ -25,6 +29,44 @@
 #elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)
 #  pragma system_header
 #endif // no system header
+#include <thrust/system/hpx/detail/execution_policy.h>
 
-// this system inherits inner_product
-#include <thrust/system/cpp/detail/inner_product.h>
+#include <hpx/parallel/algorithms/transform_reduce.hpp>
+
+THRUST_NAMESPACE_BEGIN
+namespace system
+{
+namespace hpx
+{
+namespace detail
+{
+
+template <typename DerivedPolicy, typename InputIterator1, typename InputIterator2, typename OutputType>
+OutputType inner_product(
+  execution_policy<DerivedPolicy>&, InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, OutputType init)
+{
+  return ::hpx::transform_reduce(first1, last1, first2, init);
+}
+
+template <typename DerivedPolicy,
+          typename InputIterator1,
+          typename InputIterator2,
+          typename OutputType,
+          typename BinaryFunction1,
+          typename BinaryFunction2>
+OutputType inner_product(
+  execution_policy<DerivedPolicy>&,
+  InputIterator1 first1,
+  InputIterator1 last1,
+  InputIterator2 first2,
+  OutputType init,
+  BinaryFunction1 binary_op1,
+  BinaryFunction2 binary_op2)
+{
+  return ::hpx::transform_reduce(first1, last1, first2, init, binary_op1, binary_op2);
+}
+
+} // end namespace detail
+} // end namespace hpx
+} // end namespace system
+THRUST_NAMESPACE_END
