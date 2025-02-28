@@ -14,6 +14,10 @@
  *  limitations under the License.
  */
 
+/*! \file for_each.h
+ *  \brief HPX implementation of for_each/for_each_n.
+ */
+
 #pragma once
 
 #include <thrust/detail/config.h>
@@ -25,6 +29,31 @@
 #elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)
 #  pragma system_header
 #endif // no system header
+#include <thrust/system/hpx/detail/execution_policy.h>
 
-// this system inherits for_each
-#include <thrust/system/cpp/detail/for_each.h>
+#include <hpx/parallel/algorithms/for_each.hpp>
+
+THRUST_NAMESPACE_BEGIN
+namespace system
+{
+namespace hpx
+{
+namespace detail
+{
+
+template <typename DerivedPolicy, typename InputIterator, typename UnaryFunction>
+InputIterator for_each(execution_policy<DerivedPolicy>&, InputIterator first, InputIterator last, UnaryFunction f)
+{
+  return ::hpx::for_each(first, last, f);
+}
+
+template <typename DerivedPolicy, typename InputIterator, typename Size, typename UnaryFunction>
+InputIterator for_each_n(execution_policy<DerivedPolicy>&, InputIterator first, Size n, UnaryFunction f)
+{
+  return ::hpx::for_each_n(first, n, f);
+}
+
+} // end namespace detail
+} // end namespace hpx
+} // end namespace system
+THRUST_NAMESPACE_END
