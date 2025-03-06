@@ -14,6 +14,10 @@
  *  limitations under the License.
  */
 
+/*! \file scan.h
+ *  \brief HPX implementation of inclusive_scan/exclusive_scan.
+ */
+
 #pragma once
 
 #include <thrust/detail/config.h>
@@ -25,6 +29,64 @@
 #elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)
 #  pragma system_header
 #endif // no system header
+#include <thrust/system/hpx/detail/execution_policy.h>
 
-// this system inherits scan
-#include <thrust/system/cpp/detail/scan.h>
+#include <hpx/parallel/algorithms/exclusive_scan.hpp>
+#include <hpx/parallel/algorithms/inclusive_scan.hpp>
+
+THRUST_NAMESPACE_BEGIN
+namespace system
+{
+namespace hpx
+{
+namespace detail
+{
+
+template <typename ExecutionPolicy, typename InputIterator, typename OutputIterator>
+OutputIterator
+inclusive_scan(execution_policy<ExecutionPolicy>&, InputIterator first, InputIterator last, OutputIterator result)
+{
+  return ::hpx::inclusive_scan(first, last, result);
+}
+
+template <typename ExecutionPolicy, typename InputIterator, typename OutputIterator, typename BinaryFunction>
+OutputIterator inclusive_scan(
+  execution_policy<ExecutionPolicy>&,
+  InputIterator first,
+  InputIterator last,
+  OutputIterator result,
+  BinaryFunction binary_op)
+{
+  return ::hpx::inclusive_scan(first, last, result, binary_op);
+}
+
+template <typename ExecutionPolicy, typename InputIterator, typename OutputIterator>
+OutputIterator
+exclusive_scan(execution_policy<ExecutionPolicy>&, InputIterator first, InputIterator last, OutputIterator result)
+{
+  return ::hpx::exclusive_scan(first, last, result);
+}
+
+template <typename ExecutionPolicy, typename InputIterator, typename OutputIterator, typename T>
+OutputIterator exclusive_scan(
+  execution_policy<ExecutionPolicy>&, InputIterator first, InputIterator last, OutputIterator result, T init)
+{
+  return ::hpx::exclusive_scan(first, last, result, init);
+}
+
+template <typename ExecutionPolicy, typename InputIterator, typename OutputIterator, typename T, typename BinaryFunction>
+OutputIterator exclusive_scan(
+  execution_policy<ExecutionPolicy>&,
+  InputIterator first,
+  InputIterator last,
+  OutputIterator result,
+  T init,
+  BinaryFunction binary_op)
+{
+  return ::hpx::exclusive_scan(first, last, result, init, binary_op);
+}
+
+} // end namespace detail
+} // end namespace hpx
+} // end namespace system
+THRUST_NAMESPACE_END
