@@ -14,6 +14,10 @@
  *  limitations under the License.
  */
 
+/*! \file merge.h
+ *  \brief HPX implementation of merge/merge_by_key.
+ */
+
 #pragma once
 
 #include <thrust/detail/config.h>
@@ -25,6 +29,60 @@
 #elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)
 #  pragma system_header
 #endif // no system header
+#include <thrust/system/hpx/detail/execution_policy.h>
 
-// this system inherits merge
-#include <thrust/system/cpp/detail/merge.h>
+#include <hpx/parallel/algorithms/merge.hpp>
+
+THRUST_NAMESPACE_BEGIN
+namespace system
+{
+namespace hpx
+{
+namespace detail
+{
+
+template <typename ExecutionPolicy,
+          typename InputIterator1,
+          typename InputIterator2,
+          typename OutputIterator,
+          typename StrictWeakOrdering>
+OutputIterator
+merge(execution_policy<ExecutionPolicy>&,
+      InputIterator1 first1,
+      InputIterator1 last1,
+      InputIterator2 first2,
+      InputIterator2 last2,
+      OutputIterator result,
+      StrictWeakOrdering comp)
+{
+  return ::hpx::merge(first1, last1, first2, last2, result, comp);
+}
+
+template <typename ExecutionPolicy,
+          typename InputIterator1,
+          typename InputIterator2,
+          typename InputIterator3,
+          typename InputIterator4,
+          typename OutputIterator1,
+          typename OutputIterator2,
+          typename StrictWeakOrdering>
+thrust::pair<OutputIterator1, OutputIterator2> merge_by_key(
+  execution_policy<ExecutionPolicy>&,
+  InputIterator1 keys_first1,
+  InputIterator1 keys_last1,
+  InputIterator2 keys_first2,
+  InputIterator2 keys_last2,
+  InputIterator3 values_first3,
+  InputIterator4 values_first4,
+  OutputIterator1 keys_result,
+  OutputIterator2 values_result,
+  StrictWeakOrdering comp)
+{
+  return ::hpx::merge_by_key(
+    keys_first1, keys_last1, keys_first2, keys_last2, values_first3, values_first4, keys_result, values_result, comp);
+}
+
+} // end namespace detail
+} // end namespace hpx
+} // end namespace system
+THRUST_NAMESPACE_END
