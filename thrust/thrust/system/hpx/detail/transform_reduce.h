@@ -14,6 +14,10 @@
  *  limitations under the License.
  */
 
+/*! \file transform_reduce.h
+ *  \brief HPX implementation of transform_reduce.
+ */
+
 #pragma once
 
 #include <thrust/detail/config.h>
@@ -25,6 +29,35 @@
 #elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)
 #  pragma system_header
 #endif // no system header
+#include <thrust/system/hpx/detail/execution_policy.h>
 
-// this system inherits transform_reduce
-#include <thrust/system/cpp/detail/transform_reduce.h>
+#include <hpx/parallel/algorithms/transform_reduce.hpp>
+
+THRUST_NAMESPACE_BEGIN
+namespace system
+{
+namespace hpx
+{
+namespace detail
+{
+
+template <typename ExecutionPolicy,
+          typename InputIterator,
+          typename UnaryFunction,
+          typename OutputType,
+          typename BinaryFunction>
+OutputType transform_reduce(
+  execution_policy<ExecutionPolicy>&,
+  InputIterator first,
+  InputIterator last,
+  UnaryFunction unary_op,
+  OutputType init,
+  BinaryFunction binary_op)
+{
+  return ::hpx::transform_reduce(first, last, init, binary_op, unary_op);
+}
+
+} // end namespace detail
+} // end namespace hpx
+} // end namespace system
+THRUST_NAMESPACE_END
