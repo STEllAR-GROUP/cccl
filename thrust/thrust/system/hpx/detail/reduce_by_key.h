@@ -14,6 +14,10 @@
  *  limitations under the License.
  */
 
+/*! \file reduce_by_key.h
+ *  \brief HPX implementation of reduce.
+ */
+
 #pragma once
 
 #include <thrust/detail/config.h>
@@ -25,6 +29,41 @@
 #elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)
 #  pragma system_header
 #endif // no system header
+#include <thrust/pair.h>
+#include <thrust/system/hpx/detail/execution_policy.h>
 
-// this system inherits reduce_by_key
-#include <thrust/system/cpp/detail/reduce_by_key.h>
+#include <hpx/parallel/algorithms/reduce_by_key.hpp>
+
+THRUST_NAMESPACE_BEGIN
+namespace system
+{
+namespace hpx
+{
+namespace detail
+{
+template <typename DerivedPolicy,
+          typename InputIterator1,
+          typename InputIterator2,
+          typename OutputIterator1,
+          typename OutputIterator2,
+          typename BinaryPredicate,
+          typename BinaryFunction>
+pair<OutputIterator1, OutputIterator2> reduce_by_key(
+  execution_policy<DerivedPolicy>&,
+  InputIterator1 keys_first,
+  InputIterator1 keys_last,
+  InputIterator2 values_first,
+  OutputIterator1 keys_output,
+  OutputIterator2 values_output,
+  BinaryPredicate binary_pred,
+  BinaryFunction binary_op)
+{
+  auto r = ::hpx::experimental::reduce_by_key(
+    ::hpx::execution::seq, keys_first, keys_last, values_first, keys_output, values_output, binary_pred, binary_op);
+  return {r.in, r.out};
+}
+
+} // end namespace detail
+} // end namespace hpx
+} // end namespace system
+THRUST_NAMESPACE_END
