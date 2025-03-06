@@ -14,6 +14,10 @@
  *  limitations under the License.
  */
 
+/*! \file swap_ranges.h
+ *  \brief HPX implementation of swap_ranges.
+ */
+
 #pragma once
 
 #include <thrust/detail/config.h>
@@ -25,6 +29,26 @@
 #elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)
 #  pragma system_header
 #endif // no system header
+#include <thrust/system/hpx/detail/execution_policy.h>
 
-// this system inherits swap_ranges
-#include <thrust/system/cpp/detail/swap_ranges.h>
+#include <hpx/parallel/algorithms/swap_ranges.hpp>
+
+THRUST_NAMESPACE_BEGIN
+namespace system
+{
+namespace hpx
+{
+namespace detail
+{
+
+template <typename ExecutionPolicy, typename ForwardIterator1, typename ForwardIterator2>
+ForwardIterator2 swap_ranges(
+  execution_policy<ExecutionPolicy>&, ForwardIterator1 first1, ForwardIterator1 last1, ForwardIterator2 first2)
+{
+  return ::hpx::swap_ranges(first1, last1, first2);
+}
+
+} // end namespace detail
+} // end namespace hpx
+} // end namespace system
+THRUST_NAMESPACE_END
