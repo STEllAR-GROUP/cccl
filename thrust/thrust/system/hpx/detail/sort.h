@@ -14,6 +14,10 @@
  *  limitations under the License.
  */
 
+/*! \file sort.h
+ *  \brief HPX implementation of sort.
+ */
+
 #pragma once
 
 #include <thrust/detail/config.h>
@@ -25,6 +29,73 @@
 #elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)
 #  pragma system_header
 #endif // no system header
+#include <thrust/system/hpx/detail/execution_policy.h>
 
-// this system inherits sort
-#include <thrust/system/cpp/detail/sort.h>
+#include <hpx/parallel/algorithms/is_sorted.hpp>
+#include <hpx/parallel/algorithms/sort.hpp>
+#include <hpx/parallel/algorithms/stable_sort.hpp>
+
+THRUST_NAMESPACE_BEGIN
+namespace system
+{
+namespace hpx
+{
+namespace detail
+{
+
+template <typename ExecutionPolicy, typename RandomAccessIterator>
+void sort(execution_policy<ExecutionPolicy>&, RandomAccessIterator first, RandomAccessIterator last)
+{
+  return ::hpx::sort(first, last);
+}
+
+template <typename ExecutionPolicy, typename RandomAccessIterator, typename StrictWeakOrdering>
+void sort(
+  execution_policy<ExecutionPolicy>&, RandomAccessIterator first, RandomAccessIterator last, StrictWeakOrdering comp)
+{
+  return ::hpx::sort(first, last, comp);
+}
+
+template <typename ExecutionPolicy, typename RandomAccessIterator>
+void stable_sort(execution_policy<ExecutionPolicy>&, RandomAccessIterator first, RandomAccessIterator last)
+{
+  return ::hpx::stable_sort(first, last);
+}
+
+// XXX it is an error to call this function; it has no implementation
+template <typename ExecutionPolicy, typename RandomAccessIterator, typename StrictWeakOrdering>
+void stable_sort(
+  execution_policy<ExecutionPolicy>&, RandomAccessIterator first, RandomAccessIterator last, StrictWeakOrdering comp)
+{
+  return ::hpx::stable_sort(first, last, comp);
+}
+
+template <typename ExecutionPolicy, typename ForwardIterator>
+bool is_sorted(execution_policy<ExecutionPolicy>&, ForwardIterator first, ForwardIterator last)
+{
+  return ::hpx::is_sorted(first, last);
+}
+
+template <typename ExecutionPolicy, typename ForwardIterator, typename Compare>
+bool is_sorted(execution_policy<ExecutionPolicy>&, ForwardIterator first, ForwardIterator last, Compare comp)
+{
+  return ::hpx::is_sorted(first, last, comp);
+}
+
+template <typename ExecutionPolicy, typename ForwardIterator>
+ForwardIterator is_sorted_until(execution_policy<ExecutionPolicy>&, ForwardIterator first, ForwardIterator last)
+{
+  return ::hpx::is_sorted_until(first, last);
+}
+
+template <typename ExecutionPolicy, typename ForwardIterator, typename Compare>
+ForwardIterator
+is_sorted_until(execution_policy<ExecutionPolicy>&, ForwardIterator first, ForwardIterator last, Compare comp)
+{
+  return ::hpx::is_sorted_until(first, last, comp);
+}
+
+} // end namespace detail
+} // end namespace hpx
+} // end namespace system
+THRUST_NAMESPACE_END
