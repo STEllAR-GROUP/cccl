@@ -15,7 +15,7 @@
  */
 
 /*! \file set_operations.h
- *  \brief HPX implementation of set_difference/set_intersection/set_symmetric_difference.
+ *  \brief HPX implementation of set_difference/set_intersection/set_symmetric_difference/set_union.
  */
 
 #pragma once
@@ -34,6 +34,7 @@
 #include <hpx/parallel/algorithms/set_difference.hpp>
 #include <hpx/parallel/algorithms/set_intersection.hpp>
 #include <hpx/parallel/algorithms/set_symmetric_difference.hpp>
+#include <hpx/parallel/algorithms/set_union.hpp>
 
 THRUST_NAMESPACE_BEGIN
 namespace system
@@ -128,6 +129,35 @@ OutputIterator set_symmetric_difference(
   StrictWeakOrdering comp)
 {
   return ::hpx::set_symmetric_difference(first1, last1, first2, last2, result, comp);
+}
+
+template <typename ExecutionPolicy, typename InputIterator1, typename InputIterator2, typename OutputIterator>
+OutputIterator set_union(
+  execution_policy<ExecutionPolicy>&,
+  InputIterator1 first1,
+  InputIterator1 last1,
+  InputIterator2 first2,
+  InputIterator2 last2,
+  OutputIterator result)
+{
+  return ::hpx::set_union(first1, last1, first2, last2, result);
+}
+
+template <typename ExecutionPolicy,
+          typename InputIterator1,
+          typename InputIterator2,
+          typename OutputIterator,
+          typename StrictWeakOrdering>
+OutputIterator set_union(
+  execution_policy<ExecutionPolicy>&,
+  InputIterator1 first1,
+  InputIterator1 last1,
+  InputIterator2 first2,
+  InputIterator2 last2,
+  OutputIterator result,
+  StrictWeakOrdering comp)
+{
+  return ::hpx::set_union(first1, last1, first2, last2, result, comp);
 }
 
 } // end namespace detail
