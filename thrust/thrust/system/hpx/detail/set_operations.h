@@ -14,6 +14,10 @@
  *  limitations under the License.
  */
 
+/*! \file set_operations.h
+ *  \brief HPX implementation of set_difference.
+ */
+
 #pragma once
 
 #include <thrust/detail/config.h>
@@ -25,6 +29,51 @@
 #elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)
 #  pragma system_header
 #endif // no system header
+#include <thrust/system/hpx/detail/execution_policy.h>
+
+#include <hpx/parallel/algorithms/set_difference.hpp>
+
+THRUST_NAMESPACE_BEGIN
+namespace system
+{
+namespace hpx
+{
+namespace detail
+{
+
+template <typename ExecutionPolicy, typename InputIterator1, typename InputIterator2, typename OutputIterator>
+OutputIterator set_difference(
+  execution_policy<ExecutionPolicy>&,
+  InputIterator1 first1,
+  InputIterator1 last1,
+  InputIterator2 first2,
+  InputIterator2 last2,
+  OutputIterator result)
+{
+  return ::hpx::set_difference(first1, last1, first2, last2, result);
+}
+
+template <typename ExecutionPolicy,
+          typename InputIterator1,
+          typename InputIterator2,
+          typename OutputIterator,
+          typename StrictWeakOrdering>
+OutputIterator set_difference(
+  execution_policy<ExecutionPolicy>&,
+  InputIterator1 first1,
+  InputIterator1 last1,
+  InputIterator2 first2,
+  InputIterator2 last2,
+  OutputIterator result,
+  StrictWeakOrdering comp)
+{
+  return ::hpx::set_difference(first1, last1, first2, last2, result, comp);
+}
+
+} // end namespace detail
+} // end namespace hpx
+} // end namespace system
+THRUST_NAMESPACE_END
 
 // this system inherits set_operations
 #include <thrust/system/cpp/detail/set_operations.h>
