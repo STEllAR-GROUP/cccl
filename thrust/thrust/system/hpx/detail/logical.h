@@ -14,6 +14,10 @@
  *  limitations under the License.
  */
 
+/*! \file logical.h
+ *  \brief HPX implementation of all_of/any_of/none_of.
+ */
+
 #pragma once
 
 #include <thrust/detail/config.h>
@@ -25,6 +29,37 @@
 #elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)
 #  pragma system_header
 #endif // no system header
+#include <thrust/system/hpx/detail/execution_policy.h>
 
-// this system inherits logical
-#include <thrust/system/cpp/detail/logical.h>
+#include <hpx/parallel/algorithms/all_any_none.hpp>
+
+THRUST_NAMESPACE_BEGIN
+namespace system
+{
+namespace hpx
+{
+namespace detail
+{
+
+template <typename ExecutionPolicy, typename InputIterator, typename Predicate>
+bool all_of(execution_policy<ExecutionPolicy>&, InputIterator first, InputIterator last, Predicate pred)
+{
+  return ::hpx::all_of(first, last, pred);
+}
+
+template <typename ExecutionPolicy, typename InputIterator, typename Predicate>
+bool any_of(execution_policy<ExecutionPolicy>&, InputIterator first, InputIterator last, Predicate pred)
+{
+  return ::hpx::any_of(first, last, pred);
+}
+
+template <typename ExecutionPolicy, typename InputIterator, typename Predicate>
+bool none_of(execution_policy<ExecutionPolicy>&, InputIterator first, InputIterator last, Predicate pred)
+{
+  return ::hpx::none_of(first, last, pred);
+}
+
+} // end namespace detail
+} // end namespace hpx
+} // end namespace system
+THRUST_NAMESPACE_END
