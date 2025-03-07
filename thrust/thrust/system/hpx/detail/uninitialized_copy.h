@@ -14,6 +14,10 @@
  *  limitations under the License.
  */
 
+/*! \file uninitialized_copy.h
+ *  \brief HPX implementation of uninitialized_copy/uninitialized_copy_n.
+ */
+
 #pragma once
 
 #include <thrust/detail/config.h>
@@ -25,6 +29,33 @@
 #elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)
 #  pragma system_header
 #endif // no system header
+#include <thrust/system/hpx/detail/execution_policy.h>
 
-// this system inherits uninitialized_copy
-#include <thrust/system/cpp/detail/uninitialized_copy.h>
+#include <hpx/parallel/algorithms/uninitialized_copy.hpp>
+
+THRUST_NAMESPACE_BEGIN
+namespace system
+{
+namespace hpx
+{
+namespace detail
+{
+
+template <typename ExecutionPolicy, typename InputIterator, typename ForwardIterator>
+ForwardIterator
+uninitialized_copy(execution_policy<ExecutionPolicy>&, InputIterator first, InputIterator last, ForwardIterator result)
+{
+  return ::hpx::uninitialized_copy(first, last, result);
+}
+
+template <typename ExecutionPolicy, typename InputIterator, typename Size, typename ForwardIterator>
+ForwardIterator
+uninitialized_copy_n(execution_policy<ExecutionPolicy>&, InputIterator first, Size n, ForwardIterator result)
+{
+  return ::hpx::uninitialized_copy_n(first, n, result);
+}
+
+} // end namespace detail
+} // end namespace hpx
+} // end namespace system
+THRUST_NAMESPACE_END
