@@ -391,30 +391,6 @@ struct SimdMin
   static_assert(cub::detail::always_false<T>(), "Unsupported specialization");
 };
 
-template <>
-struct SimdMin<::cuda::std::int16_t>
-{
-  using simd_type = ::cuda::std::uint32_t;
-
-  _CCCL_NODISCARD _CCCL_DEVICE _CCCL_FORCEINLINE ::cuda::std::uint32_t
-  operator()(::cuda::std::uint32_t a, ::cuda::std::uint32_t b) const
-  {
-    return __vmins2(a, b);
-  }
-};
-
-template <>
-struct SimdMin<::cuda::std::uint16_t>
-{
-  using simd_type = ::cuda::std::uint32_t;
-
-  _CCCL_NODISCARD _CCCL_DEVICE _CCCL_FORCEINLINE ::cuda::std::uint32_t
-  operator()(::cuda::std::uint32_t a, ::cuda::std::uint32_t b) const
-  {
-    return __vminu2(a, b);
-  }
-};
-
 #  if _CCCL_HAS_NVFP16()
 
 template <>
@@ -482,29 +458,6 @@ struct SimdMax
   static_assert(cub::detail::always_false<T>(), "Unsupported specialization");
 };
 
-template <>
-struct SimdMax<::cuda::std::int16_t>
-{
-  using simd_type = ::cuda::std::uint32_t;
-
-  _CCCL_NODISCARD _CCCL_DEVICE _CCCL_FORCEINLINE ::cuda::std::uint32_t
-  operator()(::cuda::std::uint32_t a, ::cuda::std::uint32_t b) const
-  {
-    return __vmaxs2(a, b);
-  }
-};
-
-template <>
-struct SimdMax<::cuda::std::uint16_t>
-{
-  using simd_type = ::cuda::std::uint32_t;
-
-  _CCCL_NODISCARD _CCCL_DEVICE _CCCL_FORCEINLINE ::cuda::std::uint32_t
-  operator()(::cuda::std::uint32_t a, ::cuda::std::uint32_t b) const
-  {
-    return __vmaxu2(a, b);
-  }
-};
 
 #  if _CCCL_HAS_NVFP16()
 
