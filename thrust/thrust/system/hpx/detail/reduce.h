@@ -14,6 +14,10 @@
  *  limitations under the License.
  */
 
+/*! \file reduce.h
+ *  \brief HPX implementation of reduce.
+ */
+
 #pragma once
 
 #include <thrust/detail/config.h>
@@ -25,6 +29,37 @@
 #elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)
 #  pragma system_header
 #endif // no system header
+#include <thrust/detail/function.h>
+#include <thrust/system/hpx/detail/execution_policy.h>
 
-// this system inherits reduce
-#include <thrust/system/cpp/detail/reduce.h>
+#include <hpx/parallel/algorithms/reduce.hpp>
+
+THRUST_NAMESPACE_BEGIN
+namespace system
+{
+namespace hpx
+{
+namespace detail
+{
+
+template <typename DerivedPolicy, typename InputIterator, typename OutputType, typename BinaryFunction>
+OutputType reduce(
+  execution_policy<DerivedPolicy>&, InputIterator first, InputIterator last, OutputType init, BinaryFunction binary_op)
+{
+  // wrap binary_op
+  thrust::detail::wrapped_function<BinaryFunction, OutputType> wrapped_binary_op{binary_op};
+
+  if constexpr (::hpx::traits::is_forward_iterator_v<InputIterator>)
+  {
+    return ::hpx::reduce(::hpx::execution::par, first, last, init, wrapped_binary_op);
+  }
+  else
+  {
+    return ::hpx::reduce(first, last, init, wrapped_binary_op);
+  }
+}
+
+} // end namespace detail
+} // end namespace hpx
+} // end namespace system
+THRUST_NAMESPACE_END
