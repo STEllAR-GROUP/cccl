@@ -30,6 +30,8 @@
 #  pragma system_header
 #endif // no system header
 
+#include <hpx/hpx_main.hpp>
+
 // get the execution policies definitions first
 #include <thrust/system/hpx/detail/execution_policy.h>
 
