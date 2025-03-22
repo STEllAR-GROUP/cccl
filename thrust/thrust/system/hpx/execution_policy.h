@@ -15,7 +15,7 @@
  */
 
 /*! \file thrust/system/hpx/execution_policy.h
- *  \brief Execution policies for Thrust's Standard C++ system.
+ *  \brief Execution policies for Thrust's HPX system.
  */
 
 #pragma once
@@ -98,27 +98,26 @@ namespace hpx
  */
 
 
-/*! \p thrust::system::hpx::execution_policy is the base class for all Thrust parallel execution
- *  policies which are derived from Thrust's standard C++ backend system.
+/*! \p thrust::hpx::execution_policy is the base class for all Thrust parallel execution
+ *  policies which are derived from Thrust's HPX backend system.
  */
 template<typename DerivedPolicy>
 struct execution_policy : thrust::execution_policy<DerivedPolicy>
 {};
 
 
-/*! \p thrust::system::hpx::tag is a type representing Thrust's standard C++ backend system in C++'s type system.
+/*! \p hpx::tag is a type representing Thrust's HPX backend system in C++'s type system.
  *  Iterators "tagged" with a type which is convertible to \p hpx::tag assert that they may be
  *  "dispatched" to algorithm implementations in the \p hpx system.
  */
 struct tag : thrust::system::hpx::execution_policy<tag> { unspecified };
 
 
-/*!
- *  \p thrust::system::hpx::par is the parallel execution policy associated with Thrust's standard
- *  C++ backend system.
+/*! \p thrust::hpx::par is the parallel execution policy associated with Thrust's HPX
+ *  backend system.
  *
  *  Instead of relying on implicit algorithm dispatch through iterator system tags, users may
- *  directly target Thrust's C++ backend system by providing \p thrust::hpx::par as an algorithm
+ *  directly target Thrust's HPX backend system by providing \p thrust::hpx::par as an algorithm
  *  parameter.
  *
  *  Explicit dispatch can be useful in avoiding the introduction of data copies into containers such
@@ -127,7 +126,7 @@ struct tag : thrust::system::hpx::execution_policy<tag> { unspecified };
  *  The type of \p thrust::hpx::par is implementation-defined.
  *
  *  The following code snippet demonstrates how to use \p thrust::hpx::par to explicitly dispatch an
- *  invocation of \p thrust::for_each to the standard C++ backend system:
+ *  invocation of \p thrust::for_each to the HPX backend system:
  *
  *  \code
  *  #include <thrust/for_each.h>

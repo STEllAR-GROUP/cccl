@@ -28,6 +28,8 @@
 #include <thrust/detail/allocator_aware_execution_policy.h>
 #include <thrust/system/hpx/detail/execution_policy.h>
 
+#include <hpx/executors/execution_policy.hpp>
+
 THRUST_NAMESPACE_BEGIN
 namespace system
 {
@@ -37,12 +39,18 @@ namespace detail
 {
 
 struct par_t
-    : thrust::system::hpx::detail::execution_policy<par_t>
+    : ::hpx::execution::parallel_policy
+    , thrust::system::hpx::detail::execution_policy<par_t>
     , thrust::detail::allocator_aware_execution_policy<thrust::system::hpx::detail::execution_policy>
 {
   _CCCL_HOST_DEVICE constexpr par_t()
       : thrust::system::hpx::detail::execution_policy<par_t>()
   {}
+
+  _CCCL_HOST_DEVICE ::hpx::execution::parallel_policy to_hpx() const
+  {
+    return *this;
+  }
 };
 
 } // namespace detail
