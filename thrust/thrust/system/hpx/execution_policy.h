@@ -30,6 +30,9 @@
 #  pragma system_header
 #endif // no system header
 
+// FIXME(K-ballo): this macro hack is used to automatically start the runtime in tests and examples
+#include <hpx/hpx_main.hpp>
+
 // get the execution policies definitions first
 #include <thrust/system/hpx/detail/execution_policy.h>
 
