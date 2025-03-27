@@ -54,10 +54,11 @@ OutputType reduce(execution_policy<DerivedPolicy>& exec,
 
   if constexpr (::hpx::traits::is_forward_iterator_v<InputIterator>)
   {
-    return ::hpx::reduce(thrust::detail::derived_cast(exec).to_hpx(), first, last, init, wrapped_binary_op);
+    return ::hpx::reduce(hpx::detail::hpx_execution_policy(exec), first, last, init, wrapped_binary_op);
   }
   else
   {
+    (void) exec;
     return ::hpx::reduce(first, last, init, wrapped_binary_op);
   }
 }

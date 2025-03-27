@@ -29,6 +29,7 @@
 #include <thrust/system/hpx/detail/execution_policy.h>
 
 #include <hpx/executors/execution_policy.hpp>
+#include <hpx/executors/parallel_executor.hpp>
 
 THRUST_NAMESPACE_BEGIN
 namespace system
@@ -38,20 +39,18 @@ namespace hpx
 namespace detail
 {
 
-struct par_t
-    : ::hpx::execution::parallel_policy
-    , thrust::system::hpx::detail::execution_policy<par_t>
-    , thrust::detail::allocator_aware_execution_policy<thrust::system::hpx::detail::execution_policy>
+template <typename Executor, typename Parameters>
+struct parallel_policy_shim
+    : ::hpx::execution::detail::execution_policy<parallel_policy_shim, Executor, Parameters>
+    , execution_policy<parallel_policy_shim<Executor, Parameters>>
 {
-  _CCCL_HOST_DEVICE constexpr par_t()
-      : thrust::system::hpx::detail::execution_policy<par_t>()
-  {}
+  using base_type = ::hpx::execution::detail::execution_policy<parallel_policy_shim, Executor, Parameters>;
 
-  _CCCL_HOST_DEVICE ::hpx::execution::parallel_policy to_hpx() const
-  {
-    return *this;
-  }
+  using base_type::base_type;
 };
+
+using par_t = parallel_policy_shim<::hpx::execution::parallel_executor,
+                                   ::hpx::traits::executor_parameters_type_t<::hpx::execution::parallel_executor>>;
 
 } // namespace detail
 
@@ -68,3 +67,10 @@ using thrust::system::hpx::par;
 
 } // namespace hpx
 THRUST_NAMESPACE_END
+
+namespace hpx::detail
+{
+template <typename Executor, typename Parameters>
+struct is_execution_policy<thrust::system::hpx::detail::parallel_policy_shim<Executor, Parameters>> : std::true_type
+{};
+} // namespace hpx::detail

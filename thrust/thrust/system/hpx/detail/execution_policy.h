@@ -29,6 +29,8 @@
 #include <thrust/iterator/detail/any_system_tag.h>
 #include <thrust/system/cpp/detail/execution_policy.h>
 
+#include <hpx/executors/execution_policy.hpp>
+
 THRUST_NAMESPACE_BEGIN
 namespace system
 {
@@ -48,7 +50,7 @@ namespace detail
 struct tag;
 
 // forward declaration of execution_policy
-template <typename>
+template <typename Derived>
 struct execution_policy;
 
 // specialize execution_policy for tag
@@ -71,6 +73,25 @@ struct execution_policy : thrust::system::cpp::detail::execution_policy<Derived>
     return tag();
   }
 };
+
+constexpr _CCCL_HOST_DEVICE const auto& hpx_execution_policy(execution_policy<tag>)
+{
+  return ::hpx::execution::par;
+}
+
+template < typename Derived>
+constexpr _CCCL_HOST_DEVICE auto&
+hpx_execution_policy(execution_policy<Derived>& x)
+{
+    return thrust::detail::derived_cast(x);
+}
+
+template < typename Derived>
+constexpr _CCCL_HOST_DEVICE const auto&
+hpx_execution_policy(const execution_policy<Derived>& x)
+{
+    return thrust::detail::derived_cast(x);
+}
 
 } // namespace detail
 
