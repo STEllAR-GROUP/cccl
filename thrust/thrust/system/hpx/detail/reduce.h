@@ -43,18 +43,22 @@ namespace detail
 {
 
 template <typename DerivedPolicy, typename InputIterator, typename OutputType, typename BinaryFunction>
-OutputType reduce(
-  execution_policy<DerivedPolicy>&, InputIterator first, InputIterator last, OutputType init, BinaryFunction binary_op)
+OutputType reduce(execution_policy<DerivedPolicy>& exec,
+                  InputIterator first,
+                  InputIterator last,
+                  OutputType init,
+                  BinaryFunction binary_op)
 {
   // wrap binary_op
   thrust::detail::wrapped_function<BinaryFunction, OutputType> wrapped_binary_op{binary_op};
 
   if constexpr (::hpx::traits::is_forward_iterator_v<InputIterator>)
   {
-    return ::hpx::reduce(::hpx::execution::par, first, last, init, wrapped_binary_op);
+    return ::hpx::reduce(hpx::detail::to_hpx_execution_policy(exec), first, last, init, wrapped_binary_op);
   }
   else
   {
+    (void) exec;
     return ::hpx::reduce(first, last, init, wrapped_binary_op);
   }
 }
