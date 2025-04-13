@@ -36,8 +36,11 @@
 // get the execution policies definitions first
 #include <thrust/system/hpx/detail/execution_policy.h>
 
-// get the definition of par
+// get the definition of par, par_unseq, seq, unseq
 #include <thrust/system/hpx/detail/par.h>
+#include <thrust/system/hpx/detail/par_unseq.h>
+#include <thrust/system/hpx/detail/seq.h>
+#include <thrust/system/hpx/detail/unseq.h>
 
 // now get all the algorithm definitions
 
