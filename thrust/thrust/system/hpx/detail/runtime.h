@@ -14,8 +14,8 @@
  *  limitations under the License.
  */
 
-/*! \file reduce.h
- *  \brief HPX implementation of reduce.
+/*! \file runtime.h
+ *  \brief Implementation of the HPX runtime startup/finalization.
  */
 
 #pragma once
@@ -29,11 +29,8 @@
 #elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)
 #  pragma system_header
 #endif // no system header
-#include <thrust/detail/function.h>
-#include <thrust/system/hpx/detail/execution_policy.h>
-#include <thrust/system/hpx/detail/runtime.h>
 
-#include <hpx/parallel/algorithms/reduce.hpp>
+#include <hpx/manage_runtime.hpp>
 
 THRUST_NAMESPACE_BEGIN
 namespace system
@@ -43,26 +40,44 @@ namespace hpx
 namespace detail
 {
 
-template <typename DerivedPolicy, typename InputIterator, typename OutputType, typename BinaryFunction>
-OutputType reduce(execution_policy<DerivedPolicy>& exec,
-                  InputIterator first,
-                  InputIterator last,
-                  OutputType init,
-                  BinaryFunction binary_op)
+struct init_runtime
 {
-  // wrap binary_op
-  thrust::detail::wrapped_function<BinaryFunction, OutputType> wrapped_binary_op{binary_op};
+  ::hpx::manage_runtime runtime{};
 
-  if constexpr (::hpx::traits::is_forward_iterator_v<InputIterator>)
+  init_runtime()
   {
-    return ::hpx::reduce(hpx::detail::to_hpx_execution_policy(exec), first, last, init, wrapped_binary_op);
+    ::hpx::init_params init_args;
+    init_args.cfg = {
+      // allow for unknown command line options
+      "hpx.commandline.allow_unknown!=1",
+      // disable HPX' short options
+      "hpx.commandline.aliasing!=0",
+    };
+    init_args.mode = ::hpx::runtime_mode::default_;
+
+    if (!runtime.start(__argc, __argv, init_args))
+    {
+      // something went wrong while initializing the runtime, bail out
+      std::abort();
+    }
   }
-  else
+
+  ~init_runtime()
   {
-    (void) exec;
-    return ::hpx::reduce(first, last, init, wrapped_binary_op);
+    (void) runtime.stop();
   }
-}
+
+  static init_runtime& get()
+  {
+    // The HPX runtime implicitly depends on thread-local storage, making this object thread_local ensures the correct
+    // sequencing of destructors. Since this function is only called from initialization of a global variable, only one
+    // instance of the runtime will be created.
+    static thread_local init_runtime m;
+    return m;
+  }
+};
+
+inline init_runtime& runtime = init_runtime::get();
 
 } // end namespace detail
 } // end namespace hpx
