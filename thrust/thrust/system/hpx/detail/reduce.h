@@ -31,6 +31,7 @@
 #endif // no system header
 #include <thrust/detail/function.h>
 #include <thrust/system/hpx/detail/execution_policy.h>
+#include <thrust/system/hpx/detail/runtime.h>
 
 #include <hpx/parallel/algorithms/reduce.hpp>
 
@@ -54,7 +55,9 @@ OutputType reduce(execution_policy<DerivedPolicy>& exec,
 
   if constexpr (::hpx::traits::is_forward_iterator_v<InputIterator>)
   {
-    return ::hpx::reduce(hpx::detail::to_hpx_execution_policy(exec), first, last, init, wrapped_binary_op);
+    return detail::run_as_hpx_thread([&] {
+      return ::hpx::reduce(hpx::detail::to_hpx_execution_policy(exec), first, last, init, wrapped_binary_op);
+    });
   }
   else
   {
