@@ -1,5 +1,6 @@
 #include <thrust/reduce.h>
 
+#include "test_executor.h"
 #include <unittest/unittest.h>
 
 template <typename ExecutionPolicy>
@@ -31,13 +32,13 @@ void TestReduceParOnSequencedExecutor()
 }
 DECLARE_UNITTEST(TestReduceParOnSequencedExecutor);
 
-void TestReduceParOnForkJoinExecutor()
+void TestReduceParOnTestSyncExecutor()
 {
-  hpx::execution::experimental::fork_join_executor exec{};
+  test_sync_executor exec{};
 
   TestReduce(thrust::hpx::par.on(exec));
 }
-DECLARE_UNITTEST(TestReduceParOnForkJoinExecutor);
+DECLARE_UNITTEST(TestReduceParOnTestSyncExecutor);
 
 void TestReduceParWithAutoChunkSize()
 {
@@ -61,13 +62,13 @@ void TestReduceParUnseqOnSequencedExecutor()
 }
 DECLARE_UNITTEST(TestReduceParUnseqOnSequencedExecutor);
 
-void TestReduceParUnseqOnForkJoinExecutor()
+void TestReduceParUnseqOnTestSyncExecutor()
 {
-  hpx::execution::experimental::fork_join_executor exec{};
+  test_sync_executor exec{};
 
   TestReduce(thrust::hpx::par_unseq.on(exec));
 }
-DECLARE_UNITTEST(TestReduceParUnseqOnForkJoinExecutor);
+DECLARE_UNITTEST(TestReduceParUnseqOnTestSyncExecutor);
 
 void TestReduceParUnseqWithAutoChunkSize()
 {
@@ -91,13 +92,13 @@ void TestReduceSeqOnSequencedExecutor()
 }
 DECLARE_UNITTEST(TestReduceSeqOnSequencedExecutor);
 
-//void TestReduceSeqOnForkJoinExecutor()
-//{
-//  hpx::execution::experimental::fork_join_executor exec{};
-//
-//  TestReduce(thrust::hpx::seq.on(exec));
-//}
-//DECLARE_UNITTEST(TestReduceSeqOnForkJoinExecutor);
+void TestReduceSeqOnTestSyncExecutor()
+{
+  test_sync_executor exec{};
+
+  TestReduce(thrust::hpx::seq.on(exec));
+}
+DECLARE_UNITTEST(TestReduceSeqOnTestSyncExecutor);
 
 void TestReduceSeqWithAutoChunkSize()
 {
@@ -121,13 +122,13 @@ void TestReduceUnseqOnSequencedExecutor()
 }
 DECLARE_UNITTEST(TestReduceUnseqOnSequencedExecutor);
 
-//void TestReduceUnseqOnForkJoinExecutor()
-//{
-//  hpx::execution::experimental::fork_join_executor exec{};
-//
-//  TestReduce(thrust::hpx::unseq.on(exec));
-//}
-//DECLARE_UNITTEST(TestReduceUnseqOnForkJoinExecutor);
+void TestReduceUnseqOnTestSyncExecutor()
+{
+  test_sync_executor exec{};
+
+  TestReduce(thrust::hpx::unseq.on(exec));
+}
+DECLARE_UNITTEST(TestReduceUnseqOnTestSyncExecutor);
 
 void TestReduceUnseqWithAutoChunkSize()
 {
