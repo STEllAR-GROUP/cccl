@@ -38,26 +38,27 @@ namespace detail
 {
 
 template <typename Executor, typename Parameters>
-struct parallel_policy_shim : basic_execution_policy<parallel_policy_shim, Executor, Parameters>
+struct parallel_unsequenced_policy_shim : basic_execution_policy<parallel_unsequenced_policy_shim, Executor, Parameters>
 {
-  using parallel_policy_shim::basic_execution_policy::basic_execution_policy;
+  using parallel_unsequenced_policy_shim::basic_execution_policy::basic_execution_policy;
 };
 
-using par_t = parallel_policy_shim<::hpx::execution::parallel_executor,
+using par_unseq_t =
+  parallel_unsequenced_policy_shim<::hpx::execution::parallel_executor,
                                    ::hpx::traits::executor_parameters_type_t<::hpx::execution::parallel_executor>>;
 
 } // namespace detail
 
-_CCCL_GLOBAL_CONSTANT detail::par_t par;
+_CCCL_GLOBAL_CONSTANT detail::par_unseq_t par_unseq;
 
 } // namespace hpx
 } // namespace system
 
-// alias par here
+// alias par_unseq here
 namespace hpx
 {
 
-using thrust::system::hpx::par;
+using thrust::system::hpx::par_unseq;
 
 } // namespace hpx
 THRUST_NAMESPACE_END
@@ -68,18 +69,23 @@ namespace detail
 {
 
 template <typename Executor, typename Parameters>
-struct is_rebound_execution_policy<THRUST_NS_QUALIFIER::system::hpx::detail::parallel_policy_shim<Executor, Parameters>>
-    : std::true_type
+struct is_rebound_execution_policy<
+  THRUST_NS_QUALIFIER::system::hpx::detail::parallel_unsequenced_policy_shim<Executor, Parameters>> : std::true_type
 {};
 
 template <typename Executor, typename Parameters>
-struct is_execution_policy<THRUST_NS_QUALIFIER::system::hpx::detail::parallel_policy_shim<Executor, Parameters>>
-    : std::true_type
+struct is_execution_policy<
+  THRUST_NS_QUALIFIER::system::hpx::detail::parallel_unsequenced_policy_shim<Executor, Parameters>> : std::true_type
 {};
 
 template <typename Executor, typename Parameters>
-struct is_parallel_execution_policy<THRUST_NS_QUALIFIER::system::hpx::detail::parallel_policy_shim<Executor, Parameters>>
-    : std::true_type
+struct is_parallel_execution_policy<
+  THRUST_NS_QUALIFIER::system::hpx::detail::parallel_unsequenced_policy_shim<Executor, Parameters>> : std::true_type
+{};
+
+template <typename Executor, typename Parameters>
+struct is_unsequenced_execution_policy<
+  THRUST_NS_QUALIFIER::system::hpx::detail::parallel_unsequenced_policy_shim<Executor, Parameters>> : std::true_type
 {};
 
 } // namespace detail
