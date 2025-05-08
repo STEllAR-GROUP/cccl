@@ -29,8 +29,8 @@
 #elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)
 #  pragma system_header
 #endif // no system header
-#include <thrust/detail/function.h>
 #include <thrust/system/hpx/detail/execution_policy.h>
+#include <thrust/system/hpx/detail/function.h>
 #include <thrust/system/hpx/detail/runtime.h>
 
 #include <hpx/parallel/algorithms/transform.hpp>
@@ -45,12 +45,14 @@ namespace detail
 
 template <typename ExecutionPolicy, typename InputIterator, typename OutputIterator, typename UnaryFunction>
 OutputIterator transform(
-  execution_policy<ExecutionPolicy>& exec, InputIterator first, InputIterator last, OutputIterator result, UnaryFunction op)
+  execution_policy<ExecutionPolicy>& exec,
+  InputIterator first,
+  InputIterator last,
+  OutputIterator result,
+  UnaryFunction op)
 {
-  using OutputType = typename thrust::iterator_traits<OutputIterator>::value_type;
-
   // wrap op
-  thrust::detail::wrapped_function<UnaryFunction, OutputType> wrapped_op{op};
+  wrapped_function<UnaryFunction> wrapped_op{op};
 
   if constexpr (::hpx::traits::is_forward_iterator_v<InputIterator>)
   {
@@ -78,10 +80,8 @@ OutputIterator transform(
   OutputIterator result,
   BinaryFunction op)
 {
-  using OutputType = typename thrust::iterator_traits<OutputIterator>::value_type;
-
   // wrap op
-  thrust::detail::wrapped_function<BinaryFunction, OutputType> wrapped_op{op};
+  wrapped_function<BinaryFunction> wrapped_op{op};
 
   if constexpr (::hpx::traits::is_forward_iterator_v<InputIterator1>
                 && ::hpx::traits::is_forward_iterator_v<InputIterator2>)

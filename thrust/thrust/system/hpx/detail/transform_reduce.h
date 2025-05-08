@@ -29,8 +29,8 @@
 #elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)
 #  pragma system_header
 #endif // no system header
-#include <thrust/detail/function.h>
 #include <thrust/system/hpx/detail/execution_policy.h>
+#include <thrust/system/hpx/detail/function.h>
 #include <thrust/system/hpx/detail/runtime.h>
 
 #include <hpx/parallel/algorithms/transform_reduce.hpp>
@@ -57,8 +57,8 @@ OutputType transform_reduce(
   BinaryFunction binary_op)
 {
   // wrap op
-  thrust::detail::wrapped_function<UnaryFunction, OutputType> wrapped_unary_op{unary_op};
-  thrust::detail::wrapped_function<BinaryFunction, OutputType> wrapped_binary_op{binary_op};
+  wrapped_function<UnaryFunction> wrapped_unary_op{unary_op};
+  wrapped_function<BinaryFunction> wrapped_binary_op{binary_op};
 
   if constexpr (::hpx::traits::is_forward_iterator_v<InputIterator>)
   {
