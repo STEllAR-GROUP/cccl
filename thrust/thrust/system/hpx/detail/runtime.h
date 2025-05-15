@@ -33,6 +33,51 @@
 #include <hpx/include/run_as.hpp>
 #include <hpx/manage_runtime.hpp>
 
+///////////////////////////////////////////////////////////////////////////////
+// Store the command line arguments in global variables to make them available
+// to the startup code.
+
+#if defined(linux) || defined(__linux) || defined(__linux__)
+
+inline int thrust_system_hpx__argc    = 0;
+inline char** thrust_system_hpx__argv = nullptr;
+
+inline void thrust_system_hpx__set_argc_argv(int argc, char* argv[], char*[])
+{
+  thrust_system_hpx__argc = argc;
+  thrust_system_hpx__argv = argv;
+}
+
+__attribute__((section(".preinit_array"))) inline void (*thrust_system_hpx__set_global_argc_argv)(
+  int, char*[], char*[]) = &thrust_system_hpx__set_argc_argv;
+
+#elif defined(__APPLE__)
+
+#  include <crt_externs.h>
+
+inline int thrust_system_hpx__get_arraylen(char** argv)
+{
+  int count = 0;
+  if (nullptr != argv)
+  {
+    while (nullptr != argv[count])
+    {
+      ++count;
+    }
+  }
+  return count;
+}
+
+inline int thrust_system_hpx__argc    = thrust_system_hpx__get_arraylen(*_NSGetArgv());
+inline char** thrust_system_hpx__argv = *_NSGetArgv();
+
+#elif defined(_WIN32)
+
+inline int thrust_system_hpx__argc    = __argc;
+inline char** thrust_system_hpx__argv = __argv;
+
+#endif
+
 THRUST_NAMESPACE_BEGIN
 namespace system
 {
@@ -62,7 +107,7 @@ inline void setup_hpx_runtime()
     };
     init_args.mode = ::hpx::runtime_mode::default_;
 
-    if (!runtime.emplace().start(__argc, __argv, init_args))
+    if (!runtime.emplace().start(thrust_system_hpx__argc, thrust_system_hpx__argv, init_args))
     {
       // something went wrong while initializing the runtime, bail out
       std::abort();
