@@ -86,18 +86,12 @@ namespace hpx
 namespace detail
 {
 
-inline void setup_hpx_runtime()
+struct init_runtime
 {
-  static std::once_flag once{};
-  static std::optional<::hpx::manage_runtime> runtime{};
+  ::hpx::manage_runtime runtime{};
 
-  // initialize HPX's runtime on demand
-  std::call_once(once, [] {
-    if (::hpx::get_runtime_ptr() != nullptr) // HPX runtime already running
-    {
-      return;
-    }
-
+  init_runtime()
+  {
     ::hpx::init_params init_args;
     init_args.cfg = {
       // allow for unknown command line options
@@ -107,16 +101,26 @@ inline void setup_hpx_runtime()
     };
     init_args.mode = ::hpx::runtime_mode::default_;
 
-    if (!runtime.emplace().start(thrust_system_hpx__argc, thrust_system_hpx__argv, init_args))
+    if (!runtime.start(thrust_system_hpx__argc, thrust_system_hpx__argv, init_args))
     {
       // something went wrong while initializing the runtime, bail out
       std::abort();
     }
+  }
 
-    std::atexit([] {
-      (void) runtime->stop();
-    });
-  });
+  ~init_runtime()
+  {
+    (void) runtime.stop();
+  }
+};
+
+inline init_runtime& setup_hpx_runtime()
+{
+  static thread_local ::hpx::execution_base::agent_base& agent = ::hpx::execution_base::detail::get_default_agent();
+  static init_runtime runtime{};
+
+  (void) agent;
+  return runtime;
 }
 
 template <typename Function>
@@ -127,7 +131,11 @@ inline decltype(auto) run_as_hpx_thread(const Function& f)
     return f();
   }
 
-  setup_hpx_runtime();
+  if (::hpx::get_runtime_ptr() == nullptr)
+  {
+    (void) setup_hpx_runtime();
+  }
+
   return ::hpx::run_as_hpx_thread(f);
 }
 
