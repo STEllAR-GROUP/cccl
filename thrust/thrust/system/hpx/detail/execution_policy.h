@@ -129,7 +129,7 @@ public:
   template <typename Executor_,
             typename Parameters_,
             typename Category_,
-            typename = std::enable_if_t<!std::is_same_v<Derived<Executor_, Parameters_>, Derived<Executor, Paramters>>
+            typename = std::enable_if_t<!std::is_same_v<Derived<Executor_, Parameters_>, Derived<Executor, Parameters>>
                                         && std::is_convertible_v<Executor_, Executor>
                                         && std::is_convertible_v<Parameters_, Parameters>>>
   explicit constexpr basic_execution_policy(
