@@ -31,6 +31,7 @@
 #endif // no system header
 #include <thrust/detail/function.h>
 #include <thrust/system/hpx/detail/execution_policy.h>
+#include <thrust/system/hpx/detail/runtime.h>
 
 #include <hpx/parallel/algorithms/reduce.hpp>
 
