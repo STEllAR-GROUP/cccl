@@ -124,6 +124,17 @@ struct init_runtime
 
 inline init_runtime& runtime = init_runtime::get();
 
+template <typename F>
+inline decltype(auto) run_as_hpx_thread(const F& f)
+{
+  if (::hpx::threads::get_self_ptr() != nullptr) // called from an HPX thread
+  {
+    return f();
+  }
+
+  return ::hpx::run_as_hpx_thread(f);
+}
+
 } // end namespace detail
 } // end namespace hpx
 } // end namespace system

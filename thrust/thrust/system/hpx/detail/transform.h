@@ -56,7 +56,9 @@ OutputIterator transform(
 
   if constexpr (::hpx::traits::is_forward_iterator_v<InputIterator>)
   {
-    return ::hpx::transform(hpx::detail::to_hpx_execution_policy(exec), first, last, result, wrapped_op);
+    return hpx::detail::run_as_hpx_thread([&] {
+      return ::hpx::transform(hpx::detail::to_hpx_execution_policy(exec), first, last, result, wrapped_op);
+    });
   }
   else
   {
@@ -84,7 +86,9 @@ OutputIterator transform(
   if constexpr (::hpx::traits::is_forward_iterator_v<InputIterator1>
                 && ::hpx::traits::is_forward_iterator_v<InputIterator2>)
   {
-    return ::hpx::transform(hpx::detail::to_hpx_execution_policy(exec), first1, last1, first2, result, wrapped_op);
+    return hpx::detail::run_as_hpx_thread([&] {
+      return ::hpx::transform(hpx::detail::to_hpx_execution_policy(exec), first1, last1, first2, result, wrapped_op);
+    });
   }
   else
   {

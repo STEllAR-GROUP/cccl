@@ -29,8 +29,8 @@
 #elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)
 #  pragma system_header
 #endif // no system header
-#include <thrust/detail/function.h>
 #include <thrust/system/hpx/detail/execution_policy.h>
+#include <thrust/system/hpx/detail/function.h>
 #include <thrust/system/hpx/detail/runtime.h>
 
 #include <hpx/parallel/algorithms/reduce.hpp>
@@ -51,11 +51,13 @@ OutputType reduce(execution_policy<DerivedPolicy>& exec,
                   BinaryFunction binary_op)
 {
   // wrap binary_op
-  thrust::detail::wrapped_function<BinaryFunction, OutputType> wrapped_binary_op{binary_op};
+  wrapped_function<BinaryFunction> wrapped_binary_op{binary_op};
 
   if constexpr (::hpx::traits::is_forward_iterator_v<InputIterator>)
   {
-    return ::hpx::reduce(hpx::detail::to_hpx_execution_policy(exec), first, last, init, wrapped_binary_op);
+    return hpx::detail::run_as_hpx_thread([&] {
+      return ::hpx::reduce(hpx::detail::to_hpx_execution_policy(exec), first, last, init, wrapped_binary_op);
+    });
   }
   else
   {
