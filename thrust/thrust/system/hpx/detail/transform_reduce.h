@@ -62,8 +62,10 @@ OutputType transform_reduce(
 
   if constexpr (::hpx::traits::is_forward_iterator_v<InputIterator>)
   {
-    return ::hpx::transform_reduce(
-      hpx::detail::to_hpx_execution_policy(exec), first, last, init, wrapped_binary_op, wrapped_unary_op);
+    return hpx::detail::run_as_hpx_thread([&] {
+      return ::hpx::transform_reduce(
+        hpx::detail::to_hpx_execution_policy(exec), first, last, init, wrapped_binary_op, wrapped_unary_op);
+    });
   }
   else
   {
