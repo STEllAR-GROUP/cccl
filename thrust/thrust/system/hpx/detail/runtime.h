@@ -30,6 +30,7 @@
 #  pragma system_header
 #endif // no system header
 
+#include <hpx/executors/fork_join_executor.hpp>
 #include <hpx/manage_runtime.hpp>
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -123,6 +124,7 @@ struct init_runtime
 };
 
 inline init_runtime& runtime = init_runtime::get();
+inline ::hpx::execution::experimental::fork_join_executor default_executor;
 
 template <typename F>
 inline decltype(auto) run_as_hpx_thread(const F& f)
