@@ -29,10 +29,10 @@
 #elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)
 #  pragma system_header
 #endif // no system header
+
+#include <thrust/iterator/iterator_traits.h>
 #include <thrust/system/hpx/detail/execution_policy.h>
 #include <thrust/system/hpx/detail/runtime.h>
-
-#include <type_traits>
 
 #include <hpx/parallel/algorithms/find.hpp>
 
@@ -49,7 +49,7 @@ namespace detail
 template <typename Iterator>
 struct iterator_reference_is_lvalue_reference
 {
-  using reference_type        = typename std::iterator_traits<Iterator>::reference;
+  using reference_type        = typename thrust::iterator_traits<Iterator>::reference;
   static constexpr bool value = std::is_lvalue_reference_v<reference_type>;
 };
 
