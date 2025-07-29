@@ -32,6 +32,7 @@
 
 #include <thrust/iterator/iterator_traits.h>
 #include <thrust/system/hpx/detail/execution_policy.h>
+#include <thrust/system/hpx/detail/function.h>
 #include <thrust/system/hpx/detail/runtime.h>
 
 #include <hpx/parallel/algorithms/find.hpp>
@@ -44,20 +45,10 @@ namespace hpx
 namespace detail
 {
 
-// Helper trait to detect if an iterator's reference type can be bound to a non-const lvalue reference
-// HPX's parallel algorithms expect this property, but many Thrust iterators return rvalues
-template <typename Iterator>
-struct iterator_reference_is_lvalue_reference
-{
-  using reference_type        = typename thrust::iterator_traits<Iterator>::reference;
-  static constexpr bool value = std::is_lvalue_reference_v<reference_type>;
-};
-
 template <typename DerivedPolicy, typename InputIterator, typename T>
 InputIterator find(execution_policy<DerivedPolicy>& exec, InputIterator first, InputIterator last, const T& value)
 {
-  if constexpr (::hpx::traits::is_forward_iterator_v<InputIterator>
-                && iterator_reference_is_lvalue_reference<InputIterator>::value)
+  if constexpr (::hpx::traits::is_forward_iterator_v<InputIterator>)
   {
     return hpx::detail::run_as_hpx_thread([&] {
       return ::hpx::find(hpx::detail::to_hpx_execution_policy(exec), first, last, value);
@@ -73,34 +64,38 @@ InputIterator find(execution_policy<DerivedPolicy>& exec, InputIterator first, I
 template <typename DerivedPolicy, typename InputIterator, typename Predicate>
 InputIterator find_if(execution_policy<DerivedPolicy>& exec, InputIterator first, InputIterator last, Predicate pred)
 {
-  if constexpr (::hpx::traits::is_forward_iterator_v<InputIterator>
-                && iterator_reference_is_lvalue_reference<InputIterator>::value)
+  // wrap
+  wrapped_function<Predicate> wrapped_pred(pred);
+
+  if constexpr (::hpx::traits::is_forward_iterator_v<InputIterator>)
   {
     return hpx::detail::run_as_hpx_thread([&] {
-      return ::hpx::find_if(hpx::detail::to_hpx_execution_policy(exec), first, last, pred);
+      return ::hpx::find_if(hpx::detail::to_hpx_execution_policy(exec), first, last, wrapped_pred);
     });
   }
   else
   {
     (void) exec;
-    return ::hpx::find_if(first, last, pred);
+    return ::hpx::find_if(first, last, wrapped_pred);
   }
 }
 
 template <typename DerivedPolicy, typename InputIterator, typename Predicate>
 InputIterator find_if_not(execution_policy<DerivedPolicy>& exec, InputIterator first, InputIterator last, Predicate pred)
 {
-  if constexpr (::hpx::traits::is_forward_iterator_v<InputIterator>
-                && iterator_reference_is_lvalue_reference<InputIterator>::value)
+  // wrap
+  wrapped_function<Predicate> wrapped_pred(pred);
+
+  if constexpr (::hpx::traits::is_forward_iterator_v<InputIterator>)
   {
     return hpx::detail::run_as_hpx_thread([&] {
-      return ::hpx::find_if_not(hpx::detail::to_hpx_execution_policy(exec), first, last, pred);
+      return ::hpx::find_if_not(hpx::detail::to_hpx_execution_policy(exec), first, last, wrapped_pred);
     });
   }
   else
   {
     (void) exec;
-    return ::hpx::find_if_not(first, last, pred);
+    return ::hpx::find_if_not(first, last, wrapped_pred);
   }
 }
 

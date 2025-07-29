@@ -17,13 +17,13 @@ void TestFind(ExecutionPolicy exec)
   // Test find
   {
     typename Vector::iterator result = thrust::find(exec, input.begin(), input.end(), 7);
-    ASSERT_EQUAL(thrust::distance(input.begin(), result), 3);
+    ASSERT_EQUAL(result - input.begin(), 3);
   }
 
   // Test find with value not present
   {
     typename Vector::iterator result = thrust::find(exec, input.begin(), input.end(), 99);
-    ASSERT_EQUAL(thrust::distance(input.begin(), result), thrust::distance(input.begin(), input.end()));
+    ASSERT_EQUAL(result - input.begin(), input.end() - input.begin());
   }
 
   // Test find_if with predicate
@@ -37,7 +37,7 @@ void TestFind(ExecutionPolicy exec)
   {
     auto is_greater_than_10 = [](T x) { return x > 10; };
     typename Vector::iterator result = thrust::find_if(exec, input.begin(), input.end(), is_greater_than_10);
-    ASSERT_EQUAL(thrust::distance(input.begin(), result), thrust::distance(input.begin(), input.end()));
+    ASSERT_EQUAL(result - input.begin(), input.end() - input.begin());
   }
 
   // Test find_if_not
@@ -51,7 +51,7 @@ void TestFind(ExecutionPolicy exec)
   {
     auto is_single_digit = [](T x) { return x < 10; };
     typename Vector::iterator result = thrust::find_if_not(exec, input.begin(), input.end(), is_single_digit);
-    ASSERT_EQUAL(thrust::distance(input.begin(), result), thrust::distance(input.begin(), input.end()));
+    ASSERT_EQUAL(result - input.begin(), input.end() - input.begin());
   }
 }
 
@@ -73,7 +73,7 @@ void TestFindWithDifferentTypes(ExecutionPolicy exec)
     thrust::counting_iterator<int> last = first + 10;
     
     auto result = thrust::find(exec, first, last, 42);
-    ASSERT_EQUAL(thrust::distance(first, result), 0);
+    ASSERT_EQUAL(result - first, 0);
   }
 }
 
