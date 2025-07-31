@@ -14,6 +14,10 @@
  *  limitations under the License.
  */
 
+/*! \file scan.h
+ *  \brief HPX implementation of scan.
+ */
+
 #pragma once
 
 #include <thrust/detail/config.h>
@@ -25,6 +29,51 @@
 #elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)
 #  pragma system_header
 #endif // no system header
+#include <thrust/system/hpx/detail/execution_policy.h>
+#include <thrust/system/hpx/detail/function.h>
+#include <thrust/system/hpx/detail/runtime.h>
 
-// this system inherits scan
-#include <thrust/system/cpp/detail/scan.h>
+#include <hpx/parallel/algorithms/exclusive_scan.hpp>
+#include <hpx/parallel/algorithms/inclusive_scan.hpp>
+
+THRUST_NAMESPACE_BEGIN
+namespace system
+{
+namespace hpx
+{
+namespace detail
+{
+
+template <typename DerivedPolicy, typename InputIterator, typename OutputIterator, typename BinaryFunction>
+OutputIterator inclusive_scan(
+  execution_policy<DerivedPolicy>& exec,
+  InputIterator first,
+  InputIterator last,
+  OutputIterator result,
+  BinaryFunction binary_op)
+{
+  // wrap binary_op
+  wrapped_function<BinaryFunction> wrapped_binary_op{binary_op};
+
+  if (first == last)
+  {
+    return result;
+  }
+
+  if constexpr (::hpx::traits::is_forward_iterator_v<InputIterator>)
+  {
+    return hpx::detail::run_as_hpx_thread([&] {
+      return ::hpx::inclusive_scan(hpx::detail::to_hpx_execution_policy(exec), first, last, result, wrapped_binary_op);
+    });
+  }
+  else
+  {
+    (void) exec;
+    return ::hpx::inclusive_scan(hpx::detail::to_hpx_execution_policy(exec), first, last, result, wrapped_binary_op);
+  }
+}
+
+} // end namespace detail
+} // end namespace hpx
+} // end namespace system
+THRUST_NAMESPACE_END
