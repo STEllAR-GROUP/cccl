@@ -15,7 +15,7 @@
  */
 
 /*! \file hpx/memory_resource.h
- *  \brief Memory resources for the Standard C++ system.
+ *  \brief Memory resources for the HPX system.
  */
 
 #pragma once
@@ -54,17 +54,17 @@ using universal_native_resource =
  *  \{
  */
 
-/*! The memory resource for the Standard C++ system. Uses \p
- *  mr::new_delete_resource and tags it with \p hpx::pointer.
+/*! The memory resource for the HPX system. Uses \p mr::new_delete_resource and
+ *  tags it with \p hpx::pointer.
  */
 using memory_resource = detail::native_resource;
-/*! The unified memory resource for the Standard C++ system. Uses
+/*! The unified memory resource for the HPX system. Uses
  *  \p mr::new_delete_resource and tags it with \p hpx::universal_pointer.
  */
 using universal_memory_resource = detail::universal_native_resource;
-// FIXME(bgruber): comment below is wrong or alias should be to universal_memory_resource
+
 /*! An alias for \p hpx::universal_memory_resource. */
-using universal_host_pinned_memory_resource = detail::native_resource;
+using universal_host_pinned_memory_resource = universal_memory_resource;
 
 /*! \} // memory_resources
  */
