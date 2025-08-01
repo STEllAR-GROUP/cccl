@@ -33,6 +33,8 @@
 #include <thrust/mr/new.h>
 #include <thrust/system/hpx/pointer.h>
 
+#include <hpx/parallel/algorithms/for_loop.hpp>
+
 THRUST_NAMESPACE_BEGIN
 namespace system
 {
@@ -42,7 +44,30 @@ namespace hpx
 //! \cond
 namespace detail
 {
-using native_resource = thrust::mr::fancy_pointer_resource<thrust::mr::new_delete_resource, thrust::hpx::pointer<void>>;
+
+class topology_resource final : public mr::memory_resource<>
+{
+public:
+  void* do_allocate(std::size_t bytes, std::size_t /*alignment*/ = THRUST_MR_DEFAULT_ALIGNMENT) override
+  {
+    std::byte* ptr = static_cast<std::byte*>(::hpx::threads::create_topology().allocate(bytes));
+
+    // touch first byte of every page
+    const auto page_size = ::hpx::threads::get_memory_page_size();
+    ::hpx::experimental::for_loop_strided(::hpx::execution::par, ptr, ptr + bytes, page_size, [](std::byte* it) {
+      *it = {};
+    });
+
+    return ptr;
+  }
+
+  void do_deallocate(void* p, std::size_t bytes, std::size_t /*alignment*/ = THRUST_MR_DEFAULT_ALIGNMENT) override
+  {
+    return ::hpx::threads::create_topology().deallocate(p, bytes);
+  }
+};
+
+using native_resource = thrust::mr::fancy_pointer_resource<topology_resource, thrust::hpx::pointer<void>>;
 
 using universal_native_resource =
   thrust::mr::fancy_pointer_resource<thrust::mr::new_delete_resource, thrust::hpx::universal_pointer<void>>;
