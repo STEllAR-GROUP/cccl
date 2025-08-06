@@ -541,6 +541,14 @@ struct only_set_when_expected_it
   {
     return *this;
   }
+
+  _CCCL_HOST_DEVICE only_set_when_expected_it operator++(int) const
+  {
+    only_set_when_expected_it temp = *this;
+    ++(*this);
+    return temp;
+  }
+
   _CCCL_HOST_DEVICE only_set_when_expected_it operator*() const
   {
     return *this;
@@ -563,6 +571,32 @@ struct only_set_when_expected_it
       *flag = true;
     }
   }
+
+  // Refined operator+ to update the expected value logically
+  _CCCL_HOST_DEVICE friend only_set_when_expected_it operator+(long long lhs, const only_set_when_expected_it& rhs) {
+    only_set_when_expected_it result = rhs;
+    result.expected += lhs;
+    return result;
+  }
+
+  _CCCL_HOST_DEVICE only_set_when_expected_it& operator--()
+  {
+    --expected;
+    return *this;
+  }
+
+  _CCCL_HOST_DEVICE only_set_when_expected_it operator--(int)
+  {
+    only_set_when_expected_it temp = *this;
+    --(*this);
+    return temp;
+  }
+
+  _CCCL_HOST_DEVICE only_set_when_expected_it& operator+=(long long n)
+  {
+    expected += n;
+    return *this;
+  }
 };
 
 namespace std
@@ -570,9 +604,11 @@ namespace std
 template <>
 struct iterator_traits<only_set_when_expected_it>
 {
-  using value_type      = long long;
-  using reference       = only_set_when_expected_it;
-  using difference_type = ::cuda::std::ptrdiff_t;
+  using value_type        = long long;
+  using pointer           = long long*;
+  using reference         = only_set_when_expected_it;
+  using iterator_category = thrust::random_access_device_iterator_tag;
+  using difference_type   = ::cuda::std::ptrdiff_t;
 };
 } // namespace std
 
@@ -581,6 +617,7 @@ template <>
 struct iterator_traits<only_set_when_expected_it>
 {
   using value_type        = long long;
+  using pointer           = long long*;
   using reference         = only_set_when_expected_it;
   using iterator_category = thrust::random_access_device_iterator_tag;
   using difference_type   = ::cuda::std::ptrdiff_t;

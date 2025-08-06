@@ -36,6 +36,8 @@
 #include <hpx/parallel/algorithms/exclusive_scan.hpp>
 #include <hpx/parallel/algorithms/inclusive_scan.hpp>
 
+template <typename T> struct print_type;
+
 THRUST_NAMESPACE_BEGIN
 namespace system
 {
@@ -60,17 +62,56 @@ OutputIterator inclusive_scan(
     return result;
   }
 
-  if constexpr (::hpx::traits::is_forward_iterator_v<InputIterator>)
+  // Remove SFINAE by being more explicit about the call
+  auto hpx_policy = hpx::detail::to_hpx_execution_policy(exec);
+  auto hpx_result = ::hpx::inclusive_scan(hpx_policy, first, last, result, wrapped_binary_op);
+  return hpx_result;
+}
+
+template <typename DerivedPolicy, typename InputIterator, typename OutputIterator, typename InitialValueType, typename BinaryFunction>
+OutputIterator inclusive_scan(
+  execution_policy<DerivedPolicy>& exec,
+  InputIterator first,
+  InputIterator last,
+  OutputIterator result,
+  InitialValueType init,
+  BinaryFunction binary_op)
+{
+  // wrap binary_op
+  wrapped_function<BinaryFunction> wrapped_binary_op{binary_op};
+
+  if (first == last)
   {
-    return hpx::detail::run_as_hpx_thread([&] {
-      return ::hpx::inclusive_scan(hpx::detail::to_hpx_execution_policy(exec), first, last, result, wrapped_binary_op);
-    });
+    return result;
   }
-  else
+
+  // Remove SFINAE by being more explicit about the call
+  auto hpx_policy = hpx::detail::to_hpx_execution_policy(exec);
+  auto hpx_result = ::hpx::inclusive_scan(hpx_policy, first, last, result, wrapped_binary_op, init);
+  return hpx_result;
+}
+
+template <typename DerivedPolicy, typename InputIterator, typename OutputIterator, typename InitialValueType, typename BinaryFunction>
+OutputIterator exclusive_scan(
+  execution_policy<DerivedPolicy>& exec,
+  InputIterator first,
+  InputIterator last,
+  OutputIterator result,
+  InitialValueType init,
+  BinaryFunction binary_op)
+{
+  // wrap binary_op
+  wrapped_function<BinaryFunction> wrapped_binary_op{binary_op};
+
+  if (first == last)
   {
-    (void) exec;
-    return ::hpx::inclusive_scan(hpx::detail::to_hpx_execution_policy(exec), first, last, result, wrapped_binary_op);
+    return result;
   }
+
+  // Remove SFINAE by being more explicit about the call
+  auto hpx_policy = hpx::detail::to_hpx_execution_policy(exec);
+  auto hpx_result = ::hpx::exclusive_scan(hpx_policy, first, last, result, init, wrapped_binary_op);
+  return hpx_result;
 }
 
 } // end namespace detail
