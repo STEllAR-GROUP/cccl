@@ -139,7 +139,8 @@ inline decltype(auto) run_as_hpx_thread(const F& f)
     return f();
   }
 
-  return ::hpx::run_as_hpx_thread(f);
+  constexpr ::hpx::launch::async_policy policy(::hpx::threads::thread_priority::bound);
+  return ::hpx::run_as_hpx_thread(policy, f);
 }
 
 } // end namespace detail
