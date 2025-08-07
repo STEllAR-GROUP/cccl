@@ -236,7 +236,7 @@ auto to_hpx_execution_policy(const execution_policy<Derived>& exec) noexcept
   else
   {
     (void) exec;
-    return ::hpx::execution::par.on(default_executor);
+    return ::hpx::execution::par.on(runtime.default_executor);
   }
 }
 

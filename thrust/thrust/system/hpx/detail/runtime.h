@@ -112,19 +112,24 @@ struct init_runtime
   {
     (void) runtime.stop();
   }
+};
 
-  static init_runtime& get()
+struct manage_runtime
+{
+  init_runtime init;
+  ::hpx::execution::experimental::fork_join_executor default_executor;
+
+  static manage_runtime& get()
   {
     // The HPX runtime implicitly depends on thread-local storage, making this object thread_local ensures the correct
     // sequencing of destructors. Since this function is only called from initialization of a global variable, only one
     // instance of the runtime will be created.
-    static thread_local init_runtime m;
+    static thread_local manage_runtime m;
     return m;
   }
 };
 
-inline init_runtime& runtime = init_runtime::get();
-inline ::hpx::execution::experimental::fork_join_executor default_executor;
+inline manage_runtime& runtime = manage_runtime::get();
 
 template <typename F>
 inline decltype(auto) run_as_hpx_thread(const F& f)
