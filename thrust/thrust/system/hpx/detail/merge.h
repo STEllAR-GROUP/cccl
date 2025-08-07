@@ -14,6 +14,10 @@
  *  limitations under the License.
  */
 
+/*! \file merge.h
+ *  \brief HPX implementation of merge.
+ */
+
 #pragma once
 
 #include <thrust/detail/config.h>
@@ -25,6 +29,57 @@
 #elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)
 #  pragma system_header
 #endif // no system header
+#include <thrust/system/hpx/detail/execution_policy.h>
+#include <thrust/system/hpx/detail/function.h>
+#include <thrust/system/hpx/detail/runtime.h>
 
-// this system inherits merge
+#include <hpx/parallel/algorithms/merge.hpp>
+
+THRUST_NAMESPACE_BEGIN
+namespace system
+{
+namespace hpx
+{
+namespace detail
+{
+
+template <typename ExecutionPolicy,
+          typename InputIterator1,
+          typename InputIterator2,
+          typename OutputIterator,
+          typename StrictWeakOrdering>
+OutputIterator
+merge(execution_policy<ExecutionPolicy>& exec,
+      InputIterator1 first1,
+      InputIterator1 last1,
+      InputIterator2 first2,
+      InputIterator2 last2,
+      OutputIterator result,
+      StrictWeakOrdering comp)
+{
+  // wrap comp
+  wrapped_function<StrictWeakOrdering> wrapped_comp{comp};
+
+  if constexpr (::hpx::traits::is_forward_iterator_v<InputIterator1>
+                && ::hpx::traits::is_forward_iterator_v<InputIterator2>
+                && ::hpx::traits::is_forward_iterator_v<OutputIterator>)
+  {
+    return hpx::detail::run_as_hpx_thread([&] {
+      return ::hpx::merge(
+        hpx::detail::to_hpx_execution_policy(exec), first1, last1, first2, last2, result, wrapped_comp);
+    });
+  }
+  else
+  {
+    (void) exec;
+    return ::hpx::merge(first1, last1, first2, last2, result, wrapped_comp);
+  }
+}
+
+} // end namespace detail
+} // end namespace hpx
+} // end namespace system
+THRUST_NAMESPACE_END
+
+// this system inherits merge_by_key
 #include <thrust/system/cpp/detail/merge.h>
