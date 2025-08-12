@@ -29,11 +29,10 @@
 #elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)
 #  pragma system_header
 #endif // no system header
+#include <thrust/system/hpx/detail/contiguous_iterator.h>
 #include <thrust/system/hpx/detail/execution_policy.h>
 #include <thrust/system/hpx/detail/function.h>
 #include <thrust/system/hpx/detail/runtime.h>
-#include <thrust/type_traits/is_contiguous_iterator.h>
-#include <thrust/type_traits/unwrap_contiguous_iterator.h>
 
 #include <hpx/parallel/algorithms/transform.hpp>
 
@@ -61,18 +60,11 @@ OutputIterator transform(
     return hpx::detail::run_as_hpx_thread([&] {
       auto res = ::hpx::transform(
         hpx::detail::to_hpx_execution_policy(exec),
-        thrust::try_unwrap_contiguous_iterator(first),
-        thrust::try_unwrap_contiguous_iterator(last),
-        thrust::try_unwrap_contiguous_iterator(result),
+        detail::try_unwrap_contiguous_iterator(first),
+        detail::try_unwrap_contiguous_iterator(last),
+        detail::try_unwrap_contiguous_iterator(result),
         wrapped_op);
-      if constexpr (thrust::is_contiguous_iterator_v<OutputIterator>)
-      { // rewrap
-        return result + (res - thrust::try_unwrap_contiguous_iterator(result));
-      }
-      else
-      {
-        return res;
-      }
+      return detail::rewrap_contiguous_iterator(res, result);
     });
   }
   else
@@ -104,19 +96,12 @@ OutputIterator transform(
     return hpx::detail::run_as_hpx_thread([&] {
       auto res = ::hpx::transform(
         hpx::detail::to_hpx_execution_policy(exec),
-        thrust::try_unwrap_contiguous_iterator(first1),
-        thrust::try_unwrap_contiguous_iterator(last1),
-        thrust::try_unwrap_contiguous_iterator(first2),
-        thrust::try_unwrap_contiguous_iterator(result),
+        detail::try_unwrap_contiguous_iterator(first1),
+        detail::try_unwrap_contiguous_iterator(last1),
+        detail::try_unwrap_contiguous_iterator(first2),
+        detail::try_unwrap_contiguous_iterator(result),
         wrapped_op);
-      if constexpr (thrust::is_contiguous_iterator_v<OutputIterator>)
-      { // rewrap
-        return result + (res - thrust::try_unwrap_contiguous_iterator(result));
-      }
-      else
-      {
-        return res;
-      }
+      return detail::rewrap_contiguous_iterator(res, result);
     });
   }
   else

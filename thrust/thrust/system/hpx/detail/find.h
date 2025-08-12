@@ -30,11 +30,10 @@
 #  pragma system_header
 #endif // no system header
 
+#include <thrust/system/hpx/detail/contiguous_iterator.h>
 #include <thrust/system/hpx/detail/execution_policy.h>
 #include <thrust/system/hpx/detail/function.h>
 #include <thrust/system/hpx/detail/runtime.h>
-#include <thrust/type_traits/is_contiguous_iterator.h>
-#include <thrust/type_traits/unwrap_contiguous_iterator.h>
 
 #include <hpx/parallel/algorithms/find.hpp>
 
@@ -54,17 +53,10 @@ InputIterator find(execution_policy<DerivedPolicy>& exec, InputIterator first, I
     return hpx::detail::run_as_hpx_thread([&] {
       auto res = ::hpx::find(
         hpx::detail::to_hpx_execution_policy(exec),
-        thrust::try_unwrap_contiguous_iterator(first),
-        thrust::try_unwrap_contiguous_iterator(last),
+        detail::try_unwrap_contiguous_iterator(first),
+        detail::try_unwrap_contiguous_iterator(last),
         value);
-      if constexpr (thrust::is_contiguous_iterator_v<InputIterator>)
-      { // rewrap
-        return first + (res - thrust::try_unwrap_contiguous_iterator(first));
-      }
-      else
-      {
-        return res;
-      }
+      return detail::rewrap_contiguous_iterator(res, first);
     });
   }
   else
@@ -85,17 +77,10 @@ InputIterator find_if(execution_policy<DerivedPolicy>& exec, InputIterator first
     return hpx::detail::run_as_hpx_thread([&] {
       auto res = ::hpx::find_if(
         hpx::detail::to_hpx_execution_policy(exec),
-        thrust::try_unwrap_contiguous_iterator(first),
-        thrust::try_unwrap_contiguous_iterator(last),
+        detail::try_unwrap_contiguous_iterator(first),
+        detail::try_unwrap_contiguous_iterator(last),
         wrapped_pred);
-      if constexpr (thrust::is_contiguous_iterator_v<InputIterator>)
-      { // rewrap
-        return first + (res - thrust::try_unwrap_contiguous_iterator(first));
-      }
-      else
-      {
-        return res;
-      }
+      return detail::rewrap_contiguous_iterator(res, first);
     });
   }
   else
@@ -116,17 +101,10 @@ InputIterator find_if_not(execution_policy<DerivedPolicy>& exec, InputIterator f
     return hpx::detail::run_as_hpx_thread([&] {
       auto res = ::hpx::find_if_not(
         hpx::detail::to_hpx_execution_policy(exec),
-        thrust::try_unwrap_contiguous_iterator(first),
-        thrust::try_unwrap_contiguous_iterator(last),
+        detail::try_unwrap_contiguous_iterator(first),
+        detail::try_unwrap_contiguous_iterator(last),
         wrapped_pred);
-      if constexpr (thrust::is_contiguous_iterator_v<InputIterator>)
-      { // rewrap
-        return first + (res - thrust::try_unwrap_contiguous_iterator(first));
-      }
-      else
-      {
-        return res;
-      }
+      return detail::rewrap_contiguous_iterator(res, first);
     });
   }
   else

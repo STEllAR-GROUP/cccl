@@ -29,10 +29,9 @@
 #elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)
 #  pragma system_header
 #endif // no system header
+#include <thrust/system/hpx/detail/contiguous_iterator.h>
 #include <thrust/system/hpx/detail/execution_policy.h>
 #include <thrust/system/hpx/detail/runtime.h>
-#include <thrust/type_traits/is_contiguous_iterator.h>
-#include <thrust/type_traits/unwrap_contiguous_iterator.h>
 
 #include <hpx/parallel/algorithms/copy.hpp>
 
@@ -53,17 +52,10 @@ copy(execution_policy<DerivedPolicy>& exec, InputIterator first, InputIterator l
     return hpx::detail::run_as_hpx_thread([&] {
       auto res = ::hpx::copy(
         hpx::detail::to_hpx_execution_policy(exec),
-        thrust::try_unwrap_contiguous_iterator(first),
-        thrust::try_unwrap_contiguous_iterator(last),
-        thrust::try_unwrap_contiguous_iterator(result));
-      if constexpr (thrust::is_contiguous_iterator_v<OutputIterator>)
-      { // rewrap
-        return result + (res - thrust::try_unwrap_contiguous_iterator(result));
-      }
-      else
-      {
-        return res;
-      }
+        detail::try_unwrap_contiguous_iterator(first),
+        detail::try_unwrap_contiguous_iterator(last),
+        detail::try_unwrap_contiguous_iterator(result));
+      return detail::rewrap_contiguous_iterator(res, result);
     });
   }
   else
@@ -81,17 +73,10 @@ OutputIterator copy_n(execution_policy<DerivedPolicy>& exec, InputIterator first
     return hpx::detail::run_as_hpx_thread([&] {
       auto res = ::hpx::copy_n(
         hpx::detail::to_hpx_execution_policy(exec),
-        thrust::try_unwrap_contiguous_iterator(first),
+        detail::try_unwrap_contiguous_iterator(first),
         n,
-        thrust::try_unwrap_contiguous_iterator(result));
-      if constexpr (thrust::is_contiguous_iterator_v<OutputIterator>)
-      { // rewrap
-        return result + (res - thrust::try_unwrap_contiguous_iterator(result));
-      }
-      else
-      {
-        return res;
-      }
+        detail::try_unwrap_contiguous_iterator(result));
+      return detail::rewrap_contiguous_iterator(res, result);
     });
   }
   else
