@@ -32,6 +32,8 @@
 #include <thrust/system/hpx/detail/execution_policy.h>
 #include <thrust/system/hpx/detail/function.h>
 #include <thrust/system/hpx/detail/runtime.h>
+#include <thrust/type_traits/is_contiguous_iterator.h>
+#include <thrust/type_traits/unwrap_contiguous_iterator.h>
 
 #include <hpx/parallel/algorithms/for_each.hpp>
 
@@ -52,7 +54,11 @@ InputIterator for_each(execution_policy<DerivedPolicy>& exec, InputIterator firs
   if constexpr (::hpx::traits::is_forward_iterator_v<InputIterator>)
   {
     hpx::detail::run_as_hpx_thread([&] {
-      (void) ::hpx::for_each(hpx::detail::to_hpx_execution_policy(exec), first, last, wrapped_f);
+      (void) ::hpx::for_each(
+        hpx::detail::to_hpx_execution_policy(exec),
+        thrust::try_unwrap_contiguous_iterator(first),
+        thrust::try_unwrap_contiguous_iterator(last),
+        wrapped_f);
     });
   }
   else
@@ -73,7 +79,16 @@ InputIterator for_each_n(execution_policy<DerivedPolicy>& exec, InputIterator fi
   if constexpr (::hpx::traits::is_forward_iterator_v<InputIterator>)
   {
     return hpx::detail::run_as_hpx_thread([&] {
-      return ::hpx::for_each_n(hpx::detail::to_hpx_execution_policy(exec), first, n, wrapped_f);
+      auto res = ::hpx::for_each_n(
+        hpx::detail::to_hpx_execution_policy(exec), thrust::try_unwrap_contiguous_iterator(first), n, wrapped_f);
+      if constexpr (thrust::is_contiguous_iterator_v<InputIterator>)
+      { // rewrap
+        return first + (res - thrust::try_unwrap_contiguous_iterator(first));
+      }
+      else
+      {
+        return res;
+      }
     });
   }
   else

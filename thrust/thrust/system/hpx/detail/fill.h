@@ -31,6 +31,8 @@
 #endif // no system header
 #include <thrust/system/hpx/detail/execution_policy.h>
 #include <thrust/system/hpx/detail/runtime.h>
+#include <thrust/type_traits/is_contiguous_iterator.h>
+#include <thrust/type_traits/unwrap_contiguous_iterator.h>
 
 #include <hpx/parallel/algorithms/fill.hpp>
 
@@ -48,7 +50,10 @@ void fill(execution_policy<DerivedPolicy>& exec, ForwardIterator first, ForwardI
   if constexpr (::hpx::traits::is_forward_iterator_v<ForwardIterator>)
   {
     return hpx::detail::run_as_hpx_thread([&] {
-      return ::hpx::fill(hpx::detail::to_hpx_execution_policy(exec), first, last, value);
+      return ::hpx::fill(hpx::detail::to_hpx_execution_policy(exec),
+                         thrust::try_unwrap_contiguous_iterator(first),
+                         thrust::try_unwrap_contiguous_iterator(last),
+                         value);
     });
   }
   else
@@ -64,7 +69,16 @@ OutputIterator fill_n(execution_policy<DerivedPolicy>& exec, OutputIterator firs
   if constexpr (::hpx::traits::is_forward_iterator_v<OutputIterator>)
   {
     return hpx::detail::run_as_hpx_thread([&] {
-      return ::hpx::fill_n(hpx::detail::to_hpx_execution_policy(exec), first, n, value);
+      auto res = ::hpx::fill_n(
+        hpx::detail::to_hpx_execution_policy(exec), thrust::try_unwrap_contiguous_iterator(first), n, value);
+      if constexpr (thrust::is_contiguous_iterator_v<OutputIterator>)
+      { // rewrap
+        return first + (res - thrust::try_unwrap_contiguous_iterator(first));
+      }
+      else
+      {
+        return res;
+      }
     });
   }
   else

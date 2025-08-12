@@ -32,6 +32,7 @@
 #include <thrust/system/hpx/detail/execution_policy.h>
 #include <thrust/system/hpx/detail/function.h>
 #include <thrust/system/hpx/detail/runtime.h>
+#include <thrust/type_traits/unwrap_contiguous_iterator.h>
 
 #include <hpx/parallel/algorithms/transform_reduce.hpp>
 
@@ -64,7 +65,12 @@ OutputType transform_reduce(
   {
     return hpx::detail::run_as_hpx_thread([&] {
       return ::hpx::transform_reduce(
-        hpx::detail::to_hpx_execution_policy(exec), first, last, init, wrapped_binary_op, wrapped_unary_op);
+        hpx::detail::to_hpx_execution_policy(exec),
+        thrust::try_unwrap_contiguous_iterator(first),
+        thrust::try_unwrap_contiguous_iterator(last),
+        init,
+        wrapped_binary_op,
+        wrapped_unary_op);
     });
   }
   else
