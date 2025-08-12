@@ -29,6 +29,7 @@
 #elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)
 #  pragma system_header
 #endif // no system header
+#include <thrust/system/hpx/detail/contiguous_iterator.h>
 #include <thrust/system/hpx/detail/execution_policy.h>
 #include <thrust/system/hpx/detail/function.h>
 #include <thrust/system/hpx/detail/runtime.h>
@@ -64,7 +65,12 @@ OutputType transform_reduce(
   {
     return hpx::detail::run_as_hpx_thread([&] {
       return ::hpx::transform_reduce(
-        hpx::detail::to_hpx_execution_policy(exec), first, last, init, wrapped_binary_op, wrapped_unary_op);
+        hpx::detail::to_hpx_execution_policy(exec),
+        detail::try_unwrap_contiguous_iterator(first),
+        detail::try_unwrap_contiguous_iterator(last),
+        init,
+        wrapped_binary_op,
+        wrapped_unary_op);
     });
   }
   else

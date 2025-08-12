@@ -30,7 +30,7 @@
 #  pragma system_header
 #endif // no system header
 
-#include <thrust/iterator/iterator_traits.h>
+#include <thrust/system/hpx/detail/contiguous_iterator.h>
 #include <thrust/system/hpx/detail/execution_policy.h>
 #include <thrust/system/hpx/detail/function.h>
 #include <thrust/system/hpx/detail/runtime.h>
@@ -51,7 +51,12 @@ InputIterator find(execution_policy<DerivedPolicy>& exec, InputIterator first, I
   if constexpr (::hpx::traits::is_forward_iterator_v<InputIterator>)
   {
     return hpx::detail::run_as_hpx_thread([&] {
-      return ::hpx::find(hpx::detail::to_hpx_execution_policy(exec), first, last, value);
+      auto res = ::hpx::find(
+        hpx::detail::to_hpx_execution_policy(exec),
+        detail::try_unwrap_contiguous_iterator(first),
+        detail::try_unwrap_contiguous_iterator(last),
+        value);
+      return detail::rewrap_contiguous_iterator(res, first);
     });
   }
   else
@@ -70,7 +75,12 @@ InputIterator find_if(execution_policy<DerivedPolicy>& exec, InputIterator first
   if constexpr (::hpx::traits::is_forward_iterator_v<InputIterator>)
   {
     return hpx::detail::run_as_hpx_thread([&] {
-      return ::hpx::find_if(hpx::detail::to_hpx_execution_policy(exec), first, last, wrapped_pred);
+      auto res = ::hpx::find_if(
+        hpx::detail::to_hpx_execution_policy(exec),
+        detail::try_unwrap_contiguous_iterator(first),
+        detail::try_unwrap_contiguous_iterator(last),
+        wrapped_pred);
+      return detail::rewrap_contiguous_iterator(res, first);
     });
   }
   else
@@ -89,7 +99,12 @@ InputIterator find_if_not(execution_policy<DerivedPolicy>& exec, InputIterator f
   if constexpr (::hpx::traits::is_forward_iterator_v<InputIterator>)
   {
     return hpx::detail::run_as_hpx_thread([&] {
-      return ::hpx::find_if_not(hpx::detail::to_hpx_execution_policy(exec), first, last, wrapped_pred);
+      auto res = ::hpx::find_if_not(
+        hpx::detail::to_hpx_execution_policy(exec),
+        detail::try_unwrap_contiguous_iterator(first),
+        detail::try_unwrap_contiguous_iterator(last),
+        wrapped_pred);
+      return detail::rewrap_contiguous_iterator(res, first);
     });
   }
   else

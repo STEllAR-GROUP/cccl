@@ -29,6 +29,7 @@
 #elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)
 #  pragma system_header
 #endif // no system header
+#include <thrust/system/hpx/detail/contiguous_iterator.h>
 #include <thrust/system/hpx/detail/execution_policy.h>
 #include <thrust/system/hpx/detail/function.h>
 #include <thrust/system/hpx/detail/runtime.h>
@@ -50,7 +51,10 @@ count(execution_policy<DerivedPolicy>& exec, InputIterator first, InputIterator 
   if constexpr (::hpx::traits::is_forward_iterator_v<InputIterator>)
   {
     return hpx::detail::run_as_hpx_thread([&] {
-      return ::hpx::count(hpx::detail::to_hpx_execution_policy(exec), first, last, value);
+      return ::hpx::count(hpx::detail::to_hpx_execution_policy(exec),
+                          detail::try_unwrap_contiguous_iterator(first),
+                          detail::try_unwrap_contiguous_iterator(last),
+                          value);
     });
   }
   else
@@ -70,7 +74,11 @@ count_if(execution_policy<DerivedPolicy>& exec, InputIterator first, InputIterat
   if constexpr (::hpx::traits::is_forward_iterator_v<InputIterator>)
   {
     return hpx::detail::run_as_hpx_thread([&] {
-      return ::hpx::count_if(hpx::detail::to_hpx_execution_policy(exec), first, last, wrapped_pred);
+      return ::hpx::count_if(
+        hpx::detail::to_hpx_execution_policy(exec),
+        detail::try_unwrap_contiguous_iterator(first),
+        detail::try_unwrap_contiguous_iterator(last),
+        wrapped_pred);
     });
   }
   else

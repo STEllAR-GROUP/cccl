@@ -29,6 +29,7 @@
 #elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)
 #  pragma system_header
 #endif // no system header
+#include <thrust/system/hpx/detail/contiguous_iterator.h>
 #include <thrust/system/hpx/detail/execution_policy.h>
 #include <thrust/system/hpx/detail/function.h>
 #include <thrust/system/hpx/detail/runtime.h>
@@ -65,8 +66,15 @@ merge(execution_policy<ExecutionPolicy>& exec,
                 && ::hpx::traits::is_forward_iterator_v<OutputIterator>)
   {
     return hpx::detail::run_as_hpx_thread([&] {
-      return ::hpx::merge(
-        hpx::detail::to_hpx_execution_policy(exec), first1, last1, first2, last2, result, wrapped_comp);
+      auto res = ::hpx::merge(
+        hpx::detail::to_hpx_execution_policy(exec),
+        detail::try_unwrap_contiguous_iterator(first1),
+        detail::try_unwrap_contiguous_iterator(last1),
+        detail::try_unwrap_contiguous_iterator(first2),
+        detail::try_unwrap_contiguous_iterator(last2),
+        detail::try_unwrap_contiguous_iterator(result),
+        wrapped_comp);
+      return detail::rewrap_contiguous_iterator(res, result);
     });
   }
   else
