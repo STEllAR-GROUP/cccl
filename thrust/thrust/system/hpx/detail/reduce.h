@@ -32,7 +32,7 @@
 #include <thrust/system/hpx/detail/execution_policy.h>
 #include <thrust/system/hpx/detail/function.h>
 #include <thrust/system/hpx/detail/runtime.h>
-#include <thrust/type_traits/unwrap_contiguous_iterator.h>
+#include <thrust/system/hpx/detail/contiguous_iterator.h>
 
 #include <hpx/parallel/algorithms/reduce.hpp>
 
@@ -59,8 +59,8 @@ OutputType reduce(execution_policy<DerivedPolicy>& exec,
     return hpx::detail::run_as_hpx_thread([&] {
       return ::hpx::reduce(
         hpx::detail::to_hpx_execution_policy(exec),
-        thrust::try_unwrap_contiguous_iterator(first),
-        thrust::try_unwrap_contiguous_iterator(last),
+        detail::try_unwrap_contiguous_iterator(first),
+        detail::try_unwrap_contiguous_iterator(last),
         init,
         wrapped_binary_op);
     });
