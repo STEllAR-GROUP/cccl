@@ -31,6 +31,7 @@
 #endif // no system header
 #include <thrust/mr/fancy_pointer_resource.h>
 #include <thrust/mr/new.h>
+#include <thrust/system/hpx/detail/runtime.h>
 #include <thrust/system/hpx/pointer.h>
 
 #include <hpx/parallel/algorithms/for_loop.hpp>
@@ -54,9 +55,10 @@ public:
 
     // touch first byte of every page
     const auto page_size = ::hpx::threads::get_memory_page_size();
-    ::hpx::experimental::for_loop_strided(::hpx::execution::par, ptr, ptr + bytes, page_size, [](std::byte* it) {
-      *it = {};
-    });
+    ::hpx::experimental::for_loop_strided(
+      ::hpx::execution::par.on(runtime.default_executor), ptr, ptr + bytes, page_size, [](std::byte* it) {
+        *it = {};
+      });
 
     return ptr;
   }
