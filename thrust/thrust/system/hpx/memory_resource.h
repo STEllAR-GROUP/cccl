@@ -33,8 +33,6 @@
 #include <thrust/mr/new.h>
 #include <thrust/system/hpx/pointer.h>
 
-#include <hpx/parallel/algorithms/for_loop.hpp>
-
 THRUST_NAMESPACE_BEGIN
 namespace system
 {
@@ -50,15 +48,7 @@ class topology_resource final : public mr::memory_resource<>
 public:
   void* do_allocate(std::size_t bytes, std::size_t /*alignment*/ = THRUST_MR_DEFAULT_ALIGNMENT) override
   {
-    std::byte* ptr = static_cast<std::byte*>(::hpx::threads::create_topology().allocate(bytes));
-
-    // touch first byte of every page
-    const auto page_size = ::hpx::threads::get_memory_page_size();
-    ::hpx::experimental::for_loop_strided(::hpx::execution::par, ptr, ptr + bytes, page_size, [](std::byte* it) {
-      *it = {};
-    });
-
-    return ptr;
+    return ::hpx::threads::create_topology().allocate(bytes);
   }
 
   void do_deallocate(void* p, std::size_t bytes, std::size_t /*alignment*/ = THRUST_MR_DEFAULT_ALIGNMENT) override
