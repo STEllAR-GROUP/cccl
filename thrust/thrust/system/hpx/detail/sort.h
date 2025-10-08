@@ -14,6 +14,10 @@
  *  limitations under the License.
  */
 
+/*! \file sort.h
+ *  \brief HPX implementation of sort.
+ */
+
 #pragma once
 
 #include <thrust/detail/config.h>
@@ -25,6 +29,46 @@
 #elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)
 #  pragma system_header
 #endif // no system header
+#include <thrust/system/hpx/detail/contiguous_iterator.h>
+#include <thrust/system/hpx/detail/execution_policy.h>
+#include <thrust/system/hpx/detail/function.h>
+#include <thrust/system/hpx/detail/runtime.h>
 
-// this system inherits sort
-#include <thrust/system/cpp/detail/sort.h>
+#include <hpx/parallel/algorithms/stable_sort.hpp>
+
+THRUST_NAMESPACE_BEGIN
+namespace system
+{
+namespace hpx
+{
+namespace detail
+{
+
+template <typename DerivedPolicy, typename RandomAccessIterator, typename StrictWeakOrdering>
+void stable_sort(
+  execution_policy<DerivedPolicy>& exec, RandomAccessIterator first, RandomAccessIterator last, StrictWeakOrdering comp)
+{
+  // wrap comp
+  wrapped_function<StrictWeakOrdering> wrapped_comp{comp};
+
+  if constexpr (::hpx::traits::is_random_access_iterator_v<RandomAccessIterator>)
+  {
+    return hpx::detail::run_as_hpx_thread([&] {
+      return ::hpx::stable_sort(
+        hpx::detail::to_hpx_execution_policy(exec),
+        detail::try_unwrap_contiguous_iterator(first),
+        detail::try_unwrap_contiguous_iterator(last),
+        wrapped_comp);
+    });
+  }
+  else
+  {
+    (void) exec;
+    return ::hpx::stable_sort(first, last, comp);
+  }
+}
+
+} // end namespace detail
+} // end namespace hpx
+} // end namespace system
+THRUST_NAMESPACE_END

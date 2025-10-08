@@ -29,6 +29,7 @@
 #elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)
 #  pragma system_header
 #endif // no system header
+#include <thrust/detail/type_traits/minimum_type.h>
 #include <thrust/system/hpx/detail/contiguous_iterator.h>
 #include <thrust/system/hpx/detail/execution_policy.h>
 #include <thrust/system/hpx/detail/runtime.h>
@@ -47,7 +48,12 @@ template <typename DerivedPolicy, typename InputIterator, typename OutputIterato
 OutputIterator
 copy(execution_policy<DerivedPolicy>& exec, InputIterator first, InputIterator last, OutputIterator result)
 {
-  if constexpr (::hpx::traits::is_forward_iterator_v<InputIterator>)
+  using traversal1 = typename iterator_traversal<InputIterator>::type;
+  using traversal2 = typename iterator_traversal<OutputIterator>::type;
+
+  using traversal = typename thrust::detail::minimum_type<traversal1, traversal2>::type;
+
+  if constexpr (::cuda::std::is_convertible_v<traversal, random_access_traversal_tag>)
   {
     return hpx::detail::run_as_hpx_thread([&] {
       auto res = ::hpx::copy(
@@ -68,7 +74,12 @@ copy(execution_policy<DerivedPolicy>& exec, InputIterator first, InputIterator l
 template <typename DerivedPolicy, typename InputIterator, typename Size, typename OutputIterator>
 OutputIterator copy_n(execution_policy<DerivedPolicy>& exec, InputIterator first, Size n, OutputIterator result)
 {
-  if constexpr (::hpx::traits::is_forward_iterator_v<InputIterator>)
+  using traversal1 = typename iterator_traversal<InputIterator>::type;
+  using traversal2 = typename iterator_traversal<OutputIterator>::type;
+
+  using traversal = typename thrust::detail::minimum_type<traversal1, traversal2>::type;
+
+  if constexpr (::cuda::std::is_convertible_v<traversal, random_access_traversal_tag>)
   {
     return hpx::detail::run_as_hpx_thread([&] {
       auto res = ::hpx::copy_n(
