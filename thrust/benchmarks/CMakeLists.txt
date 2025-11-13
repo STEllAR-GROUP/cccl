@@ -70,6 +70,17 @@ function(add_bench_dir bench_dir)
       target_link_libraries(${bench_name} PRIVATE ${thrust_target})
       thrust_clone_target_properties(${bench_name} ${thrust_target})
 
+      # HPX Integration: Ensures HPX runtime is started
+      if (("${config_host}" STREQUAL "HPX" OR "${config_device}" STREQUAL "HPX")
+          AND (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU"))
+
+        #  Wrap main so HPX's __wrap_main runs before nvbench main.
+        target_sources(${bench_name} PRIVATE ${CMAKE_SOURCE_DIR}/benchmarks/hpx/src/hpx_enable_wrap.cpp)
+        target_link_options(${bench_name} PRIVATE "-Wl,--wrap=main")
+        target_link_libraries(${bench_name} PRIVATE HPX::wrap_main)
+
+      endif()
+
       if ("CUDA" STREQUAL "${config_device}")
         target_compile_options(${bench_name} PRIVATE "--extended-lambda")
       endif()
