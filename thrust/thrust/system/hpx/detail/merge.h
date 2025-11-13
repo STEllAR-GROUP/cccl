@@ -32,7 +32,6 @@
 #include <thrust/system/hpx/detail/contiguous_iterator.h>
 #include <thrust/system/hpx/detail/execution_policy.h>
 #include <thrust/system/hpx/detail/function.h>
-#include <thrust/system/hpx/detail/runtime.h>
 
 #include <hpx/parallel/algorithms/merge.hpp>
 
@@ -65,7 +64,6 @@ merge(execution_policy<ExecutionPolicy>& exec,
                 && ::hpx::traits::is_forward_iterator_v<InputIterator2>
                 && ::hpx::traits::is_forward_iterator_v<OutputIterator>)
   {
-    return hpx::detail::run_as_hpx_thread([&] {
       auto res = ::hpx::merge(
         hpx::detail::to_hpx_execution_policy(exec),
         detail::try_unwrap_contiguous_iterator(first1),
@@ -75,7 +73,6 @@ merge(execution_policy<ExecutionPolicy>& exec,
         detail::try_unwrap_contiguous_iterator(result),
         wrapped_comp);
       return detail::rewrap_contiguous_iterator(res, result);
-    });
   }
   else
   {

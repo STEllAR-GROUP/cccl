@@ -32,7 +32,6 @@
 #include <thrust/system/hpx/detail/contiguous_iterator.h>
 #include <thrust/system/hpx/detail/execution_policy.h>
 #include <thrust/system/hpx/detail/function.h>
-#include <thrust/system/hpx/detail/runtime.h>
 
 #include <hpx/parallel/algorithms/transform_reduce.hpp>
 
@@ -63,7 +62,6 @@ OutputType transform_reduce(
 
   if constexpr (::hpx::traits::is_forward_iterator_v<InputIterator>)
   {
-    return hpx::detail::run_as_hpx_thread([&] {
       return ::hpx::transform_reduce(
         hpx::detail::to_hpx_execution_policy(exec),
         detail::try_unwrap_contiguous_iterator(first),
@@ -71,7 +69,6 @@ OutputType transform_reduce(
         init,
         wrapped_binary_op,
         wrapped_unary_op);
-    });
   }
   else
   {
