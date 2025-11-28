@@ -75,9 +75,7 @@ function(add_bench_dir bench_dir)
           AND (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU"))
 
         #  Wrap main so HPX's __wrap_main runs before nvbench main.
-        target_sources(${bench_name} PRIVATE ${CMAKE_SOURCE_DIR}/benchmarks/hpx/src/hpx_enable_wrap.cpp)
-        target_link_options(${bench_name} PRIVATE "-Wl,--wrap=main")
-        target_link_libraries(${bench_name} PRIVATE HPX::wrap_main)
+        target_link_libraries(${bench_name} PRIVATE HPX::auto_wrap_main)
 
       endif()
 
