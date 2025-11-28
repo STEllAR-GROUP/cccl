@@ -30,6 +30,7 @@
 #include <thrust/merge.h>
 #include <thrust/sort.h>
 #include <chrono>
+#include <hpx/init.hpp>
 
 #include "nvbench_helper.cuh"
 
@@ -43,6 +44,7 @@ struct adaptive_chunk_size {
     adaptive_chunk_size& this_, Executor&& exec,
     hpx::chrono::steady_duration const&, std::size_t count
   ) noexcept {
+    std::size_t const all_cores = hpx::get_num_worker_threads();
     std::size_t num_cores = 1;
     if(count < 4096) {
       num_cores = 1;
@@ -54,10 +56,10 @@ struct adaptive_chunk_size {
       num_cores = 16;
     }
     else if(count < 1048576 ) {
-      num_cores = 24;
+      num_cores = 16;
     }
     else {
-      num_cores = 24;
+      num_cores = all_cores;
     }
 
     return num_cores;
@@ -105,22 +107,51 @@ template <>
 struct hpx::execution::experimental::is_executor_parameters<adaptive_chunk_size> : std::true_type {
 };
 
-template <typename ExPolicy, typename FwdIter1, typename FwdIter2, typename FwdIter3>
-double run_merge_benchmark_hpx(int const test_count, ExPolicy policy, FwdIter1 first1, FwdIter2 last1, FwdIter1 first2, FwdIter2 last2, FwdIter3 dest) {
-  // warmup
-  hpx::merge(policy, first1, last1, first2, last2, dest);
+struct enable_fast_idle_mode
+{
+    template <typename Executor>
+    friend void tag_override_invoke(
+        hpx::execution::experimental::mark_begin_execution_t,
+        enable_fast_idle_mode, Executor&& exec)
+    {
+        auto const pu_mask =
+            hpx::execution::experimental::get_processing_units_mask(exec);
+        auto const full_pu_mask =
+            hpx::resource::get_partitioner().get_used_pus_mask();
 
-  // actual measurement
-  std::uint64_t time = hpx::chrono::high_resolution_clock::now();
-  
-  for(int i=0; i < test_count; ++i) {
-     hpx::merge(policy, first1, last1, first2, last2, dest);
-  }
+        // Enable fast-idle mode only for PU's that are not used by this
+        // algorithm invocation.
+        
+        hpx::threads::add_remove_scheduler_mode(
+            hpx::threads::policies::scheduler_mode::fast_idle_mode,
+            hpx::threads::policies::scheduler_mode::enable_stealing |
+                hpx::threads::policies::scheduler_mode::enable_stealing_numa,
+            full_pu_mask & ~pu_mask);
+    }
 
-  time = hpx::chrono::high_resolution_clock::now() - time;
+    template <typename Executor>
+    friend void tag_override_invoke(
+        hpx::execution::experimental::mark_end_execution_t,
+        enable_fast_idle_mode, Executor&& exec)
+    {
+        auto const pu_mask =
+            hpx::execution::experimental::get_processing_units_mask(exec);
+        auto const full_pu_mask =
+            hpx::resource::get_partitioner().get_used_pus_mask();
 
-  return (static_cast<double>(time) * 1e-9) / test_count;
-}
+        hpx::threads::add_remove_scheduler_mode(
+            hpx::threads::policies::scheduler_mode::enable_stealing |
+                hpx::threads::policies::scheduler_mode::enable_stealing_numa,
+            hpx::threads::policies::scheduler_mode::fast_idle_mode,
+            full_pu_mask & ~pu_mask);
+    }
+};
+
+template <>
+struct hpx::execution::experimental::is_executor_parameters<
+    enable_fast_idle_mode> : std::true_type
+{
+};
 
 template <typename T>
 static void basic(nvbench::state& state, nvbench::type_list<T>)
@@ -141,6 +172,7 @@ static void basic(nvbench::state& state, nvbench::type_list<T>)
 
   caching_allocator_t alloc;
   adaptive_chunk_size acs;
+  enable_fast_idle_mode efim;
 
   state.exec(nvbench::exec_tag::no_batch | nvbench::exec_tag::sync, [&](nvbench::launch& launch) {
     auto const stackless_policy = hpx::execution::experimental::with_stacksize(policy(alloc, launch), hpx::threads::thread_stacksize::nostack);
@@ -154,7 +186,7 @@ static void basic(nvbench::state& state, nvbench::type_list<T>)
       out.begin());
   });
 }
-
+//, nvbench::int16_t, nvbench::int32_t, nvbench::int64_t, nvbench::float32_t, nvbench::float64_t
 using v_types = nvbench::type_list<nvbench::int8_t, nvbench::int16_t, nvbench::int32_t, nvbench::int64_t, nvbench::float32_t, nvbench::float64_t>;
 
 NVBENCH_BENCH_TYPES(basic, NVBENCH_TYPE_AXES(v_types))
