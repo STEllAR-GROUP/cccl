@@ -165,7 +165,10 @@ static void basic(nvbench::state& state, nvbench::type_list<T>)
   std::size_t const all_cores = hpx::get_num_worker_threads();
   
   auto temp = run_merge_benchmark_hpx(10, hpx::execution::par.with(nc, mnc), in.cbegin(), in.cbegin() + elements_in_lhs, in.cbegin() + elements_in_lhs, in.cend(), out.begin());
+  std::cout<<"Sequential Time: "<<seq_time<<std::endl;
+  std::cout<<"parallel Time  : "<<temp<<std::endl;
   temp = temp - seq_time;
+  std::cout<<"Difference Time: "<<temp<<std::endl;
   overhead_time = (temp) / static_cast<double>(all_cores);
   
   picoseconds time_per_iteration_ps(
@@ -176,18 +179,22 @@ static void basic(nvbench::state& state, nvbench::type_list<T>)
   );
 
   adaptive_chunk_size acs(time_per_iteration_ps, overhead_time_ps);
+  hpx::execution::experimental::chunking_parameters params = {};
+  hpx::execution::experimental::collect_chunking_parameters
+                collect_params(params);
 
   state.exec(nvbench::exec_tag::no_batch | nvbench::exec_tag::sync, [&](nvbench::launch& launch) {
     auto const stackless_policy = hpx::execution::experimental::with_stacksize(policy(alloc, launch), hpx::threads::thread_stacksize::nostack);
     auto exec = hpx::execution::experimental::with_priority(stackless_policy, hpx::threads::thread_priority::initially_bound);
     thrust::merge(
-      exec.with(acs),
+      exec.with(acs, collect_params),
       in.cbegin(),
       in.cbegin() + elements_in_lhs,
       in.cbegin() + elements_in_lhs,
       in.cend(),
       out.begin());
   });
+  std::cout<<"Chunk size: "<<params.chunk_size<<" No of chunks: "<<params.num_chunks<<" No of cores: "<<params.num_cores<<std::endl;
 }
 
 using v_types = nvbench::type_list<nvbench::int8_t, nvbench::int16_t, nvbench::int32_t, nvbench::int64_t, nvbench::float32_t, nvbench::float64_t>;
