@@ -1,4 +1,4 @@
-/******************************************************************************
+[O/******************************************************************************
  * Copyright (c) 2011-2023, NVIDIA CORPORATION.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,17 +29,23 @@
 #include <thrust/execution_policy.h>
 #include <thrust/merge.h>
 #include <thrust/sort.h>
-#include <chrono>
 #include <hpx/init.hpp>
+#include <chrono>
 
 #include "nvbench_helper.cuh"
 
 using picoseconds = std::chrono::duration<long long, std::pico>;
 
 struct adaptive_chunk_size {
+  template <typename Rep1, typename Period1, typename Rep2, typename Period2>
   explicit constexpr adaptive_chunk_size(
-  size_t const data_type_size
-  ): data_type_size_(data_type_size) {}
+    std::chrono::duration<Rep1, Period1> const time_per_iteration,
+    std::chrono::duration<Rep2, Period2> const overhead_time = 
+    std::chrono::microseconds(1)
+  ) : time_per_iteration_(std::chrono::duration_cast<picoseconds>(time_per_iteration)), 
+    overhead_time_(std::chrono::duration_cast<picoseconds>(overhead_time)) {
+  }
+
   // calculate no of cores
   template <typename Executor>
   friend std::size_t tag_override_invoke(
@@ -47,43 +53,24 @@ struct adaptive_chunk_size {
     adaptive_chunk_size& this_, Executor&& exec,
     hpx::chrono::steady_duration const&, std::size_t count
   ) noexcept {
-    std::size_t const all_cores = hpx::get_num_worker_threads();
-    std::size_t num_cores = 1;
-    std::size_t L1_cache = 786432;
-    std::size_t L2_cache = 25952256;
-    //auto pu_mask = hpx::execution::experimental::get_processing_units_mask(exec);
-    //auto cache_bytes = hpx::threads::get_topology().get_cache_size(pu_mask, 1);
-   /*
-    if(count < 4096) {
-      num_cores = 1;
-    }
-    else if (this_.data_type_size_ * count <= L1_cache/8) {
-      num_cores = 4;
-    }
-    else if(this_.data_type_size_ * count <= L1_cache) {
-      num_cores = 12;
-    }
-    else {
-      num_cores = all_cores;
-    } 
-    /*
-    if(count < 4096) {
-      num_cores = 1;
-    }
-    else if(count < 32768) {
-      num_cores = 4;
-    }
-    else if(count <= 65536) {
-      num_cores = 12;
-    }
-    else if(count < 1048576 ) {
-      num_cores = 12;
-    }
-    else {
-      num_cores = all_cores;
-    }*/
+    std::size_t const cores_baseline = 
+     hpx::execution::experimental::processing_units_count(
+      exec, this_.time_per_iteration_, count);
+    
+     auto const overall_time = static_cast<double>(
+      (count + 1) * this_.time_per_iteration_.count());
 
-     num_cores = 2;
+    constexpr double efficiency_factor = 0.052;
+    if(this_.overhead_time_.count()==0) {
+      this_.overhead_time_ = std::chrono::duration_cast<picoseconds>(std::chrono::microseconds(1));
+    }
+    
+    auto const optimal_num_cores = 
+      static_cast<std::size_t>(efficiency_factor * overall_time / 
+      static_cast<double>(this_.overhead_time_.count()));
+    
+    std::size_t num_cores = (std::min) (cores_baseline, optimal_num_cores);
+    num_cores = (std::max) (num_cores, static_cast<std::size_t>(1)); 
 
     return num_cores;
   }
@@ -120,60 +107,34 @@ struct adaptive_chunk_size {
       (num_iterations + max_chunks -1)/ max_chunks);
 
     HPX_ASSERT(chunk_size * num_chunks >= num_iterations);
+
     return chunk_size;
   }
-  size_t data_type_size_;
+
+  picoseconds time_per_iteration_;
+  picoseconds overhead_time_;
 };
 
 template <>
 struct hpx::execution::experimental::is_executor_parameters<adaptive_chunk_size> : std::true_type {
 };
 
-struct enable_fast_idle_mode
-{
-    template <typename Executor>
-    friend void tag_override_invoke(
-        hpx::execution::experimental::mark_begin_execution_t,
-        enable_fast_idle_mode, Executor&& exec)
-    {
-        auto const pu_mask =
-            hpx::execution::experimental::get_processing_units_mask(exec);
-        auto const full_pu_mask =
-            hpx::resource::get_partitioner().get_used_pus_mask();
+template <typename ExPolicy, typename FwdIter1, typename FwdIter2, typename FwdIter3>
+double run_merge_benchmark_hpx(int const test_count, ExPolicy policy, FwdIter1 first1, FwdIter2 last1, FwdIter1 first2, FwdIter2 last2, FwdIter3 dest) {
+  // warmup
+  hpx::merge(policy, first1, last1, first2, last2, dest);
 
-        // Enable fast-idle mode only for PU's that are not used by this
-        // algorithm invocation.
-        
-        hpx::threads::add_remove_scheduler_mode(
-            hpx::threads::policies::scheduler_mode::fast_idle_mode,
-            hpx::threads::policies::scheduler_mode::enable_stealing |
-                hpx::threads::policies::scheduler_mode::enable_stealing_numa,
-            full_pu_mask & ~pu_mask);
-    }
+  // actual measurement
+  std::uint64_t time = hpx::chrono::high_resolution_clock::now();
+  
+  for(int i=0; i < test_count; ++i) {
+     hpx::merge(policy, first1, last1, first2, last2, dest);
+  }
 
-    template <typename Executor>
-    friend void tag_override_invoke(
-        hpx::execution::experimental::mark_end_execution_t,
-        enable_fast_idle_mode, Executor&& exec)
-    {
-        auto const pu_mask =
-            hpx::execution::experimental::get_processing_units_mask(exec);
-        auto const full_pu_mask =
-            hpx::resource::get_partitioner().get_used_pus_mask();
+  time = hpx::chrono::high_resolution_clock::now() - time;
 
-        hpx::threads::add_remove_scheduler_mode(
-            hpx::threads::policies::scheduler_mode::enable_stealing |
-                hpx::threads::policies::scheduler_mode::enable_stealing_numa,
-            hpx::threads::policies::scheduler_mode::fast_idle_mode,
-            full_pu_mask & ~pu_mask);
-    }
-};
-
-template <>
-struct hpx::execution::experimental::is_executor_parameters<
-    enable_fast_idle_mode> : std::true_type
-{
-};
+  return (static_cast<double>(time) * 1e-9) / test_count;
+}
 
 template <typename T>
 static void basic(nvbench::state& state, nvbench::type_list<T>)
@@ -193,8 +154,28 @@ static void basic(nvbench::state& state, nvbench::type_list<T>)
   state.add_global_memory_writes<T>(elements);
 
   caching_allocator_t alloc;
-  adaptive_chunk_size acs(sizeof(T));
-  enable_fast_idle_mode efim;
+  
+  const double seq_time = run_merge_benchmark_hpx(10, hpx::execution::seq, in.cbegin(), in.cbegin() + elements_in_lhs, in.cbegin() + elements_in_lhs, in.cend(), out.begin());
+  double overhead_time = 0.0;
+  double const time_per_iteration = seq_time / 
+    static_cast<double>((std::max)(elements_in_lhs, elements - elements_in_lhs));
+  
+  hpx::execution::experimental::num_cores nc(1);
+  hpx::execution::experimental::max_num_chunks mnc(2);
+  std::size_t const all_cores = hpx::get_num_worker_threads();
+  
+  auto temp = run_merge_benchmark_hpx(10, hpx::execution::par.with(nc, mnc), in.cbegin(), in.cbegin() + elements_in_lhs, in.cbegin() + elements_in_lhs, in.cend(), out.begin());
+  temp = temp - seq_time;
+  overhead_time = (temp) / static_cast<double>(all_cores);
+  
+  picoseconds time_per_iteration_ps(
+    static_cast<int64_t>(time_per_iteration * 1e12)
+  );
+  picoseconds overhead_time_ps(
+    static_cast<int64_t>(overhead_time * 1e12)
+  );
+
+  adaptive_chunk_size acs(time_per_iteration_ps, overhead_time_ps);
   hpx::execution::experimental::chunking_parameters params = {};
   hpx::execution::experimental::collect_chunking_parameters
                 collect_params(params);
@@ -212,14 +193,14 @@ static void basic(nvbench::state& state, nvbench::type_list<T>)
   });
   std::cout<<"Chunk size: "<<params.chunk_size<<" No of chunks: "<<params.num_chunks<<" No of cores: "<<params.num_cores<<std::endl;
 }
-//, nvbench::int16_t, nvbench::int32_t, nvbench::int64_t, nvbench::float32_t, nvbench::float64_t
-using v_types = nvbench::type_list< nvbench::int8_t, nvbench::int16_t, nvbench::int32_t, nvbench::int64_t, nvbench::float32_t, nvbench::float64_t>;
-//, nvbench::int16_t, nvbench::int32_t, nvbench::int64_t, nvbench::float32_t, nvbench::float64_t>;
+
+using v_types = nvbench::type_list<nvbench::int8_t, nvbench::int16_t, nvbench::int32_t, nvbench::int64_t, nvbench::float32_t, nvbench::float64_t>;
 
 NVBENCH_BENCH_TYPES(basic, NVBENCH_TYPE_AXES(v_types))
   .set_name("HPX")
   .set_type_axes_names({"T{ct}"})
-  .add_int64_power_of_two_axis("Elements", nvbench::range(12,12,2))
-  .add_string_axis("Entropy", {"1.000"})
-  .add_int64_axis("InputSizeRatio", {75});
+  .add_int64_power_of_two_axis("Elements", nvbench::range(8, 28, 2))
+  .add_string_axis("Entropy", {"1.000", "0.201"})
+  .add_int64_axis("InputSizeRatio", {50, 75});
+
 

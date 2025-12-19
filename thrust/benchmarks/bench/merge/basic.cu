@@ -61,11 +61,11 @@ static void basic(nvbench::state& state, nvbench::type_list<T>)
   });
 }
 
-using v_types = nvbench::type_list<nvbench::int64_t>;
+using v_types = nvbench::type_list<nvbench::int8_t, nvbench::int16_t, nvbench::int32_t, nvbench::int64_t, nvbench::float32_t, nvbench::float64_t>;
 
 NVBENCH_BENCH_TYPES(basic, NVBENCH_TYPE_AXES(v_types))
   .set_name("TBB")
   .set_type_axes_names({"T{ct}"})
-  .add_int64_power_of_two_axis("Elements", nvbench::range(8, 28, 2))
+  .add_int64_power_of_two_axis("Elements", nvbench::range(8,28,2))
   .add_string_axis("Entropy", {"1.000", "0.201"})
   .add_int64_axis("InputSizeRatio", {50, 75});
