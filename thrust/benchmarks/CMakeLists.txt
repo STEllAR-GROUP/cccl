@@ -37,7 +37,8 @@ endfunction()
 function(thrust_wrap_bench_in_cpp cpp_file_var cu_file thrust_target)
   thrust_get_target_property(prefix ${thrust_target} PREFIX)
   set(wrapped_source_file "${cu_file}")
-  set(cpp_file "${CMAKE_CURRENT_BINARY_DIR}/${prefix}/${cu_file}.cpp")
+  file(RELATIVE_PATH rel_cu_file "${CMAKE_CURRENT_SOURCE_DIR}" "${cu_file}")
+  set(cpp_file "${CMAKE_CURRENT_BINARY_DIR}/${prefix}/${rel_cu_file}.cpp")
   configure_file("${Thrust_SOURCE_DIR}/cmake/wrap_source_file.cpp.in" "${cpp_file}")
   set(${cpp_file_var} "${cpp_file}" PARENT_SCOPE)
 endfunction()
@@ -68,6 +69,15 @@ function(add_bench_dir bench_dir)
       add_bench(base_bench_target ${bench_name} "${real_bench_src}")
       target_link_libraries(${bench_name} PRIVATE ${thrust_target})
       thrust_clone_target_properties(${bench_name} ${thrust_target})
+
+      # HPX Integration: Ensures HPX runtime is started
+      if (("${config_host}" STREQUAL "HPX" OR "${config_device}" STREQUAL "HPX")
+          AND (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU"))
+
+        #  Wrap main so HPX's __wrap_main runs before nvbench main.
+        target_link_libraries(${bench_name} PRIVATE HPX::hpx HPX::auto_wrap_main)
+
+      endif()
 
       if ("CUDA" STREQUAL "${config_device}")
         target_compile_options(${bench_name} PRIVATE "--extended-lambda")

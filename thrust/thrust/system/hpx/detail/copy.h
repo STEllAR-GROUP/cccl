@@ -31,7 +31,6 @@
 #endif // no system header
 #include <thrust/system/hpx/detail/contiguous_iterator.h>
 #include <thrust/system/hpx/detail/execution_policy.h>
-#include <thrust/system/hpx/detail/runtime.h>
 
 #include <hpx/parallel/algorithms/copy.hpp>
 
@@ -49,14 +48,12 @@ copy(execution_policy<DerivedPolicy>& exec, InputIterator first, InputIterator l
 {
   if constexpr (::hpx::traits::is_forward_iterator_v<InputIterator>)
   {
-    return hpx::detail::run_as_hpx_thread([&] {
       auto res = ::hpx::copy(
         hpx::detail::to_hpx_execution_policy(exec),
         detail::try_unwrap_contiguous_iterator(first),
         detail::try_unwrap_contiguous_iterator(last),
         detail::try_unwrap_contiguous_iterator(result));
       return detail::rewrap_contiguous_iterator(res, result);
-    });
   }
   else
   {
@@ -70,14 +67,12 @@ OutputIterator copy_n(execution_policy<DerivedPolicy>& exec, InputIterator first
 {
   if constexpr (::hpx::traits::is_forward_iterator_v<InputIterator>)
   {
-    return hpx::detail::run_as_hpx_thread([&] {
       auto res = ::hpx::copy_n(
         hpx::detail::to_hpx_execution_policy(exec),
         detail::try_unwrap_contiguous_iterator(first),
         n,
         detail::try_unwrap_contiguous_iterator(result));
       return detail::rewrap_contiguous_iterator(res, result);
-    });
   }
   else
   {

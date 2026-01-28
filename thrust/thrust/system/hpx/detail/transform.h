@@ -32,7 +32,6 @@
 #include <thrust/system/hpx/detail/contiguous_iterator.h>
 #include <thrust/system/hpx/detail/execution_policy.h>
 #include <thrust/system/hpx/detail/function.h>
-#include <thrust/system/hpx/detail/runtime.h>
 
 #include <hpx/parallel/algorithms/transform.hpp>
 
@@ -57,7 +56,6 @@ OutputIterator transform(
 
   if constexpr (::hpx::traits::is_forward_iterator_v<InputIterator>)
   {
-    return hpx::detail::run_as_hpx_thread([&] {
       auto res = ::hpx::transform(
         hpx::detail::to_hpx_execution_policy(exec),
         detail::try_unwrap_contiguous_iterator(first),
@@ -65,7 +63,6 @@ OutputIterator transform(
         detail::try_unwrap_contiguous_iterator(result),
         wrapped_op);
       return detail::rewrap_contiguous_iterator(res, result);
-    });
   }
   else
   {
@@ -93,7 +90,6 @@ OutputIterator transform(
   if constexpr (::hpx::traits::is_forward_iterator_v<InputIterator1>
                 && ::hpx::traits::is_forward_iterator_v<InputIterator2>)
   {
-    return hpx::detail::run_as_hpx_thread([&] {
       auto res = ::hpx::transform(
         hpx::detail::to_hpx_execution_policy(exec),
         detail::try_unwrap_contiguous_iterator(first1),
@@ -102,7 +98,6 @@ OutputIterator transform(
         detail::try_unwrap_contiguous_iterator(result),
         wrapped_op);
       return detail::rewrap_contiguous_iterator(res, result);
-    });
   }
   else
   {
