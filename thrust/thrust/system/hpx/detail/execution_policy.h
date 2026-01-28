@@ -29,6 +29,7 @@
 #include <thrust/detail/type_traits.h>
 #include <thrust/iterator/detail/any_system_tag.h>
 #include <thrust/system/cpp/detail/execution_policy.h>
+#include <thrust/system/hpx/detail/runtime.h>
 
 #include <hpx/execution.hpp>
 
@@ -235,7 +236,7 @@ auto to_hpx_execution_policy(const execution_policy<Derived>& exec) noexcept
   else
   {
     (void) exec;
-    return ::hpx::execution::par;
+    return ::hpx::execution::par.on(runtime.default_executor);
   }
 }
 
