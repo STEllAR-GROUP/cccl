@@ -53,7 +53,7 @@ struct adaptive_chunk_size {
     std::size_t L2_cache = 25952256;
     //auto pu_mask = hpx::execution::experimental::get_processing_units_mask(exec);
     //auto cache_bytes = hpx::threads::get_topology().get_cache_size(pu_mask, 1);
-   /*
+   
     if(count < 4096) {
       num_cores = 1;
     }
@@ -66,24 +66,7 @@ struct adaptive_chunk_size {
     else {
       num_cores = all_cores;
     } 
-    /*
-    if(count < 4096) {
-      num_cores = 1;
-    }
-    else if(count < 32768) {
-      num_cores = 4;
-    }
-    else if(count <= 65536) {
-      num_cores = 12;
-    }
-    else if(count < 1048576 ) {
-      num_cores = 12;
-    }
-    else {
-      num_cores = all_cores;
-    }*/
 
-     num_cores = 2;
 
     return num_cores;
   }
