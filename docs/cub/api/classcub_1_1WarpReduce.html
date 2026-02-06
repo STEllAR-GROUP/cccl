@@ -332,6 +332,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/type_traits.html">Type traits</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/vector_tuple_protocol.html">Vector Tuple Protocol</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/numeric.html">Numeric</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/random.html">Random</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/memory.html">Memory</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/memory_resource.html">Memory Resources</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/math.html">Math</a></li>
@@ -1221,6 +1222,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__cuda__stream.html">cuda::experimental::stf::exec_place_cuda_stream</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__green__ctx.html">cuda::experimental::stf::exec_place_green_ctx</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__grid.html">cuda::experimental::stf::exec_place_grid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__guard.html">cuda::experimental::stf::exec_place_guard</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__host.html">cuda::experimental::stf::exec_place_host</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1executable__graph__cache.html">cuda::experimental::stf::executable_graph_cache</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1executable__graph__cache__stat.html">cuda::experimental::stf::executable_graph_cache_stat</a></li>
@@ -1310,6 +1312,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01cuda_1_1experimental_1_1stf_1_1green__ctx__view_01_4.html">cuda::experimental::stf::hash&lt; cuda::experimental::stf::green_ctx_view &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01data__place_01_4.html">cuda::experimental::stf::hash&lt; data_place &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01dim4_01_4.html">cuda::experimental::stf::hash&lt; dim4 &gt;</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01exec__place_01_4.html">cuda::experimental::stf::hash&lt; exec_place &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01hashtable_01_4.html">cuda::experimental::stf::hash&lt; hashtable &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01mdspan_3_01P_8_8_8_01_4_01_4.html">cuda::experimental::stf::hash&lt; mdspan&lt; P… &gt; &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01pos4_01_4.html">cuda::experimental::stf::hash&lt; pos4 &gt;</a></li>
@@ -1628,6 +1631,9 @@ Logical warp and lane identifiers are constructed from <code class="docutils lit
 <span class="target" id="classcub_1_1WarpReduce_1a590cc4f4b6cc53c5b9b713bb0f2876b3"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0_iEN3cub10WarpReduceE" title="cub::WarpReduce::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Sum</span></span></span><span class="sig-paren">(</span><em class="sig-param"><a class="reference internal" href="#_CPPv4I0_iEN3cub10WarpReduceE" title="cub::WarpReduce::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">input</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3cub10WarpReduce3SumE1T" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Computes a warp-wide sum in the calling warp.
 The output is valid in warp <em>lane</em><sub>0</sub>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncwarp()</span></code> warp-wide barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p>
 <section id="snippet">
 <h2>Snippet<a class="headerlink" href="#snippet" title="Link to this heading">#</a></h2>
@@ -1706,6 +1712,9 @@ The corresponding output <code class="docutils literal notranslate"><span class=
 The output is valid in warp <em>lane</em><sub>0</sub>.</p>
 <p>All threads across the calling warp must agree on the same value for <code class="docutils literal notranslate"><span class="pre">valid_items</span></code>.
 Otherwise the result is undefined.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncwarp()</span></code> warp-wide barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p>
 <section id="id1">
 <h2>Snippet<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
@@ -1769,6 +1778,9 @@ The corresponding output <code class="docutils literal notranslate"><span class=
 <dd><p><p>Computes a segmented sum in the calling warp where segments are defined by head-flags.
 The sum of each segment is returned to the first lane in that segment
 (which always includes <em>lane</em><sub>0</sub>).</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncwarp()</span></code> warp-wide barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p>
 <section id="id2">
 <h2>Snippet<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
@@ -1826,6 +1838,9 @@ respectively. The corresponding output <code class="docutils literal notranslate
 <dd><p><p>Computes a segmented sum in the calling warp where segments are defined by tail-flags.
 The sum of each segment is returned to the first lane in that segment
 (which always includes <em>lane</em><sub>0</sub>).</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncwarp()</span></code> warp-wide barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p>
 <section id="id3">
 <h2>Snippet<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
@@ -1885,6 +1900,9 @@ respectively. The corresponding output <code class="docutils literal notranslate
 <dd><p><p>Computes a warp-wide reduction in the calling warp using the specified binary reduction
 functor. The output is valid in warp <em>lane</em><sub>0</sub>.</p>
 <p>Supports non-commutative reduction operators</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncwarp()</span></code> warp-wide barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p>
 <section id="id4">
 <h2>Snippet<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
@@ -1956,6 +1974,9 @@ reduction functor. The output is valid in warp <em>lane</em><sub>0</sub>.</p>
 <p>All threads across the calling warp must agree on the same value for <code class="docutils literal notranslate"><span class="pre">valid_items</span></code>.
 Otherwise the result is undefined.</p>
 <p>Supports non-commutative reduction operators</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncwarp()</span></code> warp-wide barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p>
 <section id="id5">
 <h2>Snippet<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
@@ -2015,6 +2036,9 @@ undefined in other threads).</p>
 The reduction of each segment is returned to the first lane in that segment
 (which always includes <em>lane</em><sub>0</sub>).</p>
 <p>Supports non-commutative reduction operators</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncwarp()</span></code> warp-wide barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p>
 <section id="id6">
 <h2>Snippet<a class="headerlink" href="#id6" title="Link to this heading">#</a></h2>
@@ -2074,6 +2098,9 @@ respectively. The corresponding output <code class="docutils literal notranslate
 The reduction of each segment is returned to the first lane in that segment
 (which always includes <em>lane</em><sub>0</sub>).</p>
 <p>Supports non-commutative reduction operators</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncwarp()</span></code> warp-wide barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p>
 <section id="id7">
 <h2>Snippet<a class="headerlink" href="#id7" title="Link to this heading">#</a></h2>

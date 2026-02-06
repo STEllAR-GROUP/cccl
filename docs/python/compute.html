@@ -332,6 +332,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../libcudacxx/extended_api/type_traits.html">Type traits</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../libcudacxx/extended_api/vector_tuple_protocol.html">Vector Tuple Protocol</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../libcudacxx/extended_api/numeric.html">Numeric</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../libcudacxx/extended_api/random.html">Random</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../libcudacxx/extended_api/memory.html">Memory</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../libcudacxx/extended_api/memory_resource.html">Memory Resources</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../libcudacxx/extended_api/math.html">Math</a></li>
@@ -1221,6 +1222,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__cuda__stream.html">cuda::experimental::stf::exec_place_cuda_stream</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__green__ctx.html">cuda::experimental::stf::exec_place_green_ctx</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__grid.html">cuda::experimental::stf::exec_place_grid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__guard.html">cuda::experimental::stf::exec_place_guard</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__host.html">cuda::experimental::stf::exec_place_host</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../cudax/api/classcuda_1_1experimental_1_1stf_1_1executable__graph__cache.html">cuda::experimental::stf::executable_graph_cache</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../cudax/api/classcuda_1_1experimental_1_1stf_1_1executable__graph__cache__stat.html">cuda::experimental::stf::executable_graph_cache_stat</a></li>
@@ -1310,6 +1312,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01cuda_1_1experimental_1_1stf_1_1green__ctx__view_01_4.html">cuda::experimental::stf::hash&lt; cuda::experimental::stf::green_ctx_view &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01data__place_01_4.html">cuda::experimental::stf::hash&lt; data_place &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01dim4_01_4.html">cuda::experimental::stf::hash&lt; dim4 &gt;</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01exec__place_01_4.html">cuda::experimental::stf::hash&lt; exec_place &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01hashtable_01_4.html">cuda::experimental::stf::hash&lt; hashtable &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01mdspan_3_01P_8_8_8_01_4_01_4.html">cuda::experimental::stf::hash&lt; mdspan&lt; P… &gt; &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01pos4_01_4.html">cuda::experimental::stf::hash&lt; pos4 &gt;</a></li>
@@ -1578,8 +1581,8 @@ to compute the sum of a sequence of integers:</p>
 </div>
 </div>
 </section>
-<section id="controlling-temporary-memory">
-<h3>Controlling temporary memory<a class="headerlink" href="#controlling-temporary-memory" title="Link to this heading">#</a></h3>
+<section id="object-based-api-expert-mode">
+<h3>Object-based API (expert mode)<a class="headerlink" href="#object-based-api-expert-mode" title="Link to this heading">#</a></h3>
 <p>Many algorithms allocate temporary device memory for intermediate results. For finer
 control over allocation—or to reuse buffers across calls—use the object-based API.
 For example, <a class="reference internal" href="compute_api.html#cuda.compute.algorithms.make_reduce_into" title="cuda.compute.algorithms.make_reduce_into"><code class="xref py py-func docutils literal notranslate"><span class="pre">make_reduce_into</span></code></a>
@@ -1589,15 +1592,34 @@ returns a reusable reduction object that lets you manage memory explicitly.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a reducer object:</span>
 <span class="n">reducer</span> <span class="o">=</span> <span class="n">cuda</span><span class="o">.</span><span class="n">compute</span><span class="o">.</span><span class="n">make_reduce_into</span><span class="p">(</span><span class="n">d_in</span><span class="p">,</span> <span class="n">d_out</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">h_init</span><span class="p">)</span>
 <span class="c1"># get the temporary storage size by passing None as the first argument:</span>
-<span class="n">temp_storage_bytes</span> <span class="o">=</span> <span class="n">reducer</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">d_in</span><span class="p">,</span> <span class="n">d_out</span><span class="p">,</span> <span class="n">num_items</span><span class="p">,</span> <span class="n">h_init</span><span class="p">)</span>
+<span class="n">temp_storage_bytes</span> <span class="o">=</span> <span class="n">reducer</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">d_in</span><span class="p">,</span> <span class="n">d_out</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">num_items</span><span class="p">,</span> <span class="n">h_init</span><span class="p">)</span>
 <span class="c1"># allocate the temporary storage as any array-like object</span>
 <span class="c1"># (e.g., CuPy array, Torch tensor):</span>
 <span class="n">temp_storage</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">temp_storage_bytes</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
 <span class="c1"># perform the reduction, passing the temporary storage as the first argument:</span>
-<span class="n">reducer</span><span class="p">(</span><span class="n">temp_storage</span><span class="p">,</span> <span class="n">d_in</span><span class="p">,</span> <span class="n">d_out</span><span class="p">,</span> <span class="n">num_items</span><span class="p">,</span> <span class="n">h_init</span><span class="p">)</span>
+<span class="n">reducer</span><span class="p">(</span><span class="n">temp_storage</span><span class="p">,</span> <span class="n">d_in</span><span class="p">,</span> <span class="n">d_out</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">num_items</span><span class="p">,</span> <span class="n">h_init</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+<p>The object-based API splits the algorithm invocation into three phases,</p>
+<ol class="arabic simple">
+<li><p>Constructing an algorithm object</p></li>
+<li><p>Determining the amount of temporary memory needed by the computation</p></li>
+<li><p>Performing the computation</p></li>
+</ol>
+<p>It is important that the type of arguments passed during construction (step 1) match
+those passed during invocation (step 2 and 3). Otherwise you may see unexpected errors
+or silent bugs.</p>
+<ul class="simple">
+<li><p>Data types of arrays/iterators must match. If you pass an array of <cite>int32</cite> data type
+as the <cite>d_in=</cite> argument during construction of a reducer object, you must pass
+an array of dtype <cite>int32</cite> when invoking it. The array can be of a different size.</p></li>
+<li><p>Bytecode instructions of functions must match. If you pass a function/lambda for
+the operator during construction, you must pass a function with the same bytecode
+instructions during invocation. This means you _can_ pass a different function
+referencing different global/closures, but the operations within the functions
+must be the same.</p></li>
+</ul>
 </section>
 </section>
 <section id="user-defined-operations">
@@ -2053,7 +2075,7 @@ compilation time or reclaiming memory.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#algorithms">Algorithms</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api-conventions">API conventions</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#full-example">Full Example</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#controlling-temporary-memory">Controlling temporary memory</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#object-based-api-expert-mode">Object-based API (expert mode)</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#user-defined-operations">User-Defined Operations</a><ul class="visible nav section-nav flex-column">

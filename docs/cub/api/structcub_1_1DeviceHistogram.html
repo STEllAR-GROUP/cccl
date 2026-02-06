@@ -332,6 +332,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/type_traits.html">Type traits</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/vector_tuple_protocol.html">Vector Tuple Protocol</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/numeric.html">Numeric</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/random.html">Random</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/memory.html">Memory</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/memory_resource.html">Memory Resources</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/math.html">Math</a></li>
@@ -1221,6 +1222,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__cuda__stream.html">cuda::experimental::stf::exec_place_cuda_stream</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__green__ctx.html">cuda::experimental::stf::exec_place_green_ctx</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__grid.html">cuda::experimental::stf::exec_place_grid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__guard.html">cuda::experimental::stf::exec_place_guard</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__host.html">cuda::experimental::stf::exec_place_host</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1executable__graph__cache.html">cuda::experimental::stf::executable_graph_cache</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1executable__graph__cache__stat.html">cuda::experimental::stf::executable_graph_cache_stat</a></li>
@@ -1310,6 +1312,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01cuda_1_1experimental_1_1stf_1_1green__ctx__view_01_4.html">cuda::experimental::stf::hash&lt; cuda::experimental::stf::green_ctx_view &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01data__place_01_4.html">cuda::experimental::stf::hash&lt; data_place &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01dim4_01_4.html">cuda::experimental::stf::hash&lt; dim4 &gt;</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01exec__place_01_4.html">cuda::experimental::stf::hash&lt; exec_place &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01hashtable_01_4.html">cuda::experimental::stf::hash&lt; hashtable &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01mdspan_3_01P_8_8_8_01_4_01_4.html">cuda::experimental::stf::hash&lt; mdspan&lt; P… &gt; &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01pos4_01_4.html">cuda::experimental::stf::hash&lt; pos4 &gt;</a></li>
@@ -1560,6 +1563,9 @@ of the disjoint categories (known as <em>bins</em>).</p>
 
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0000EN3cub15DeviceHistogram13HistogramEvenE11cudaError_tPvR6size_t15SampleIteratorTP8CounterTi6LevelT6LevelT7OffsetT12cudaStream_t" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Computes an intensity histogram from a sequence of data samples using equal-width bins.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>The number of histogram bins is (<code class="docutils literal notranslate"><span class="pre">num_levels</span> <span class="pre">-</span> <span class="pre">1</span></code>)</p></li>
 <li><p>All bins comprise the same width of sample values: <code class="docutils literal notranslate"><span class="pre">(upper_level</span> <span class="pre">-</span> <span class="pre">lower_level)</span> <span class="pre">/</span> <span class="pre">(num_levels</span> <span class="pre">-</span> <span class="pre">1)</span></code>.</p></li>
@@ -1661,6 +1667,9 @@ from a sequence of float samples</p>
 
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0000EN3cub15DeviceHistogram13HistogramEvenE11cudaError_tPvR6size_t15SampleIteratorTP8CounterTi6LevelT6LevelT7OffsetT7OffsetT6size_t12cudaStream_t" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Computes an intensity histogram from a sequence of data samples using equal-width bins.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>A two-dimensional <em>region of interest</em> within <code class="docutils literal notranslate"><span class="pre">d_samples</span></code> can be specified using
 the <code class="docutils literal notranslate"><span class="pre">num_row_samples</span></code>, <code class="docutils literal notranslate"><span class="pre">num_rows</span></code>, and <code class="docutils literal notranslate"><span class="pre">row_stride_bytes</span></code> parameters.</p></li>
@@ -1774,6 +1783,9 @@ from a 2x5 region of interest within a flattened 2x7 array of float samples.</p>
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_i_i0000EN3cub15DeviceHistogram18MultiHistogramEvenE11cudaError_tPvR6size_t15SampleIteratorTN4cudaSt5arrayIP8CounterT19NUM_ACTIVE_CHANNELSEEN4cudaSt5arrayIi19NUM_ACTIVE_CHANNELSEEN4cudaSt5arrayI6LevelT19NUM_ACTIVE_CHANNELSEEN4cudaSt5arrayI6LevelT19NUM_ACTIVE_CHANNELSEE7OffsetT12cudaStream_t" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Computes per-channel intensity histograms from a sequence of multi-channel “pixel” data samples using
 equal-width bins.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>The input is a sequence of <em>pixel</em> structures, where each pixel comprises
 a record of <code class="docutils literal notranslate"><span class="pre">NUM_CHANNELS</span></code> consecutive data samples
@@ -1919,6 +1931,9 @@ Implies that the number of bins for channel<sub>i</sub> is <code class="docutils
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_i_i0000EN3cub15DeviceHistogram18MultiHistogramEvenE11cudaError_tPvR6size_t15SampleIteratorTN4cudaSt5arrayIP8CounterT19NUM_ACTIVE_CHANNELSEEN4cudaSt5arrayIi19NUM_ACTIVE_CHANNELSEEN4cudaSt5arrayI6LevelT19NUM_ACTIVE_CHANNELSEEN4cudaSt5arrayI6LevelT19NUM_ACTIVE_CHANNELSEE7OffsetT7OffsetT6size_t12cudaStream_t" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Computes per-channel intensity histograms from a sequence of
 multi-channel “pixel” data samples using equal-width bins.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>The input is a sequence of <em>pixel</em> structures, where each pixel
 comprises a record of <code class="docutils literal notranslate"><span class="pre">NUM_CHANNELS</span></code> consecutive data samples (e.g., an <em>RGBA</em> pixel).</p></li>
@@ -2078,6 +2093,9 @@ Implies that the number of bins for channel<sub>i</sub> is <code class="docutils
 
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0000EN3cub15DeviceHistogram14HistogramRangeE11cudaError_tPvR6size_t15SampleIteratorTP8CounterTiPK6LevelT7OffsetT12cudaStream_t" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Computes an intensity histogram from a sequence of data samples using the specified bin boundary levels.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>The number of histogram bins is (<code class="docutils literal notranslate"><span class="pre">num_levels</span> <span class="pre">-</span> <span class="pre">1</span></code>)</p></li>
 <li><p>The value range for bin<sub>i</sub> is <code class="docutils literal notranslate"><span class="pre">[level[i],</span> <span class="pre">level[i+1])</span></code></p></li>
@@ -2168,6 +2186,9 @@ from a sequence of float samples</p>
 
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0000EN3cub15DeviceHistogram14HistogramRangeE11cudaError_tPvR6size_t15SampleIteratorTP8CounterTiPK6LevelT7OffsetT7OffsetT6size_t12cudaStream_t" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Computes an intensity histogram from a sequence of data samples using the specified bin boundary levels.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>A two-dimensional <em>region of interest</em> within <code class="docutils literal notranslate"><span class="pre">d_samples</span></code> can be
 specified using the <code class="docutils literal notranslate"><span class="pre">num_row_samples</span></code>, <code class="docutils literal notranslate"><span class="pre">num_rows</span></code>, and <code class="docutils literal notranslate"><span class="pre">row_stride_bytes</span></code> parameters.</p></li>
@@ -2269,6 +2290,9 @@ from a 2x5 region of interest within a flattened 2x7 array of float samples.</p>
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_i_i0000EN3cub15DeviceHistogram19MultiHistogramRangeE11cudaError_tPvR6size_t15SampleIteratorTN4cudaSt5arrayIP8CounterT19NUM_ACTIVE_CHANNELSEEN4cudaSt5arrayIi19NUM_ACTIVE_CHANNELSEEN4cudaSt5arrayIPK6LevelT19NUM_ACTIVE_CHANNELSEE7OffsetT12cudaStream_t" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Computes per-channel intensity histograms from a sequence of multi-channel “pixel” data samples
 using the specified bin boundary levels.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>The input is a sequence of <em>pixel</em> structures, where each pixel
 comprises a record of <code class="docutils literal notranslate"><span class="pre">NUM_CHANNELS</span></code> consecutive data samples (e.g., an <em>RGBA</em> pixel).</p></li>
@@ -2402,6 +2426,9 @@ channel<sub>i</sub> is <code class="docutils literal notranslate"><span class="p
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_i_i0000EN3cub15DeviceHistogram19MultiHistogramRangeE11cudaError_tPvR6size_t15SampleIteratorTN4cudaSt5arrayIP8CounterT19NUM_ACTIVE_CHANNELSEEN4cudaSt5arrayIi19NUM_ACTIVE_CHANNELSEEN4cudaSt5arrayIPK6LevelT19NUM_ACTIVE_CHANNELSEE7OffsetT7OffsetT6size_t12cudaStream_t" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Computes per-channel intensity histograms from a sequence of multi-channel “pixel” data samples using
 the specified bin boundary levels.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>The input is a sequence of <em>pixel</em> structures, where each pixel comprises
 a record of <code class="docutils literal notranslate"><span class="pre">NUM_CHANNELS</span></code> consecutive data samples (e.g., an <em>RGBA</em> pixel).</p></li>

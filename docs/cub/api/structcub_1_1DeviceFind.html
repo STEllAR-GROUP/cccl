@@ -332,6 +332,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/type_traits.html">Type traits</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/vector_tuple_protocol.html">Vector Tuple Protocol</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/numeric.html">Numeric</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/random.html">Random</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/memory.html">Memory</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/memory_resource.html">Memory Resources</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/math.html">Math</a></li>
@@ -1221,6 +1222,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__cuda__stream.html">cuda::experimental::stf::exec_place_cuda_stream</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__green__ctx.html">cuda::experimental::stf::exec_place_green_ctx</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__grid.html">cuda::experimental::stf::exec_place_grid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__guard.html">cuda::experimental::stf::exec_place_guard</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__host.html">cuda::experimental::stf::exec_place_host</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1executable__graph__cache.html">cuda::experimental::stf::executable_graph_cache</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1executable__graph__cache__stat.html">cuda::experimental::stf::executable_graph_cache_stat</a></li>
@@ -1310,6 +1312,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01cuda_1_1experimental_1_1stf_1_1green__ctx__view_01_4.html">cuda::experimental::stf::hash&lt; cuda::experimental::stf::green_ctx_view &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01data__place_01_4.html">cuda::experimental::stf::hash&lt; data_place &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01dim4_01_4.html">cuda::experimental::stf::hash&lt; dim4 &gt;</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01exec__place_01_4.html">cuda::experimental::stf::hash&lt; exec_place &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01hashtable_01_4.html">cuda::experimental::stf::hash&lt; hashtable &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01mdspan_3_01P_8_8_8_01_4_01_4.html">cuda::experimental::stf::hash&lt; mdspan&lt; P… &gt; &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01pos4_01_4.html">cuda::experimental::stf::hash&lt; pos4 &gt;</a></li>
@@ -1549,6 +1552,9 @@
 <li><p>The range <code class="docutils literal notranslate"><span class="pre">[d_out,</span> <span class="pre">d_out</span> <span class="pre">+</span> <span class="pre">1)</span></code> shall not overlap <code class="docutils literal notranslate"><span class="pre">[d_in,</span> <span class="pre">d_in</span> <span class="pre">+</span> <span class="pre">num_items)</span></code> in any way.</p></li>
 <li><p>When <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> is <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, no work is done and the required allocation size is returned in <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code>. See <a class="reference internal" href="../api_docs/device_wide.html#device-temp-storage"><span class="std std-ref">Determining Temporary Storage Requirements</span></a> for usage guidance.</p></li>
 </ul>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 3.3.0.</span></p>
+</div>
 <section id="snippet">
 <h2>Snippet<a class="headerlink" href="#snippet" title="Link to this heading">#</a></h2>
 <p>The code snippet below illustrates the finding of the first element that satisfies the predicate.</p>
@@ -1604,6 +1610,9 @@ using <code class="docutils literal notranslate"><span class="pre">comp</span></
 <ul class="simple">
 <li><p>The range <code class="docutils literal notranslate"><span class="pre">[first,</span> <span class="pre">last)</span></code> must be sorted consistently with <code class="docutils literal notranslate"><span class="pre">comp</span></code>.</p></li>
 </ul>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 3.3.0.</span></p>
+</div>
 </section>
 </p>
 <dl class="field-list simple">
@@ -1656,6 +1665,9 @@ using <code class="docutils literal notranslate"><span class="pre">comp</span></
 <ul class="simple">
 <li><p>The range <code class="docutils literal notranslate"><span class="pre">[first,</span> <span class="pre">last)</span></code> must be sorted consistently with <code class="docutils literal notranslate"><span class="pre">comp</span></code>.</p></li>
 </ul>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 3.3.0.</span></p>
+</div>
 </section>
 </p>
 <dl class="field-list simple">

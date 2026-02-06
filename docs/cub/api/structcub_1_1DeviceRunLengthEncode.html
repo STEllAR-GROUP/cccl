@@ -332,6 +332,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/type_traits.html">Type traits</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/vector_tuple_protocol.html">Vector Tuple Protocol</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/numeric.html">Numeric</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/random.html">Random</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/memory.html">Memory</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/memory_resource.html">Memory Resources</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/math.html">Math</a></li>
@@ -1221,6 +1222,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__cuda__stream.html">cuda::experimental::stf::exec_place_cuda_stream</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__green__ctx.html">cuda::experimental::stf::exec_place_green_ctx</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__grid.html">cuda::experimental::stf::exec_place_grid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__guard.html">cuda::experimental::stf::exec_place_guard</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__host.html">cuda::experimental::stf::exec_place_host</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1executable__graph__cache.html">cuda::experimental::stf::executable_graph_cache</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1executable__graph__cache__stat.html">cuda::experimental::stf::executable_graph_cache_stat</a></li>
@@ -1310,6 +1312,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01cuda_1_1experimental_1_1stf_1_1green__ctx__view_01_4.html">cuda::experimental::stf::hash&lt; cuda::experimental::stf::green_ctx_view &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01data__place_01_4.html">cuda::experimental::stf::hash&lt; data_place &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01dim4_01_4.html">cuda::experimental::stf::hash&lt; dim4 &gt;</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01exec__place_01_4.html">cuda::experimental::stf::hash&lt; exec_place &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01hashtable_01_4.html">cuda::experimental::stf::hash&lt; hashtable &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01mdspan_3_01P_8_8_8_01_4_01_4.html">cuda::experimental::stf::hash&lt; mdspan&lt; P… &gt; &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01pos4_01_4.html">cuda::experimental::stf::hash&lt; pos4 &gt;</a></li>
@@ -1567,6 +1570,9 @@ run.</p>
 
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00000EN3cub21DeviceRunLengthEncode6EncodeE11cudaError_tPvR6size_t14InputIteratorT21UniqueOutputIteratorT22LengthsOutputIteratorT22NumRunsOutputIteratorT9NumItemsT12cudaStream_t" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Computes a run-length encoding of the sequence <code class="docutils literal notranslate"><span class="pre">d_in</span></code>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>For the <em>i</em><sup>th</sup> run encountered, the first key of the run and
 its length are written to <code class="docutils literal notranslate"><span class="pre">d_unique_out[i]</span></code> and <code class="docutils literal notranslate"><span class="pre">d_counts_out[i]</span></code>, respectively.</p></li>
@@ -1662,6 +1668,9 @@ its length are written to <code class="docutils literal notranslate"><span class
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00000EN3cub21DeviceRunLengthEncode14NonTrivialRunsE11cudaError_tPvR6size_t14InputIteratorT22OffsetsOutputIteratorT22LengthsOutputIteratorT22NumRunsOutputIteratorT9NumItemsT12cudaStream_t" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Enumerates the starting offsets and lengths of all non-trivial runs
 (of <code class="docutils literal notranslate"><span class="pre">length</span> <span class="pre">&gt;</span> <span class="pre">1</span></code>) of same-valued keys in the sequence <code class="docutils literal notranslate"><span class="pre">d_in</span></code>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>For the <em>i</em><sup>th</sup> non-trivial run, the run’s starting offset and
 its length are written to <code class="docutils literal notranslate"><span class="pre">d_offsets_out[i]</span></code> and <code class="docutils literal notranslate"><span class="pre">d_lengths_out[i]</span></code>, respectively.</p></li>

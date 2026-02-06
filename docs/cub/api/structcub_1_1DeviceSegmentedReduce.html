@@ -332,6 +332,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/type_traits.html">Type traits</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/vector_tuple_protocol.html">Vector Tuple Protocol</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/numeric.html">Numeric</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/random.html">Random</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/memory.html">Memory</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/memory_resource.html">Memory Resources</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/math.html">Math</a></li>
@@ -1221,6 +1222,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__cuda__stream.html">cuda::experimental::stf::exec_place_cuda_stream</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__green__ctx.html">cuda::experimental::stf::exec_place_green_ctx</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__grid.html">cuda::experimental::stf::exec_place_grid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__guard.html">cuda::experimental::stf::exec_place_guard</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__host.html">cuda::experimental::stf::exec_place_host</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1executable__graph__cache.html">cuda::experimental::stf::executable_graph_cache</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1executable__graph__cache__stat.html">cuda::experimental::stf::executable_graph_cache_stat</a></li>
@@ -1310,6 +1312,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01cuda_1_1experimental_1_1stf_1_1green__ctx__view_01_4.html">cuda::experimental::stf::hash&lt; cuda::experimental::stf::green_ctx_view &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01data__place_01_4.html">cuda::experimental::stf::hash&lt; data_place &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01dim4_01_4.html">cuda::experimental::stf::hash&lt; dim4 &gt;</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01exec__place_01_4.html">cuda::experimental::stf::hash&lt; exec_place &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01hashtable_01_4.html">cuda::experimental::stf::hash&lt; hashtable &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01mdspan_3_01P_8_8_8_01_4_01_4.html">cuda::experimental::stf::hash&lt; mdspan&lt; P… &gt; &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01pos4_01_4.html">cuda::experimental::stf::hash&lt; pos4 &gt;</a></li>
@@ -1564,6 +1567,9 @@ from a sequence of input elements.</p>
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I000000EN3cub21DeviceSegmentedReduce6ReduceE11cudaError_tPvR6size_t14InputIteratorT15OutputIteratorTN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorT12ReductionOpT1T12cudaStream_t" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Computes a device-wide segmented reduction using the specified
 binary <code class="docutils literal notranslate"><span class="pre">reduction_op</span></code> functor.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>Does not support binary reduction operators that are non-commutative.</p></li>
 <li><p>Provides “run-to-run” determinism for pseudo-associative reduction
@@ -1685,6 +1691,9 @@ If <code class="docutils literal notranslate"><span class="pre">d_end_offsets[i]
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0000EN3cub21DeviceSegmentedReduce6ReduceE11cudaError_tPvR6size_t14InputIteratorT15OutputIteratorTN4cudaSt7int64_tEi12ReductionOpT1T12cudaStream_t" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Computes a device-wide segmented reduction using the specified
 binary <code class="docutils literal notranslate"><span class="pre">reduction_op</span></code> functor and a fixed segment size.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 3.2.0: </span>First appears in CUDA Toolkit 13.2.</p>
+</div>
 <ul class="simple">
 <li><p>Does not support binary reduction operators that are non-commutative.</p></li>
 <li><p>Provides “run-to-run” determinism for pseudo-associative reduction
@@ -1766,6 +1775,9 @@ because CUB can employ different tile-sizing for different architectures.</p></l
 
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00000EN3cub21DeviceSegmentedReduce3SumE11cudaError_tPvR6size_t14InputIteratorT15OutputIteratorTN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorT12cudaStream_t" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Computes a device-wide segmented sum using the addition (<code class="docutils literal notranslate"><span class="pre">+</span></code>) operator.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>Uses <code class="docutils literal notranslate"><span class="pre">0</span></code> as the initial value of the reduction for each segment.</p></li>
 <li><p>When input a contiguous sequence of segments, a single sequence
@@ -1857,6 +1869,9 @@ If <code class="docutils literal notranslate"><span class="pre">d_end_offsets[i]
 
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I000000EN3cub21DeviceSegmentedReduce3SumE11cudaError_t14InputIteratorT15OutputIteratorTN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorT4EnvT" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Computes a device-wide segmented sum using the addition (<code class="docutils literal notranslate"><span class="pre">+</span></code>) operator.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>Uses <code class="docutils literal notranslate"><span class="pre">0</span></code> as the initial value of the reduction for each segment.</p></li>
 <li><p>When input a contiguous sequence of segments, a single sequence
@@ -1948,6 +1963,9 @@ If <code class="docutils literal notranslate"><span class="pre">d_end_offsets[i]
 
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN3cub21DeviceSegmentedReduce3SumE11cudaError_tPvR6size_t14InputIteratorT15OutputIteratorTN4cudaSt7int64_tEi12cudaStream_t" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Computes a device-wide segmented sum using the addition (<code class="docutils literal notranslate"><span class="pre">+</span></code>) operator.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 3.2.0: </span>First appears in CUDA Toolkit 13.2.</p>
+</div>
 <ul class="simple">
 <li><p>Uses <code class="docutils literal notranslate"><span class="pre">0</span></code> as the initial value of the reduction for each segment.</p></li>
 <li><p>When <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> is <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, no work is done and the required allocation size is returned in <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code>. See <a class="reference internal" href="../api_docs/device_wide.html#device-temp-storage"><span class="std std-ref">Determining Temporary Storage Requirements</span></a> for usage guidance.</p></li>
@@ -2018,6 +2036,9 @@ If <code class="docutils literal notranslate"><span class="pre">d_end_offsets[i]
 
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00000EN3cub21DeviceSegmentedReduce3MinE11cudaError_tPvR6size_t14InputIteratorT15OutputIteratorTN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorT12cudaStream_t" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Computes a device-wide segmented minimum using the less-than (<code class="docutils literal notranslate"><span class="pre">&lt;</span></code>) operator.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>Uses <code class="docutils literal notranslate"><span class="pre">::cuda::std::numeric_limits&lt;T&gt;::max()</span></code> as the initial value of the reduction for each segment.</p></li>
 <li><p>When input a contiguous sequence of segments, a single sequence
@@ -2120,6 +2141,9 @@ If <code class="docutils literal notranslate"><span class="pre">d_end_offsets[i]
 
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN3cub21DeviceSegmentedReduce3MinE11cudaError_tPvR6size_t14InputIteratorT15OutputIteratorTN4cudaSt7int64_tEi12cudaStream_t" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Computes a device-wide segmented minimum using the less-than (<code class="docutils literal notranslate"><span class="pre">&lt;</span></code>) operator.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 3.2.0: </span>First appears in CUDA Toolkit 13.2.</p>
+</div>
 <ul class="simple">
 <li><p>Uses <code class="docutils literal notranslate"><span class="pre">::cuda::std::numeric_limits&lt;T&gt;::max()</span></code> as the initial value of the reduction for each segment.</p></li>
 </ul>
@@ -2200,6 +2224,9 @@ If <code class="docutils literal notranslate"><span class="pre">d_end_offsets[i]
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00000EN3cub21DeviceSegmentedReduce6ArgMinE11cudaError_tPvR6size_t14InputIteratorT15OutputIteratorTN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorT12cudaStream_t" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Finds the first device-wide minimum in each segment using the
 less-than (<code class="docutils literal notranslate"><span class="pre">&lt;</span></code>) operator, also returning the in-segment index of that item.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>The output value type of <code class="docutils literal notranslate"><span class="pre">d_out</span></code> is <code class="docutils literal notranslate"><span class="pre">cub::KeyValuePair&lt;int,</span> <span class="pre">T&gt;</span></code>
 (assuming the value type of <code class="docutils literal notranslate"><span class="pre">d_in</span></code> is <code class="docutils literal notranslate"><span class="pre">T</span></code>)</p>
@@ -2300,6 +2327,9 @@ If <code class="docutils literal notranslate"><span class="pre">d_end_offsets[i]
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN3cub21DeviceSegmentedReduce6ArgMinE11cudaError_tPvR6size_t14InputIteratorT15OutputIteratorTN4cudaSt7int64_tEi12cudaStream_t" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Finds the first device-wide minimum in each segment using the
 less-than (<code class="docutils literal notranslate"><span class="pre">&lt;</span></code>) operator, also returning the in-segment index of that item.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 3.2.0: </span>First appears in CUDA Toolkit 13.2.</p>
+</div>
 <ul class="simple">
 <li><p>The output value type of <code class="docutils literal notranslate"><span class="pre">d_out</span></code> is <code class="docutils literal notranslate"><span class="pre">::cuda::std::pair&lt;int,</span> <span class="pre">T&gt;</span></code>
 (assuming the value type of <code class="docutils literal notranslate"><span class="pre">d_in</span></code> is <code class="docutils literal notranslate"><span class="pre">T</span></code>)</p>
@@ -2376,6 +2406,9 @@ less-than (<code class="docutils literal notranslate"><span class="pre">&lt;</sp
 
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00000EN3cub21DeviceSegmentedReduce3MaxE11cudaError_tPvR6size_t14InputIteratorT15OutputIteratorTN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorT12cudaStream_t" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Computes a device-wide segmented maximum using the greater-than (<code class="docutils literal notranslate"><span class="pre">&gt;</span></code>) operator.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>Uses <code class="docutils literal notranslate"><span class="pre">::cuda::std::numeric_limits&lt;T&gt;::lowest()</span></code> as the initial value of the reduction.</p></li>
 <li><p>When input a contiguous sequence of segments, a single sequence
@@ -2468,6 +2501,9 @@ If <code class="docutils literal notranslate"><span class="pre">d_end_offsets[i]
 
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN3cub21DeviceSegmentedReduce3MaxE11cudaError_tPvR6size_t14InputIteratorT15OutputIteratorTN4cudaSt7int64_tEi12cudaStream_t" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Computes a device-wide segmented maximum using the greater-than (<code class="docutils literal notranslate"><span class="pre">&gt;</span></code>) operator.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 3.2.0: </span>First appears in CUDA Toolkit 13.2.</p>
+</div>
 <ul class="simple">
 <li><p>Uses <code class="docutils literal notranslate"><span class="pre">::cuda::std::numeric_limits&lt;T&gt;::lowest()</span></code> as the initial value of the reduction.</p></li>
 </ul>
@@ -2539,6 +2575,9 @@ If <code class="docutils literal notranslate"><span class="pre">d_end_offsets[i]
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00000EN3cub21DeviceSegmentedReduce6ArgMaxE11cudaError_tPvR6size_t14InputIteratorT15OutputIteratorTN4cudaSt7int64_tE20BeginOffsetIteratorT18EndOffsetIteratorT12cudaStream_t" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Finds the first device-wide maximum in each segment using the
 greater-than (<code class="docutils literal notranslate"><span class="pre">&gt;</span></code>) operator, also returning the in-segment index of that item</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>The output value type of <code class="docutils literal notranslate"><span class="pre">d_out</span></code> is <code class="docutils literal notranslate"><span class="pre">cub::KeyValuePair&lt;int,</span> <span class="pre">T&gt;</span></code>
 (assuming the value type of <code class="docutils literal notranslate"><span class="pre">d_in</span></code> is <code class="docutils literal notranslate"><span class="pre">T</span></code>)</p>
@@ -2640,6 +2679,9 @@ If <code class="docutils literal notranslate"><span class="pre">d_end_offsets[i]
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN3cub21DeviceSegmentedReduce6ArgMaxE11cudaError_tPvR6size_t14InputIteratorT15OutputIteratorTN4cudaSt7int64_tEi12cudaStream_t" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Finds the first device-wide maximum in each segment using the
 greater-than (<code class="docutils literal notranslate"><span class="pre">&gt;</span></code>) operator, also returning the in-segment index of that item</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 3.2.0: </span>First appears in CUDA Toolkit 13.2.</p>
+</div>
 <ul class="simple">
 <li><p>The output value type of <code class="docutils literal notranslate"><span class="pre">d_out</span></code> is <code class="docutils literal notranslate"><span class="pre">::cuda::std::pair&lt;int,</span> <span class="pre">T&gt;</span></code>
 (assuming the value type of <code class="docutils literal notranslate"><span class="pre">d_in</span></code> is <code class="docutils literal notranslate"><span class="pre">T</span></code>)</p>

@@ -332,6 +332,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/type_traits.html">Type traits</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/vector_tuple_protocol.html">Vector Tuple Protocol</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/numeric.html">Numeric</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/random.html">Random</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/memory.html">Memory</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/memory_resource.html">Memory Resources</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/math.html">Math</a></li>
@@ -1221,6 +1222,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__cuda__stream.html">cuda::experimental::stf::exec_place_cuda_stream</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__green__ctx.html">cuda::experimental::stf::exec_place_green_ctx</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__grid.html">cuda::experimental::stf::exec_place_grid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__guard.html">cuda::experimental::stf::exec_place_guard</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__host.html">cuda::experimental::stf::exec_place_host</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1executable__graph__cache.html">cuda::experimental::stf::executable_graph_cache</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1executable__graph__cache__stat.html">cuda::experimental::stf::executable_graph_cache_stat</a></li>
@@ -1310,6 +1312,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01cuda_1_1experimental_1_1stf_1_1green__ctx__view_01_4.html">cuda::experimental::stf::hash&lt; cuda::experimental::stf::green_ctx_view &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01data__place_01_4.html">cuda::experimental::stf::hash&lt; data_place &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01dim4_01_4.html">cuda::experimental::stf::hash&lt; dim4 &gt;</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01exec__place_01_4.html">cuda::experimental::stf::hash&lt; exec_place &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01hashtable_01_4.html">cuda::experimental::stf::hash&lt; hashtable &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01mdspan_3_01P_8_8_8_01_4_01_4.html">cuda::experimental::stf::hash&lt; mdspan&lt; P… &gt; &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01pos4_01_4.html">cuda::experimental::stf::hash&lt; pos4 &gt;</a></li>
@@ -1545,6 +1548,9 @@
 The algorithm is similar to
 <a class="reference external" href="https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2022/p2300r5.html#design-sender-adaptor-bulk">bulk</a>
 from P2300.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.4.0: </span>First appears in CUDA Toolkit 12.5.</p>
+</div>
 <ul class="simple">
 <li><p>The return value of <code class="docutils literal notranslate"><span class="pre">op</span></code>, if any, is ignored.</p></li>
 <li><p>When <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> is <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, no work is done and the required allocation size is returned in <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code>. See <a class="reference internal" href="../api_docs/device_wide.html#device-temp-storage"><span class="std std-ref">Determining Temporary Storage Requirements</span></a> for usage guidance.</p></li>
@@ -1620,6 +1626,9 @@ from P2300.</p>
 <dd><p><section id="id1">
 <h2>Overview<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
 <p>Applies the function object <code class="docutils literal notranslate"><span class="pre">op</span></code> to each element in the range <code class="docutils literal notranslate"><span class="pre">[first,</span> <span class="pre">first</span> <span class="pre">+</span> <span class="pre">num_items)</span></code></p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.4.0: </span>First appears in CUDA Toolkit 12.5.</p>
+</div>
 <ul class="simple">
 <li><p>The return value of <code class="docutils literal notranslate"><span class="pre">op</span></code>, if any, is ignored.</p></li>
 <li><p>When <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> is <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, no work is done and the required allocation size is returned in <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code>. See <a class="reference internal" href="../api_docs/device_wide.html#device-temp-storage"><span class="std std-ref">Determining Temporary Storage Requirements</span></a> for usage guidance.</p></li>
@@ -1695,6 +1704,9 @@ from P2300.</p>
 <dd><p><section id="id3">
 <h2>Overview<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
 <p>Applies the function object <code class="docutils literal notranslate"><span class="pre">op</span></code> to each element in the range <code class="docutils literal notranslate"><span class="pre">[first,</span> <span class="pre">last)</span></code></p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.4.0: </span>First appears in CUDA Toolkit 12.5.</p>
+</div>
 <ul class="simple">
 <li><p>The return value of <code class="docutils literal notranslate"><span class="pre">op</span></code>, if any, is ignored.</p></li>
 <li><p>When <code class="docutils literal notranslate"><span class="pre">d_temp_storage</span></code> is <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, no work is done and the required allocation size is returned in <code class="docutils literal notranslate"><span class="pre">temp_storage_bytes</span></code>. See <a class="reference internal" href="../api_docs/device_wide.html#device-temp-storage"><span class="std std-ref">Determining Temporary Storage Requirements</span></a> for usage guidance.</p></li>
@@ -1771,6 +1783,9 @@ from P2300.</p>
 <p>Applies the function object <code class="docutils literal notranslate"><span class="pre">op</span></code> to each element in the range <code class="docutils literal notranslate"><span class="pre">[first,</span> <span class="pre">first</span> <span class="pre">+</span> <span class="pre">num_items)</span></code>.
 Unlike the <code class="docutils literal notranslate"><span class="pre">ForEachN</span></code> algorithm, <code class="docutils literal notranslate"><span class="pre">ForEachCopyN</span></code> is allowed to invoke <code class="docutils literal notranslate"><span class="pre">op</span></code> on copies of the elements.
 This relaxation allows <code class="docutils literal notranslate"><span class="pre">ForEachCopyN</span></code> to vectorize loads.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.4.0: </span>First appears in CUDA Toolkit 12.5.</p>
+</div>
 <ul class="simple">
 <li><p>Allowed to invoke <code class="docutils literal notranslate"><span class="pre">op</span></code> on copies of the elements</p></li>
 <li><p>The return value of <code class="docutils literal notranslate"><span class="pre">op</span></code>, if any, is ignored.</p></li>
@@ -1855,6 +1870,9 @@ This relaxation allows <code class="docutils literal notranslate"><span class="p
 <p>Applies the function object <code class="docutils literal notranslate"><span class="pre">op</span></code> to each element in the range <code class="docutils literal notranslate"><span class="pre">[first,</span> <span class="pre">last)</span></code>.
 Unlike the <code class="docutils literal notranslate"><span class="pre">ForEach</span></code> algorithm, <code class="docutils literal notranslate"><span class="pre">ForEachCopy</span></code> is allowed to invoke <code class="docutils literal notranslate"><span class="pre">op</span></code> on copies of the elements.
 This relaxation allows <code class="docutils literal notranslate"><span class="pre">ForEachCopy</span></code> to vectorize loads.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.4.0: </span>First appears in CUDA Toolkit 12.5.</p>
+</div>
 <ul class="simple">
 <li><p>Allowed to invoke <code class="docutils literal notranslate"><span class="pre">op</span></code> on copies of the elements</p></li>
 <li><p>The return value of <code class="docutils literal notranslate"><span class="pre">op</span></code>, if any, is ignored.</p></li>
@@ -1936,6 +1954,9 @@ This relaxation allows <code class="docutils literal notranslate"><span class="p
 The algorithm is similar to
 <a class="reference external" href="https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2022/p2300r5.html#design-sender-adaptor-bulk">bulk</a>
 from P2300.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.4.0: </span>First appears in CUDA Toolkit 12.5.</p>
+</div>
 <ul class="simple">
 <li><p>The return value of <code class="docutils literal notranslate"><span class="pre">op</span></code>, if any, is ignored.</p></li>
 </ul>
@@ -1996,6 +2017,9 @@ from P2300.</p>
 <dd><p><section id="id12">
 <h2>Overview<a class="headerlink" href="#id12" title="Link to this heading">#</a></h2>
 <p>Applies the function object <code class="docutils literal notranslate"><span class="pre">op</span></code> to each element in the range <code class="docutils literal notranslate"><span class="pre">[first,</span> <span class="pre">first</span> <span class="pre">+</span> <span class="pre">num_items)</span></code></p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.4.0: </span>First appears in CUDA Toolkit 12.5.</p>
+</div>
 <ul class="simple">
 <li><p>The return value of <code class="docutils literal notranslate"><span class="pre">op</span></code>, if any, is ignored.</p></li>
 </ul>
@@ -2056,6 +2080,9 @@ from P2300.</p>
 <dd><p><section id="id14">
 <h2>Overview<a class="headerlink" href="#id14" title="Link to this heading">#</a></h2>
 <p>Applies the function object <code class="docutils literal notranslate"><span class="pre">op</span></code> to each element in the range <code class="docutils literal notranslate"><span class="pre">[first,</span> <span class="pre">last)</span></code></p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.4.0: </span>First appears in CUDA Toolkit 12.5.</p>
+</div>
 <ul class="simple">
 <li><p>The return value of <code class="docutils literal notranslate"><span class="pre">op</span></code>, if any, is ignored.</p></li>
 </ul>
@@ -2117,6 +2144,9 @@ from P2300.</p>
 <p>Applies the function object <code class="docutils literal notranslate"><span class="pre">op</span></code> to each element in the range <code class="docutils literal notranslate"><span class="pre">[first,</span> <span class="pre">first</span> <span class="pre">+</span> <span class="pre">num_items)</span></code>.
 Unlike the <code class="docutils literal notranslate"><span class="pre">ForEachN</span></code> algorithm, <code class="docutils literal notranslate"><span class="pre">ForEachCopyN</span></code> is allowed to invoke <code class="docutils literal notranslate"><span class="pre">op</span></code> on copies of the elements.
 This relaxation allows <code class="docutils literal notranslate"><span class="pre">ForEachCopyN</span></code> to vectorize loads.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.4.0: </span>First appears in CUDA Toolkit 12.5.</p>
+</div>
 <ul class="simple">
 <li><p>Allowed to invoke <code class="docutils literal notranslate"><span class="pre">op</span></code> on copies of the elements</p></li>
 <li><p>The return value of <code class="docutils literal notranslate"><span class="pre">op</span></code>, if any, is ignored.</p></li>
@@ -2186,6 +2216,9 @@ This relaxation allows <code class="docutils literal notranslate"><span class="p
 <p>Applies the function object <code class="docutils literal notranslate"><span class="pre">op</span></code> to each element in the range <code class="docutils literal notranslate"><span class="pre">[first,</span> <span class="pre">last)</span></code>.
 Unlike the <code class="docutils literal notranslate"><span class="pre">ForEach</span></code> algorithm, <code class="docutils literal notranslate"><span class="pre">ForEachCopy</span></code> is allowed to invoke <code class="docutils literal notranslate"><span class="pre">op</span></code> on copies of the elements.
 This relaxation allows <code class="docutils literal notranslate"><span class="pre">ForEachCopy</span></code> to vectorize loads.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.4.0: </span>First appears in CUDA Toolkit 12.5.</p>
+</div>
 <ul class="simple">
 <li><p>Allowed to invoke <code class="docutils literal notranslate"><span class="pre">op</span></code> on copies of the elements</p></li>
 <li><p>The return value of <code class="docutils literal notranslate"><span class="pre">op</span></code>, if any, is ignored.</p></li>
@@ -2254,6 +2287,9 @@ This relaxation allows <code class="docutils literal notranslate"><span class="p
 <h2>Overview<a class="headerlink" href="#id20" title="Link to this heading">#</a></h2>
 <p>Iterate through a multi-dimensional extents into a single linear index and a list of indices for each extent
 dimension.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.4.0: </span>First appears in CUDA Toolkit 12.5.</p>
+</div>
 <ul class="simple">
 <li><p>a single linear index that represents the current iteration</p></li>
 <li><p>indices of each extent dimension</p></li>
@@ -2342,6 +2378,9 @@ coordinates.</p>
 <dd><p><section id="id22">
 <h2>Overview<a class="headerlink" href="#id22" title="Link to this heading">#</a></h2>
 <p>Iterate through a multi-dimensional extents producing</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.4.0: </span>First appears in CUDA Toolkit 12.5.</p>
+</div>
 <ul class="simple">
 <li><p>a single linear index that represents the current iteration</p></li>
 <li><p>list of indices containing the coordinates for each extent dimension</p></li>
@@ -2429,6 +2468,9 @@ coordinates.</p>
 <h2>Overview<a class="headerlink" href="#id24" title="Link to this heading">#</a></h2>
 <p>Iterate through multi-dimensional extents using a specific mdspan layout, applying a function object for each
 element, passing</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.4.0: </span>First appears in CUDA Toolkit 12.5.</p>
+</div>
 <ul class="simple">
 <li><p>a single linear index that represents the current iteration</p></li>
 <li><p>a list of indices containing the coordinates for each extent dimension</p></li>

@@ -332,6 +332,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/type_traits.html">Type traits</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/vector_tuple_protocol.html">Vector Tuple Protocol</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/numeric.html">Numeric</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/random.html">Random</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/memory.html">Memory</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/memory_resource.html">Memory Resources</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/math.html">Math</a></li>
@@ -1221,6 +1222,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__cuda__stream.html">cuda::experimental::stf::exec_place_cuda_stream</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__green__ctx.html">cuda::experimental::stf::exec_place_green_ctx</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__grid.html">cuda::experimental::stf::exec_place_grid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__guard.html">cuda::experimental::stf::exec_place_guard</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__host.html">cuda::experimental::stf::exec_place_host</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1executable__graph__cache.html">cuda::experimental::stf::executable_graph_cache</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1executable__graph__cache__stat.html">cuda::experimental::stf::executable_graph_cache_stat</a></li>
@@ -1310,6 +1312,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01cuda_1_1experimental_1_1stf_1_1green__ctx__view_01_4.html">cuda::experimental::stf::hash&lt; cuda::experimental::stf::green_ctx_view &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01data__place_01_4.html">cuda::experimental::stf::hash&lt; data_place &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01dim4_01_4.html">cuda::experimental::stf::hash&lt; dim4 &gt;</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01exec__place_01_4.html">cuda::experimental::stf::hash&lt; exec_place &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01hashtable_01_4.html">cuda::experimental::stf::hash&lt; hashtable &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01mdspan_3_01P_8_8_8_01_4_01_4.html">cuda::experimental::stf::hash&lt; mdspan&lt; P… &gt; &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01pos4_01_4.html">cuda::experimental::stf::hash&lt; pos4 &gt;</a></li>
@@ -1605,12 +1608,20 @@ by BlockExchange.</p>
 <dt class="sig sig-object cpp" id="_CPPv4N3cub13BlockExchange13BlockExchangeEv">
 <span class="target" id="classcub_1_1BlockExchange_1a1fc39b6df3dac2d15512acb8b1cd695e"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BlockExchange</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3cub13BlockExchange13BlockExchangeEv" title="Link to this definition">#</a><br /></dt>
 <dd><p>Collective constructor using a private static allocation of shared memory as temporary storage. </p>
+<p><div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
+</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3cub13BlockExchange13BlockExchangeER11TempStorage">
 <span class="target" id="classcub_1_1BlockExchange_1aeccd1792b70c7bdff2ce8f9a4bc0af95"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BlockExchange</span></span></span><span class="sig-paren">(</span><em class="sig-param"><a class="reference internal" href="#_CPPv4N3cub13BlockExchange11TempStorageE" title="cub::BlockExchange::TempStorage"><span class="n"><span class="pre">TempStorage</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">temp_storage</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3cub13BlockExchange13BlockExchangeER11TempStorage" title="Link to this definition">#</a><br /></dt>
 <dd><p>Collective constructor using the specified memory allocation as temporary storage. </p>
+<p><div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
+</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>temp_storage</strong> – <strong>[in]</strong> Reference to memory allocation having layout type TempStorage </p>
@@ -1632,6 +1643,9 @@ by BlockExchange.</p>
 
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3cub13BlockExchange16StripedToBlockedEvRA14ItemsPerThread_K1TRA14ItemsPerThread_7OutputT" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Transposes data items from <strong>striped</strong> arrangement to <strong>blocked</strong> arrangement.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncthreads()</span></code> threadblock barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p></li>
 </ul>
@@ -1684,6 +1698,9 @@ of 512 integer items partitioned across 128 threads where each thread owns 4 ite
 
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3cub13BlockExchange16BlockedToStripedEvRA14ItemsPerThread_K1TRA14ItemsPerThread_7OutputT" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Transposes data items from <strong>blocked</strong> arrangement to <strong>striped</strong> arrangement.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncthreads()</span></code> threadblock barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p></li>
 </ul>
@@ -1740,6 +1757,9 @@ memory.</p>
 
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3cub13BlockExchange20WarpStripedToBlockedEvRA14ItemsPerThread_K1TRA14ItemsPerThread_7OutputT" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Transposes data items from <strong>warp-striped</strong> arrangement to <strong>blocked</strong> arrangement.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncthreads()</span></code> threadblock barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p></li>
 </ul>
@@ -1795,6 +1815,9 @@ etc.) The corresponding output <code class="docutils literal notranslate"><span 
 
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3cub13BlockExchange20BlockedToWarpStripedEvRA14ItemsPerThread_K1TRA14ItemsPerThread_7OutputT" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Transposes data items from <strong>blocked</strong> arrangement to <strong>warp-striped</strong> arrangement.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncthreads()</span></code> threadblock barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p></li>
 </ul>
@@ -1857,6 +1880,9 @@ items are striped across the second warp, etc.)</p>
 
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN3cub13BlockExchange16ScatterToBlockedEvRA14ItemsPerThread_K1TRA14ItemsPerThread_7OutputTRA14ItemsPerThread_7OffsetT" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Exchanges data items annotated by rank into <strong>blocked</strong> arrangement.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncthreads()</span></code> threadblock barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p></li>
 </ul>
@@ -1887,6 +1913,9 @@ items are striped across the second warp, etc.)</p>
 
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN3cub13BlockExchange16ScatterToStripedEvRA14ItemsPerThread_K1TRA14ItemsPerThread_7OutputTRA14ItemsPerThread_7OffsetT" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Exchanges data items annotated by rank into <strong>striped</strong> arrangement.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncthreads()</span></code> threadblock barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p></li>
 </ul>
@@ -1917,6 +1946,9 @@ items are striped across the second warp, etc.)</p>
 
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN3cub13BlockExchange23ScatterToStripedGuardedEvRA14ItemsPerThread_K1TRA14ItemsPerThread_7OutputTRA14ItemsPerThread_7OffsetT" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Exchanges data items annotated by rank into <strong>striped</strong> arrangement. Items with rank -1 are not exchanged.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncthreads()</span></code> threadblock barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p></li>
 </ul>
@@ -1948,6 +1980,9 @@ items are striped across the second warp, etc.)</p>
 
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I000EN3cub13BlockExchange23ScatterToStripedFlaggedEvRA14ItemsPerThread_K1TRA14ItemsPerThread_7OutputTRA14ItemsPerThread_7OffsetTRA14ItemsPerThread_9ValidFlag" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Exchanges valid data items annotated by rank into <strong>striped</strong> arrangement.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncthreads()</span></code> threadblock barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p></li>
 </ul>

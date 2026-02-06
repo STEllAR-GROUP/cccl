@@ -332,6 +332,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/type_traits.html">Type traits</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/vector_tuple_protocol.html">Vector Tuple Protocol</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/numeric.html">Numeric</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/random.html">Random</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/memory.html">Memory</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/memory_resource.html">Memory Resources</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../libcudacxx/extended_api/math.html">Math</a></li>
@@ -1221,6 +1222,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__cuda__stream.html">cuda::experimental::stf::exec_place_cuda_stream</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__green__ctx.html">cuda::experimental::stf::exec_place_green_ctx</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__grid.html">cuda::experimental::stf::exec_place_grid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__guard.html">cuda::experimental::stf::exec_place_guard</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1exec__place__host.html">cuda::experimental::stf::exec_place_host</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1executable__graph__cache.html">cuda::experimental::stf::executable_graph_cache</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/classcuda_1_1experimental_1_1stf_1_1executable__graph__cache__stat.html">cuda::experimental::stf::executable_graph_cache_stat</a></li>
@@ -1310,6 +1312,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01cuda_1_1experimental_1_1stf_1_1green__ctx__view_01_4.html">cuda::experimental::stf::hash&lt; cuda::experimental::stf::green_ctx_view &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01data__place_01_4.html">cuda::experimental::stf::hash&lt; data_place &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01dim4_01_4.html">cuda::experimental::stf::hash&lt; dim4 &gt;</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01exec__place_01_4.html">cuda::experimental::stf::hash&lt; exec_place &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01hashtable_01_4.html">cuda::experimental::stf::hash&lt; hashtable &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01mdspan_3_01P_8_8_8_01_4_01_4.html">cuda::experimental::stf::hash&lt; mdspan&lt; P… &gt; &gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../cudax/api/structcuda_1_1experimental_1_1stf_1_1hash_3_01pos4_01_4.html">cuda::experimental::stf::hash&lt; pos4 &gt;</a></li>
@@ -1686,12 +1689,20 @@ BlockReduce and how to re-purpose the same memory region.</p>
 <dt class="sig sig-object cpp" id="_CPPv4N3cub14BlockRadixSort14BlockRadixSortEv">
 <span class="target" id="classcub_1_1BlockRadixSort_1a501d530857ec4c12bcf615ea530fc84a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BlockRadixSort</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3cub14BlockRadixSort14BlockRadixSortEv" title="Link to this definition">#</a><br /></dt>
 <dd><p>Collective constructor using a private static allocation of shared memory as temporary storage. </p>
+<p><div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
+</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3cub14BlockRadixSort14BlockRadixSortER11TempStorage">
 <span class="target" id="classcub_1_1BlockRadixSort_1abe82502a99d77ec1e3732cbc2088b8e1"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BlockRadixSort</span></span></span><span class="sig-paren">(</span><em class="sig-param"><a class="reference internal" href="#_CPPv4N3cub14BlockRadixSort11TempStorageE" title="cub::BlockRadixSort::TempStorage"><span class="n"><span class="pre">TempStorage</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">temp_storage</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3cub14BlockRadixSort14BlockRadixSortER11TempStorage" title="Link to this definition">#</a><br /></dt>
 <dd><p>Collective constructor using the specified memory allocation as temporary storage. </p>
+<p><div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
+</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>temp_storage</strong> – <strong>[in]</strong> Reference to memory allocation having layout type <a class="reference internal" href="#structcub_1_1BlockRadixSort_1_1TempStorage"><span class="std std-ref">TempStorage</span></a></p>
@@ -1715,6 +1726,9 @@ BlockReduce and how to re-purpose the same memory region.</p>
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3cub14BlockRadixSort4SortERA14ItemsPerThread_4KeyTii" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Performs an ascending block-wide radix sort over a
 <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> of keys.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>Efficiency is increased with increased granularity <code class="docutils literal notranslate"><span class="pre">ITEMS_PER_THREAD</span></code>. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of <code class="docutils literal notranslate"><span class="pre">cub::BlockLoad</span></code> for efficiently gathering a <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> of elements across threads.</p></li>
 <li><p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncthreads()</span></code> threadblock barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p></li>
@@ -1773,6 +1787,9 @@ The corresponding output <code class="docutils literal notranslate"><span class=
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3cub14BlockRadixSort4SortEN4cudaSt11enable_if_tIXntN4cudaSt16is_convertible_vI11DecomposerTiEEEEERA14ItemsPerThread_4KeyT11DecomposerTii" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Performs an ascending block-wide radix sort over a
 <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> of keys.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>Efficiency is increased with increased granularity <code class="docutils literal notranslate"><span class="pre">ITEMS_PER_THREAD</span></code>. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of <code class="docutils literal notranslate"><span class="pre">cub::BlockLoad</span></code> for efficiently gathering a <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> of elements across threads.</p></li>
 <li><p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncthreads()</span></code> threadblock barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p></li>
@@ -1888,6 +1905,9 @@ where each thread owns 1 key.</p>
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3cub14BlockRadixSort4SortEN4cudaSt11enable_if_tIXntN4cudaSt16is_convertible_vI11DecomposerTiEEEEERA14ItemsPerThread_4KeyT11DecomposerT" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Performs an ascending block-wide radix sort over a
 <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> of keys.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>Efficiency is increased with increased granularity <code class="docutils literal notranslate"><span class="pre">ITEMS_PER_THREAD</span></code>. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of <code class="docutils literal notranslate"><span class="pre">cub::BlockLoad</span></code> for efficiently gathering a <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> of elements across threads.</p></li>
 <li><p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncthreads()</span></code> threadblock barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p></li>
@@ -1998,6 +2018,9 @@ where each thread owns 3 consecutive keys.</p>
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3cub14BlockRadixSort4SortERA14ItemsPerThread_4KeyTRA14ItemsPerThread_6ValueTii" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Performs an ascending block-wide radix sort across a <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a>
 of keys and values.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>BlockRadixSort can only accommodate one associated tile of values. To “truck along”
 more than one tile of values, simply perform a key-value sort of the keys paired
@@ -2066,6 +2089,9 @@ corresponding output <code class="docutils literal notranslate"><span class="pre
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3cub14BlockRadixSort4SortEN4cudaSt11enable_if_tIXntN4cudaSt16is_convertible_vI11DecomposerTiEEEEERA14ItemsPerThread_4KeyTRA14ItemsPerThread_6ValueT11DecomposerTii" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Performs an ascending block-wide radix sort over a
 <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> of keys and values.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>BlockRadixSort can only accommodate one associated tile of values. To “truck along”
 more than one tile of values, simply perform a key-value sort of the keys paired
@@ -2197,6 +2223,9 @@ where each thread owns 1 pair.</p>
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3cub14BlockRadixSort4SortEN4cudaSt11enable_if_tIXntN4cudaSt16is_convertible_vI11DecomposerTiEEEEERA14ItemsPerThread_4KeyTRA14ItemsPerThread_6ValueT11DecomposerT" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Performs an ascending block-wide radix sort over a
 <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> of keys and values.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>BlockRadixSort can only accommodate one associated tile of values. To “truck along”
 more than one tile of values, simply perform a key-value sort of the keys paired
@@ -2320,6 +2349,9 @@ where each thread owns 3 consecutive pairs.</p>
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3cub14BlockRadixSort14SortDescendingERA14ItemsPerThread_4KeyTii" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Performs a descending block-wide radix sort over a <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a>
 of keys.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>Efficiency is increased with increased granularity <code class="docutils literal notranslate"><span class="pre">ITEMS_PER_THREAD</span></code>. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of <code class="docutils literal notranslate"><span class="pre">cub::BlockLoad</span></code> for efficiently gathering a <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> of elements across threads.</p></li>
 <li><p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncthreads()</span></code> threadblock barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p></li>
@@ -2378,6 +2410,9 @@ The corresponding output <code class="docutils literal notranslate"><span class=
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3cub14BlockRadixSort14SortDescendingEN4cudaSt11enable_if_tIXntN4cudaSt16is_convertible_vI11DecomposerTiEEEEERA14ItemsPerThread_4KeyT11DecomposerTii" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Performs a descending block-wide radix sort over a
 <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> of keys.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>Efficiency is increased with increased granularity <code class="docutils literal notranslate"><span class="pre">ITEMS_PER_THREAD</span></code>. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of <code class="docutils literal notranslate"><span class="pre">cub::BlockLoad</span></code> for efficiently gathering a <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> of elements across threads.</p></li>
 <li><p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncthreads()</span></code> threadblock barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p></li>
@@ -2493,6 +2528,9 @@ where each thread owns 1 key.</p>
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3cub14BlockRadixSort14SortDescendingEN4cudaSt11enable_if_tIXntN4cudaSt16is_convertible_vI11DecomposerTiEEEEERA14ItemsPerThread_4KeyT11DecomposerT" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Performs a descending block-wide radix sort over a
 <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> of keys.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>Efficiency is increased with increased granularity <code class="docutils literal notranslate"><span class="pre">ITEMS_PER_THREAD</span></code>. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of <code class="docutils literal notranslate"><span class="pre">cub::BlockLoad</span></code> for efficiently gathering a <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> of elements across threads.</p></li>
 <li><p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncthreads()</span></code> threadblock barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p></li>
@@ -2603,6 +2641,9 @@ where each thread owns 3 consecutive keys.</p>
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3cub14BlockRadixSort14SortDescendingERA14ItemsPerThread_4KeyTRA14ItemsPerThread_6ValueTii" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Performs a descending block-wide radix sort across a <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a>
 of keys and values.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>BlockRadixSort can only accommodate one associated tile of values. To “truck along”
 more than one tile of values, simply perform a key-value sort of the keys paired
@@ -2669,6 +2710,9 @@ corresponding output <code class="docutils literal notranslate"><span class="pre
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3cub14BlockRadixSort14SortDescendingEN4cudaSt11enable_if_tIXntN4cudaSt16is_convertible_vI11DecomposerTiEEEEERA14ItemsPerThread_4KeyTRA14ItemsPerThread_6ValueT11DecomposerTii" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Performs a descending block-wide radix sort over a
 <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> of keys and values.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>BlockRadixSort can only accommodate one associated tile of values. To “truck along”
 more than one tile of values, simply perform a key-value sort of the keys paired
@@ -2800,6 +2844,9 @@ where each thread owns 1 pair.</p>
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3cub14BlockRadixSort14SortDescendingEN4cudaSt11enable_if_tIXntN4cudaSt16is_convertible_vI11DecomposerTiEEEEERA14ItemsPerThread_4KeyTRA14ItemsPerThread_6ValueT11DecomposerT" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Performs a descending block-wide radix sort over a
 <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> of keys and values.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>BlockRadixSort can only accommodate one associated tile of values. To “truck along”
 more than one tile of values, simply perform a key-value sort of the keys paired
@@ -2926,6 +2973,9 @@ where each thread owns 3 consecutive pairs.</p>
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3cub14BlockRadixSort20SortBlockedToStripedERA14ItemsPerThread_4KeyTii" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Performs an ascending radix sort across a <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> of keys,
 leaving them in a <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">striped arrangement</span></a>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>Efficiency is increased with increased granularity <code class="docutils literal notranslate"><span class="pre">ITEMS_PER_THREAD</span></code>. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of <code class="docutils literal notranslate"><span class="pre">cub::BlockLoad</span></code> for efficiently gathering a <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> of elements across threads.</p></li>
 <li><p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncthreads()</span></code> threadblock barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p></li>
@@ -2985,6 +3035,9 @@ The corresponding output <code class="docutils literal notranslate"><span class=
 <dd><p><p>Performs an ascending block-wide radix sort over a
 <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> of keys, leaving them in a
 <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">striped arrangement</span></a>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>Efficiency is increased with increased granularity <code class="docutils literal notranslate"><span class="pre">ITEMS_PER_THREAD</span></code>. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of <code class="docutils literal notranslate"><span class="pre">cub::BlockLoad</span></code> for efficiently gathering a <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> of elements across threads.</p></li>
 <li><p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncthreads()</span></code> threadblock barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p></li>
@@ -3105,6 +3158,9 @@ where each thread owns 2 consecutive keys. The final partitioning is striped.</p
 <dd><p><p>Performs an ascending block-wide radix sort over a
 <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> of keys, leaving them in a
 <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">striped arrangement</span></a>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>Efficiency is increased with increased granularity <code class="docutils literal notranslate"><span class="pre">ITEMS_PER_THREAD</span></code>. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of <code class="docutils literal notranslate"><span class="pre">cub::BlockLoad</span></code> for efficiently gathering a <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> of elements across threads.</p></li>
 <li><p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncthreads()</span></code> threadblock barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p></li>
@@ -3215,6 +3271,9 @@ where each thread owns 3 consecutive keys. The final partitioning is striped.</p
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3cub14BlockRadixSort20SortBlockedToStripedERA14ItemsPerThread_4KeyTRA14ItemsPerThread_6ValueTii" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Performs an ascending radix sort across a <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> of keys and
 values, leaving them in a <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">striped arrangement</span></a>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>BlockRadixSort can only accommodate one associated tile of values. To “truck along”
 more than one tile of values, simply perform a key-value sort of the keys paired
@@ -3282,6 +3341,9 @@ The corresponding output <code class="docutils literal notranslate"><span class=
 <dd><p><p>Performs an ascending block-wide radix sort over a
 <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> of keys and values, leaving them in a
 <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">striped arrangement</span></a>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>Efficiency is increased with increased granularity <code class="docutils literal notranslate"><span class="pre">ITEMS_PER_THREAD</span></code>. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of <code class="docutils literal notranslate"><span class="pre">cub::BlockLoad</span></code> for efficiently gathering a <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> of elements across threads.</p></li>
 <li><p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncthreads()</span></code> threadblock barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p></li>
@@ -3413,6 +3475,9 @@ where each thread owns 2 consecutive pairs. The final partitioning is striped.</
 <dd><p><p>Performs an ascending block-wide radix sort over a
 <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> of keys and values, leaving them in a
 <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">striped arrangement</span></a>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>Efficiency is increased with increased granularity <code class="docutils literal notranslate"><span class="pre">ITEMS_PER_THREAD</span></code>. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of <code class="docutils literal notranslate"><span class="pre">cub::BlockLoad</span></code> for efficiently gathering a <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> of elements across threads.</p></li>
 <li><p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncthreads()</span></code> threadblock barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p></li>
@@ -3532,6 +3597,9 @@ where each thread owns 3 consecutive pairs. The final partitioning is striped.</
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3cub14BlockRadixSort30SortDescendingBlockedToStripedERA14ItemsPerThread_4KeyTii" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Performs a descending radix sort across a <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a>
 of keys, leaving them in a <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">striped arrangement</span></a>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>Efficiency is increased with increased granularity <code class="docutils literal notranslate"><span class="pre">ITEMS_PER_THREAD</span></code>. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of <code class="docutils literal notranslate"><span class="pre">cub::BlockLoad</span></code> for efficiently gathering a <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> of elements across threads.</p></li>
 <li><p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncthreads()</span></code> threadblock barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p></li>
@@ -3591,6 +3659,9 @@ The corresponding output <code class="docutils literal notranslate"><span class=
 <dd><p><p>Performs a descending block-wide radix sort over a
 <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> of keys, leaving them in a
 <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">striped arrangement</span></a>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>Efficiency is increased with increased granularity <code class="docutils literal notranslate"><span class="pre">ITEMS_PER_THREAD</span></code>. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of <code class="docutils literal notranslate"><span class="pre">cub::BlockLoad</span></code> for efficiently gathering a <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> of elements across threads.</p></li>
 <li><p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncthreads()</span></code> threadblock barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p></li>
@@ -3716,6 +3787,9 @@ where each thread owns 2 consecutive keys. The final partitioning is striped.</p
 <dd><p><p>Performs a descending block-wide radix sort over a
 <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> of keys, leaving them in a
 <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">striped arrangement</span></a>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>Efficiency is increased with increased granularity <code class="docutils literal notranslate"><span class="pre">ITEMS_PER_THREAD</span></code>. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of <code class="docutils literal notranslate"><span class="pre">cub::BlockLoad</span></code> for efficiently gathering a <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> of elements across threads.</p></li>
 <li><p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncthreads()</span></code> threadblock barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p></li>
@@ -3826,6 +3900,9 @@ where each thread owns 3 consecutive keys. The final partitioning is striped.</p
 <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3cub14BlockRadixSort30SortDescendingBlockedToStripedERA14ItemsPerThread_4KeyTRA14ItemsPerThread_6ValueTii" title="Link to this definition">#</a><br /></dt>
 <dd><p><p>Performs a descending radix sort across a <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a>
 of keys and values, leaving them in a <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">striped arrangement</span></a></p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>BlockRadixSort can only accommodate one associated tile of values. To “truck along”
 more than one tile of values, simply perform a key-value sort of the keys paired
@@ -3893,6 +3970,9 @@ The corresponding output <code class="docutils literal notranslate"><span class=
 <dd><p><p>Performs a descending block-wide radix sort over a
 <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> of keys and values, leaving them in a
 <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">striped arrangement</span></a>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>Efficiency is increased with increased granularity <code class="docutils literal notranslate"><span class="pre">ITEMS_PER_THREAD</span></code>. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of <code class="docutils literal notranslate"><span class="pre">cub::BlockLoad</span></code> for efficiently gathering a <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> of elements across threads.</p></li>
 <li><p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncthreads()</span></code> threadblock barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p></li>
@@ -4029,6 +4109,9 @@ where each thread owns 2 consecutive pairs. The final partitioning is striped.</
 <dd><p><p>Performs a descending block-wide radix sort over a
 <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> of keys and values, leaving them in a
 <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">striped arrangement</span></a>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.2.0: </span>First appears in CUDA Toolkit 12.3.</p>
+</div>
 <ul class="simple">
 <li><p>Efficiency is increased with increased granularity <code class="docutils literal notranslate"><span class="pre">ITEMS_PER_THREAD</span></code>. Performance is also typically increased until the additional register pressure or shared memory allocation size causes SM occupancy to fall too low. Consider variants of <code class="docutils literal notranslate"><span class="pre">cub::BlockLoad</span></code> for efficiently gathering a <a class="reference internal" href="../index.html#flexible-data-arrangement"><span class="std std-ref">blocked arrangement</span></a> of elements across threads.</p></li>
 <li><p>A subsequent <code class="docutils literal notranslate"><span class="pre">__syncthreads()</span></code> threadblock barrier should be invoked after calling this method if the collective’s temporary storage (e.g., <code class="docutils literal notranslate"><span class="pre">temp_storage</span></code>) is to be reused or repurposed.</p></li>
