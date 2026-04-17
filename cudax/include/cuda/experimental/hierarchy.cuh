@@ -21,8 +21,13 @@
 #  pragma system_header
 #endif // no system header
 
+#include <cuda/experimental/__hierarchy/concepts.cuh>
 #include <cuda/experimental/__hierarchy/fwd.cuh>
-#include <cuda/experimental/__hierarchy/grid_sync.cuh>
-#include <cuda/experimental/__hierarchy/group.cuh>
+#include <cuda/experimental/__hierarchy/groups.cuh>
+#include <cuda/experimental/__hierarchy/implicit_hierarchy.cuh>
+#include <cuda/experimental/__hierarchy/mappings.cuh>
+#include <cuda/experimental/__hierarchy/queries.cuh>
+#include <cuda/experimental/__hierarchy/synchronizers.cuh>
+#include <cuda/experimental/__hierarchy/this_group.cuh>
 
 #endif // _CUDA_EXPERIMENTAL_HIERARCHY

@@ -22,19 +22,21 @@
 #include <cuda/cmath>
 #include <cuda/iterator>
 #include <cuda/memory_pool>
-#include <cuda/std/__pstl_algorithm>
+#include <cuda/std/algorithm>
 #include <cuda/std/execution>
 #include <cuda/stream>
 
 #include <testing.cuh>
 #include <utility.cuh>
 
+#include "test_macros.h"
+
 inline constexpr int size = 10000;
 
 template <class T = int>
 struct is_even
 {
-  __device__ constexpr bool operator()(const T& val) const noexcept
+  TEST_DEVICE_FUNC constexpr bool operator()(const T& val) const noexcept
   {
     return (val % 2) == 0;
   }
@@ -76,21 +78,21 @@ C2H_TEST("cuda::std::remove_copy_if", "[parallel algorithm]")
 
   SECTION("with default stream")
   {
-    const auto policy = cuda::execution::__cub_par_unseq;
+    const auto policy = cuda::execution::gpu;
     test_remove_copy_if(policy, output);
   }
 
   SECTION("with provided stream")
   {
     cuda::stream stream{cuda::device_ref{0}};
-    const auto policy = cuda::execution::__cub_par_unseq.with_stream(stream);
+    const auto policy = cuda::execution::gpu.with(cuda::get_stream, stream);
     test_remove_copy_if(policy, output);
   }
 
   SECTION("with provided memory_resource")
   {
     cuda::device_memory_pool_ref device_resource = cuda::device_default_memory_pool(cuda::device_ref{0});
-    const auto policy = cuda::execution::__cub_par_unseq.with_memory_resource(device_resource);
+    const auto policy = cuda::execution::gpu.with(cuda::mr::get_memory_resource, device_resource);
     test_remove_copy_if(policy, output);
   }
 
@@ -98,7 +100,8 @@ C2H_TEST("cuda::std::remove_copy_if", "[parallel algorithm]")
   {
     cuda::stream stream{cuda::device_ref{0}};
     cuda::device_memory_pool_ref device_resource = cuda::device_default_memory_pool(stream.device());
-    const auto policy = cuda::execution::__cub_par_unseq.with_memory_resource(device_resource).with_stream(stream);
+    const auto policy =
+      cuda::execution::gpu.with(cuda::mr::get_memory_resource, device_resource).with(cuda::get_stream, stream);
     test_remove_copy_if(policy, output);
   }
 }

@@ -7,9 +7,6 @@
 //
 //===----------------------------------------------------------------------===//
 
-// todo: enable with nvrtc
-// UNSUPPORTED: nvrtc
-
 #include <cuda/hierarchy>
 #include <cuda/std/cassert>
 #include <cuda/std/cstddef>
@@ -17,8 +14,9 @@
 #include <cuda/std/type_traits>
 
 #include "hierarchy_queries.h"
+#include "test_macros.h"
 
-__device__ void test_block()
+TEST_DEVICE_FUNC void test_block()
 {
   constexpr cuda::std::size_t dext = cuda::std::dynamic_extent;
 
@@ -42,7 +40,11 @@ __device__ void test_block()
   }
   test_extents(cuda::std::dims<3, unsigned>{gridDim.x, gridDim.y, gridDim.z}, cuda::block, cuda::grid);
 
-  // 4. Test cuda::block.count(x)
+  // 4. Test cuda::block.static_count(x)
+  test_static_count(cuda::block, cuda::cluster);
+  test_static_count(cuda::block, cuda::grid);
+
+  // 5. Test cuda::block.count(x)
   {
     cuda::std::size_t exp = 1;
     NV_IF_TARGET(NV_PROVIDES_SM_90, ({
@@ -54,7 +56,7 @@ __device__ void test_block()
   }
   test_count(cuda::std::size_t{gridDim.z} * gridDim.y * gridDim.x, cuda::block, cuda::grid);
 
-  // 5. test cuda::block.index(x)
+  // 6. test cuda::block.index(x)
   {
     uint3 exp{0, 0, 0};
     NV_IF_TARGET(NV_PROVIDES_SM_90, (exp = __clusterRelativeBlockIdx();))
@@ -62,7 +64,7 @@ __device__ void test_block()
   }
   test_index(blockIdx, cuda::block, cuda::grid);
 
-  // 6. Test cuda::block.rank(x)
+  // 7. Test cuda::block.rank(x)
   {
     cuda::std::size_t exp = 0;
     NV_IF_TARGET(NV_PROVIDES_SM_90, ({

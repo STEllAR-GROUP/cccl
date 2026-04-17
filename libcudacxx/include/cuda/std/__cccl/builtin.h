@@ -23,6 +23,7 @@
 #  pragma system_header
 #endif // no system header
 
+#include <cuda/std/__cccl/cuda_capabilities.h>
 #include <cuda/std/__cccl/extended_data_types.h>
 #include <cuda/std/__cccl/host_std_lib.h>
 
@@ -111,8 +112,10 @@
 #endif // _CCCL_CHECK_BUILTIN(builtin_constant_p)
 
 #if _CCCL_CHECK_BUILTIN(builtin_expect) || _CCCL_COMPILER(MSVC) || _CCCL_COMPILER(GCC)
-#  define _CCCL_BUILTIN_EXPECT(...) __builtin_expect(__VA_ARGS__)
-#endif // _CCCL_CHECK_BUILTIN(builtin_expect)
+#  define _CCCL_BUILTIN_EXPECT(_EXPR, _VAL) __builtin_expect(_EXPR, _VAL)
+#else // ^^^ has __builtin_expect ^^^ / vvv no __builtin_expect vvv
+#  define _CCCL_BUILTIN_EXPECT(_EXPR, _VAL) (_EXPR)
+#endif // ^^^ no __builtin_expect ^^^
 
 #if _CCCL_CHECK_BUILTIN(builtin_huge_valf) || _CCCL_COMPILER(MSVC) || _CCCL_COMPILER(GCC, <, 10)
 #  define _CCCL_BUILTIN_HUGE_VALF() __builtin_huge_valf()
@@ -405,6 +408,10 @@
 #if _CCCL_HAS_BUILTIN(__type_pack_element)
 #  define _CCCL_BUILTIN_TYPE_PACK_ELEMENT(...) __type_pack_element<__VA_ARGS__>
 #endif // _CCCL_HAS_BUILTIN(__type_pack_element)
+
+#if _CCCL_HAS_BUILTIN(__is_complete_type)
+#  define _CCCL_BUILTIN_IS_COMPLETE_TYPE(...) __is_complete_type(__VA_ARGS__)
+#endif // _CCCL_HAS_BUILTIN(__is_complete_type)
 
 // NVCC prior to 12.2 have trouble with pack expansion into __type_pack_element in an alias template
 #if _CCCL_CUDACC_BELOW(12, 2)

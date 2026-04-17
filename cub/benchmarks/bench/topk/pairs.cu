@@ -85,7 +85,8 @@ void topk_pairs(nvbench::state& state, nvbench::type_list<KeyT, ValueT, OffsetT,
     d_values_out,
     static_cast<offset_t>(elements),
     static_cast<out_offset_t>(selected_elements),
-    0
+    cub::detail::identity_decomposer_t{},
+    nullptr
 #if !TUNE_BASE
     ,
     policy_selector_t<KeyT, OffsetT>{}
@@ -105,6 +106,7 @@ void topk_pairs(nvbench::state& state, nvbench::type_list<KeyT, ValueT, OffsetT,
       d_values_out,
       static_cast<offset_t>(elements),
       static_cast<out_offset_t>(selected_elements),
+      cub::detail::identity_decomposer_t{},
       launch.get_stream()
 #if !TUNE_BASE
         ,

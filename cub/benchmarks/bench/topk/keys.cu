@@ -79,7 +79,8 @@ void topk_keys(nvbench::state& state, nvbench::type_list<KeyT, OffsetT, OutOffse
     static_cast<cub::NullType*>(nullptr),
     static_cast<offset_t>(elements),
     static_cast<out_offset_t>(selected_elements),
-    0
+    cub::detail::identity_decomposer_t{},
+    nullptr
 #if !TUNE_BASE
     ,
     policy_selector_t<KeyT, OffsetT>{}
@@ -99,6 +100,7 @@ void topk_keys(nvbench::state& state, nvbench::type_list<KeyT, OffsetT, OutOffse
       static_cast<cub::NullType*>(nullptr),
       static_cast<offset_t>(elements),
       static_cast<out_offset_t>(selected_elements),
+      cub::detail::identity_decomposer_t{},
       launch.get_stream()
 #if !TUNE_BASE
         ,

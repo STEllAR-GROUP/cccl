@@ -182,26 +182,26 @@ template <typename LargeKernelT,
           typename BeginOffsetIteratorT,
           typename EndOffsetIteratorT,
           typename KernelLauncherFactory>
-__launch_bounds__(1) CUB_DETAIL_KERNEL_ATTRIBUTES void DeviceSegmentedSortContinuationKernel(
-  LargeKernelT large_kernel,
-  SmallKernelT small_kernel,
-  local_segment_index_t num_segments,
-  KeyT* d_current_keys,
-  KeyT* d_final_keys,
+__launch_bounds__(1) _CCCL_KERNEL_ATTRIBUTES void DeviceSegmentedSortContinuationKernel(
+  _CCCL_GRID_CONSTANT const LargeKernelT large_kernel,
+  _CCCL_GRID_CONSTANT const SmallKernelT small_kernel,
+  _CCCL_GRID_CONSTANT const local_segment_index_t num_segments,
+  _CCCL_GRID_CONSTANT KeyT* const d_current_keys,
+  _CCCL_GRID_CONSTANT KeyT* const d_final_keys,
   device_double_buffer<KeyT> d_keys_double_buffer,
-  ValueT* d_current_values,
-  ValueT* d_final_values,
+  _CCCL_GRID_CONSTANT ValueT* const d_current_values,
+  _CCCL_GRID_CONSTANT ValueT* const d_final_values,
   device_double_buffer<ValueT> d_values_double_buffer,
-  BeginOffsetIteratorT d_begin_offsets,
-  EndOffsetIteratorT d_end_offsets,
-  local_segment_index_t* group_sizes,
-  local_segment_index_t* large_and_medium_segments_indices,
-  local_segment_index_t* small_segments_indices,
-  KernelLauncherFactory launcher_factory,
-  int large_block_threads,
-  int small_block_threads,
-  int medium_segments_per_block,
-  int small_segments_per_block)
+  _CCCL_GRID_CONSTANT const BeginOffsetIteratorT d_begin_offsets,
+  _CCCL_GRID_CONSTANT const EndOffsetIteratorT d_end_offsets,
+  _CCCL_GRID_CONSTANT local_segment_index_t* const group_sizes,
+  _CCCL_GRID_CONSTANT local_segment_index_t* const large_and_medium_segments_indices,
+  _CCCL_GRID_CONSTANT local_segment_index_t* const small_segments_indices,
+  _CCCL_GRID_CONSTANT const KernelLauncherFactory launcher_factory,
+  _CCCL_GRID_CONSTANT const int large_block_threads,
+  _CCCL_GRID_CONSTANT const int small_block_threads,
+  _CCCL_GRID_CONSTANT const int medium_segments_per_block,
+  _CCCL_GRID_CONSTANT const int small_segments_per_block)
 {
   // In case of CDP:
   // 1. each CTA has a different main stream
@@ -321,15 +321,15 @@ struct policy_selector_from_hub
         sp::WARP_THREADS,
         sp::ITEMS_PER_THREAD,
         sp::LOAD_ALGORITHM,
-        sp::STORE_ALGORITHM,
-        sp::LOAD_MODIFIER},
+        sp::LOAD_MODIFIER,
+        sp::STORE_ALGORITHM},
       sub_warp_merge_sort_policy{
         mp::BLOCK_THREADS,
         mp::WARP_THREADS,
         mp::ITEMS_PER_THREAD,
         mp::LOAD_ALGORITHM,
-        mp::STORE_ALGORITHM,
-        mp::LOAD_MODIFIER},
+        mp::LOAD_MODIFIER,
+        mp::STORE_ALGORITHM},
       ap::PARTITIONING_THRESHOLD};
   }
 };
@@ -359,7 +359,7 @@ template <
     cub::detail::it_value_t<THRUST_NS_QUALIFIER::counting_iterator<cub::detail::segmented_sort::local_segment_index_t>>,
     detail::three_way_partition::per_partition_offset_t>,
   typename PartitionKernelSource = detail::three_way_partition::DeviceThreeWayPartitionKernelSource<
-    typename PartitionPolicyHub::MaxPolicy,
+    detail::three_way_partition::policy_selector_from_hub<PartitionPolicyHub>,
     THRUST_NS_QUALIFIER::counting_iterator<cub::detail::segmented_sort::local_segment_index_t>,
     cub::detail::segmented_sort::local_segment_index_t*,
     cub::detail::segmented_sort::local_segment_index_t*,
@@ -515,20 +515,7 @@ struct DispatchSegmentedSort
 
       // We call partition through dispatch instead of device because c.parallel needs to be able to call the kernel.
       // This approach propagates the type erasure to partition.
-      using ChooseOffsetT                = detail::choose_signed_offset<global_segment_offset_t>;
-      using PartitionOffsetT             = typename ChooseOffsetT::type;
-      using DispatchThreeWayPartitionIfT = cub::DispatchThreeWayPartitionIf<
-        THRUST_NS_QUALIFIER::counting_iterator<local_segment_index_t>,
-        decltype(large_and_medium_segments_indices.get()),
-        decltype(small_segments_indices.get()),
-        decltype(medium_indices_iterator),
-        decltype(group_sizes.get()),
-        decltype(large_segments_selector),
-        decltype(small_segments_selector),
-        PartitionOffsetT,
-        PartitionPolicyHub,
-        PartitionKernelSource,
-        KernelLauncherFactory>;
+      using ChooseOffsetT = detail::choose_signed_offset<global_segment_offset_t>;
 
       // Signed integer type for global offsets
       // Check if the number of items exceeds the range covered by the selected signed offset type
@@ -537,7 +524,7 @@ struct DispatchSegmentedSort
         return error;
       }
 
-      DispatchThreeWayPartitionIfT::Dispatch(
+      detail::three_way_partition::dispatch(
         nullptr,
         three_way_partition_temp_storage_bytes,
         THRUST_NS_QUALIFIER::counting_iterator<local_segment_index_t>(0),
@@ -547,11 +534,11 @@ struct DispatchSegmentedSort
         group_sizes.get(),
         large_segments_selector,
         small_segments_selector,
-        max_num_segments_per_invocation,
+        static_cast<ChooseOffsetT::type>(max_num_segments_per_invocation),
         stream,
+        detail::three_way_partition::policy_selector_from_hub<PartitionPolicyHub>{},
         partition_kernel_source,
-        launcher_factory,
-        partition_max_policy);
+        launcher_factory);
 
       device_partition_temp_storage.grow(three_way_partition_temp_storage_bytes);
     }
@@ -790,20 +777,7 @@ private:
 
       // We call partition through dispatch instead of device because c.parallel needs to be able to call the kernel.
       // This approach propagates the type erasure to partition.
-      using ChooseOffsetT                = detail::choose_signed_offset<global_segment_offset_t>;
-      using PartitionOffsetT             = typename ChooseOffsetT::type;
-      using DispatchThreeWayPartitionIfT = cub::DispatchThreeWayPartitionIf<
-        THRUST_NS_QUALIFIER::counting_iterator<local_segment_index_t>,
-        decltype(large_and_medium_segments_indices.get()),
-        decltype(small_segments_indices.get()),
-        decltype(medium_indices_iterator),
-        decltype(group_sizes.get()),
-        decltype(large_segments_selector),
-        decltype(small_segments_selector),
-        PartitionOffsetT,
-        PartitionPolicyHub,
-        PartitionKernelSource,
-        KernelLauncherFactory>;
+      using ChooseOffsetT = detail::choose_signed_offset<global_segment_offset_t>;
 
       // Signed integer type for global offsets
       // Check if the number of items exceeds the range covered by the selected signed offset type
@@ -812,7 +786,7 @@ private:
         return error;
       }
 
-      if (const auto error = DispatchThreeWayPartitionIfT::Dispatch(
+      if (const auto error = detail::three_way_partition::dispatch(
             device_partition_temp_storage.get(),
             three_way_partition_temp_storage_bytes,
             THRUST_NS_QUALIFIER::counting_iterator<local_segment_index_t>(0),
@@ -822,11 +796,11 @@ private:
             group_sizes.get(),
             large_segments_selector,
             small_segments_selector,
-            current_num_segments,
+            static_cast<ChooseOffsetT::type>(current_num_segments),
             stream,
+            detail::three_way_partition::policy_selector_from_hub<PartitionPolicyHub>{},
             partition_kernel_source,
-            launcher_factory,
-            partition_max_policy))
+            launcher_factory))
       {
         return error;
       }
@@ -976,8 +950,7 @@ private:
 
 namespace detail::segmented_sort
 {
-template <typename PartitionPolicyHub,
-          typename LargeKernelT,
+template <typename LargeKernelT,
           typename SmallKernelT,
           typename KeyT,
           typename ValueT,
@@ -986,6 +959,7 @@ template <typename PartitionPolicyHub,
           typename KernelSource,
           typename PartitionKernelSource,
           typename KernelLauncherFactory,
+          typename PartitionPolicySelector,
           typename GetFinalOutputOp>
 CUB_RUNTIME_FUNCTION _CCCL_VISIBILITY_HIDDEN _CCCL_FORCEINLINE cudaError_t sort_with_partitioning(
   LargeKernelT large_kernel,
@@ -1009,7 +983,7 @@ CUB_RUNTIME_FUNCTION _CCCL_VISIBILITY_HIDDEN _CCCL_FORCEINLINE cudaError_t sort_
   KernelSource& kernel_source,
   PartitionKernelSource& partition_kernel_source,
   KernelLauncherFactory& launcher_factory,
-  typename PartitionPolicyHub::MaxPolicy partition_max_policy,
+  PartitionPolicySelector partition_policy_selector,
   const segmented_sort_policy& active_policy,
   GetFinalOutputOp&& get_final_output)
 {
@@ -1037,27 +1011,13 @@ CUB_RUNTIME_FUNCTION _CCCL_VISIBILITY_HIDDEN _CCCL_FORCEINLINE cudaError_t sort_
     auto medium_indices_iterator =
       ::cuda::std::make_reverse_iterator(large_and_medium_segments_indices.get() + current_num_segments);
 
-    using ChooseOffsetT                = choose_signed_offset<global_segment_offset_t>;
-    using PartitionOffsetT             = typename ChooseOffsetT::type;
-    using DispatchThreeWayPartitionIfT = cub::DispatchThreeWayPartitionIf<
-      THRUST_NS_QUALIFIER::counting_iterator<local_segment_index_t>,
-      decltype(large_and_medium_segments_indices.get()),
-      decltype(small_segments_indices.get()),
-      decltype(medium_indices_iterator),
-      decltype(group_sizes.get()),
-      decltype(large_segments_selector),
-      decltype(small_segments_selector),
-      PartitionOffsetT,
-      PartitionPolicyHub,
-      PartitionKernelSource,
-      KernelLauncherFactory>;
-
+    using ChooseOffsetT = choose_signed_offset<global_segment_offset_t>;
     if (const auto error = ChooseOffsetT::is_exceeding_offset_type(num_items))
     {
       return error;
     }
 
-    if (const auto error = DispatchThreeWayPartitionIfT::Dispatch(
+    if (const auto error = three_way_partition::dispatch(
           device_partition_temp_storage.get(),
           three_way_partition_temp_storage_bytes,
           THRUST_NS_QUALIFIER::counting_iterator<local_segment_index_t>(0),
@@ -1067,11 +1027,11 @@ CUB_RUNTIME_FUNCTION _CCCL_VISIBILITY_HIDDEN _CCCL_FORCEINLINE cudaError_t sort_
           group_sizes.get(),
           large_segments_selector,
           small_segments_selector,
-          current_num_segments,
+          static_cast<ChooseOffsetT::type>(current_num_segments),
           stream,
+          partition_policy_selector,
           partition_kernel_source,
-          launcher_factory,
-          partition_max_policy))
+          launcher_factory))
     {
       return error;
     }
@@ -1259,11 +1219,11 @@ template <
   typename PolicySelector = policy_selector_from_types<KeyT, ValueT>,
   typename KernelSource =
     DeviceSegmentedSortKernelSource<PolicySelector, Order, KeyT, ValueT, BeginOffsetIteratorT, EndOffsetIteratorT, OffsetT>,
-  typename PartitionPolicyHub = detail::three_way_partition::policy_hub<
+  typename PartitionPolicySelector = detail::three_way_partition::policy_selector_from_types<
     cub::detail::it_value_t<THRUST_NS_QUALIFIER::counting_iterator<local_segment_index_t>>,
     three_way_partition::per_partition_offset_t>,
   typename PartitionKernelSource = detail::three_way_partition::DeviceThreeWayPartitionKernelSource<
-    typename PartitionPolicyHub::MaxPolicy,
+    PartitionPolicySelector,
     THRUST_NS_QUALIFIER::counting_iterator<local_segment_index_t>,
     local_segment_index_t*,
     local_segment_index_t*,
@@ -1278,6 +1238,7 @@ template <
   typename KernelLauncherFactory = CUB_DETAIL_DEFAULT_KERNEL_LAUNCHER_FACTORY>
 #if _CCCL_HAS_CONCEPTS()
   requires segmented_sort_policy_selector<PolicySelector>
+        && three_way_partition::three_way_partition_policy_selector<PartitionPolicySelector>
 #endif // _CCCL_HAS_CONCEPTS()
 CUB_RUNTIME_FUNCTION _CCCL_FORCEINLINE auto dispatch(
   void* d_temp_storage,
@@ -1290,11 +1251,11 @@ CUB_RUNTIME_FUNCTION _CCCL_FORCEINLINE auto dispatch(
   EndOffsetIteratorT d_end_offsets,
   bool is_overwrite_okay,
   cudaStream_t stream,
-  PolicySelector policy_selector                              = {},
-  typename PartitionPolicyHub::MaxPolicy partition_max_policy = {},
-  KernelSource kernel_source                                  = {},
-  PartitionKernelSource partition_kernel_source               = {},
-  KernelLauncherFactory launcher_factory                      = {}) -> cudaError_t
+  PolicySelector policy_selector                    = {},
+  PartitionPolicySelector partition_policy_selector = {},
+  KernelSource kernel_source                        = {},
+  PartitionKernelSource partition_kernel_source     = {},
+  KernelLauncherFactory launcher_factory            = {}) -> cudaError_t
 {
   [[maybe_unused]] static constexpr bool keys_only = ::cuda::std::is_same_v<ValueT, NullType>;
 
@@ -1389,20 +1350,7 @@ CUB_RUNTIME_FUNCTION _CCCL_FORCEINLINE auto dispatch(
 
       // We call partition through dispatch instead of device because c.parallel needs to be able to call the kernel.
       // This approach propagates the type erasure to partition.
-      using ChooseOffsetT                = choose_signed_offset<global_segment_offset_t>;
-      using PartitionOffsetT             = typename ChooseOffsetT::type;
-      using DispatchThreeWayPartitionIfT = cub::DispatchThreeWayPartitionIf<
-        THRUST_NS_QUALIFIER::counting_iterator<local_segment_index_t>,
-        decltype(large_and_medium_segments_indices.get()),
-        decltype(small_segments_indices.get()),
-        decltype(medium_indices_iterator),
-        decltype(group_sizes.get()),
-        decltype(large_segments_selector),
-        decltype(small_segments_selector),
-        PartitionOffsetT,
-        PartitionPolicyHub,
-        PartitionKernelSource,
-        KernelLauncherFactory>;
+      using ChooseOffsetT = choose_signed_offset<global_segment_offset_t>;
 
       // Signed integer type for global offsets
       // Check if the number of items exceeds the range covered by the selected signed offset type
@@ -1411,7 +1359,7 @@ CUB_RUNTIME_FUNCTION _CCCL_FORCEINLINE auto dispatch(
         return error;
       }
 
-      DispatchThreeWayPartitionIfT::Dispatch(
+      three_way_partition::dispatch(
         nullptr,
         three_way_partition_temp_storage_bytes,
         THRUST_NS_QUALIFIER::counting_iterator<local_segment_index_t>(0),
@@ -1421,11 +1369,11 @@ CUB_RUNTIME_FUNCTION _CCCL_FORCEINLINE auto dispatch(
         group_sizes.get(),
         large_segments_selector,
         small_segments_selector,
-        max_num_segments_per_invocation,
+        static_cast<ChooseOffsetT::type>(max_num_segments_per_invocation),
         stream,
+        partition_policy_selector,
         partition_kernel_source,
-        launcher_factory,
-        partition_max_policy);
+        launcher_factory);
 
       device_partition_temp_storage.grow(three_way_partition_temp_storage_bytes);
     }
@@ -1508,7 +1456,7 @@ CUB_RUNTIME_FUNCTION _CCCL_FORCEINLINE auto dispatch(
 
     if (partition_segments)
     {
-      if (const auto error = sort_with_partitioning<PartitionPolicyHub>(
+      if (const auto error = sort_with_partitioning(
             segmented_sort_kernel_large,
             segmented_sort_kernel_small,
             num_segments,
@@ -1530,7 +1478,7 @@ CUB_RUNTIME_FUNCTION _CCCL_FORCEINLINE auto dispatch(
             kernel_source,
             partition_kernel_source,
             launcher_factory,
-            partition_max_policy,
+            partition_policy_selector,
             active_policy,
             get_final_output))
       {

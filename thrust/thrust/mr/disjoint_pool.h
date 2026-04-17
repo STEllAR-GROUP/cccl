@@ -29,7 +29,7 @@
 #include <thrust/mr/pool_options.h>
 
 #include <cuda/__cmath/ilog.h>
-#include <cuda/__cmath/pow2.h>
+#include <cuda/__memory/is_valid_alignment.h>
 #include <cuda/std/__algorithm/max.h>
 #include <cuda/std/__algorithm/min.h>
 #include <cuda/std/__host_stdlib/algorithm>
@@ -149,7 +149,7 @@ public:
 
   /*! Destructor. Releases all held memory to upstream.
    */
-  ~disjoint_unsynchronized_pool_resource()
+  ~disjoint_unsynchronized_pool_resource() override
   {
     release();
   }
@@ -223,9 +223,8 @@ private:
 
   struct pool
   {
-    _CCCL_HOST pool(const pointer_vector& free)
-        : free_blocks(free)
-        , previous_allocated_count(0)
+    _CCCL_HOST pool(pointer_vector free)
+        : free_blocks(::cuda::std::move(free))
     {}
 
     _CCCL_HOST pool(const pool& other)
@@ -238,8 +237,8 @@ private:
 
     _CCCL_HOST ~pool() {}
 
-    pointer_vector free_blocks;
-    std::size_t previous_allocated_count;
+    pointer_vector free_blocks{};
+    std::size_t previous_allocated_count{};
   };
 
   using pool_vector = thrust::host_vector<pool, allocator<pool, Bookkeeper>>;
@@ -340,8 +339,7 @@ public:
     }
   }
 
-  [[nodiscard]] virtual void_ptr
-  do_allocate(std::size_t bytes, std::size_t alignment = THRUST_MR_DEFAULT_ALIGNMENT) override
+  [[nodiscard]] void_ptr do_allocate(std::size_t bytes, std::size_t alignment = THRUST_MR_DEFAULT_ALIGNMENT) override
   {
     try
     {
@@ -358,7 +356,7 @@ public:
   [[nodiscard]] void_ptr do_allocate_impl(std::size_t bytes, std::size_t alignment)
   {
     bytes = (std::max) (bytes, m_options.smallest_block_size);
-    assert(::cuda::is_power_of_two(alignment));
+    assert(::cuda::__is_valid_alignment(alignment));
 
     // an oversized and/or overaligned allocation requested; needs to be allocated separately
     if (bytes > m_options.largest_block_size || alignment > m_options.alignment)
@@ -467,10 +465,10 @@ public:
     return ret;
   }
 
-  virtual void do_deallocate(void_ptr p, std::size_t n, std::size_t alignment = THRUST_MR_DEFAULT_ALIGNMENT) override
+  void do_deallocate(void_ptr p, std::size_t n, std::size_t alignment = THRUST_MR_DEFAULT_ALIGNMENT) override
   {
     n = (std::max) (n, m_options.smallest_block_size);
-    assert(::cuda::is_power_of_two(alignment));
+    assert(::cuda::__is_valid_alignment(alignment));
 
     // verify that the pointer is at least as aligned as claimed
     assert(reinterpret_cast<::cuda::std::intmax_t>(detail::pointer_traits<void_ptr>::get(p)) % alignment == 0);

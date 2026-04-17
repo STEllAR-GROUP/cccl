@@ -59,7 +59,7 @@ namespace random
  *    thrust::xor_combine_engine<thrust::minstd_rand,0,thrust::minstd_rand0,0> rng;
  *
  *    // print a random number to standard output
- *    std::cout << rng() << std::endl;
+ *    std::cout << rng() << '\n';
  *
  *    return 0;
  *  }
@@ -145,7 +145,7 @@ public:
   /*! This member function produces a new random value and updates this \p xor_combine_engine's state.
    *  \return A new random number.
    */
-  _CCCL_HOST_DEVICE result_type operator()(void);
+  _CCCL_HOST_DEVICE result_type operator()();
 
   /*! This member function advances this \p xor_combine_engine's state a given number of times
    *  and discards the results.

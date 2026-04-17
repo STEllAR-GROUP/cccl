@@ -27,8 +27,7 @@
 #include <cub/device/dispatch/dispatch_streaming_reduce_by_key.cuh>
 #include <cub/device/dispatch/tuning/tuning_rle_encode.cuh>
 
-#include <thrust/iterator/constant_iterator.h>
-
+#include <cuda/__iterator/constant_iterator.h>
 #include <cuda/std/__execution/env.h>
 #include <cuda/std/__type_traits/enable_if.h>
 #include <cuda/std/__type_traits/is_same.h>
@@ -171,7 +170,7 @@ struct DeviceRunLengthEncode
     LengthsOutputIteratorT d_counts_out,
     NumRunsOutputIteratorT d_num_runs_out,
     NumItemsT num_items,
-    cudaStream_t stream = 0)
+    cudaStream_t stream = nullptr)
   {
     _CCCL_NVTX_RANGE_SCOPE_IF(d_temp_storage, "cub::DeviceRunLengthEncode::Encode");
 
@@ -185,7 +184,7 @@ struct DeviceRunLengthEncode
     using length_t = cub::detail::non_void_value_t<LengthsOutputIteratorT, offset_t>;
 
     // Generator type for providing 1s values for run-length reduction
-    using lengths_input_iterator_t = THRUST_NS_QUALIFIER::constant_iterator<length_t, offset_t>;
+    using lengths_input_iterator_t = ::cuda::constant_iterator<length_t, offset_t>;
 
     using accum_t = ::cuda::std::__accumulator_t<reduction_op, length_t, length_t>;
 
@@ -279,7 +278,6 @@ struct DeviceRunLengthEncode
   //!
   //! @param[in] env
   //!   **[optional]** Execution environment. Default is ``cuda::std::execution::env{}``.
-  //!   @endrst
   template <typename InputIteratorT,
             typename UniqueOutputIteratorT,
             typename LengthsOutputIteratorT,
@@ -301,7 +299,7 @@ struct DeviceRunLengthEncode
     using reduction_op             = ::cuda::std::plus<>;
     using offset_t                 = detail::choose_signed_offset_t<NumItemsT>;
     using length_t                 = cub::detail::non_void_value_t<LengthsOutputIteratorT, offset_t>;
-    using lengths_input_iterator_t = THRUST_NS_QUALIFIER::constant_iterator<length_t, offset_t>;
+    using lengths_input_iterator_t = ::cuda::constant_iterator<length_t, offset_t>;
     using accum_t                  = ::cuda::std::__accumulator_t<reduction_op, length_t, length_t>;
     using key_t = cub::detail::non_void_value_t<UniqueOutputIteratorT, cub::detail::it_value_t<InputIteratorT>>;
     using policy_selector_t = detail::rle::encode::policy_selector_from_types<accum_t, key_t>;
@@ -435,7 +433,7 @@ struct DeviceRunLengthEncode
     LengthsOutputIteratorT d_lengths_out,
     NumRunsOutputIteratorT d_num_runs_out,
     NumItemsT num_items,
-    cudaStream_t stream = 0)
+    cudaStream_t stream = nullptr)
   {
     _CCCL_NVTX_RANGE_SCOPE_IF(d_temp_storage, "cub::DeviceRunLengthEncode::NonTrivialRuns");
 
@@ -526,7 +524,6 @@ struct DeviceRunLengthEncode
   //!
   //! @param[in] env
   //!   **[optional]** Execution environment. Default is ``cuda::std::execution::env{}``.
-  //!   @endrst
   template <typename InputIteratorT,
             typename OffsetsOutputIteratorT,
             typename LengthsOutputIteratorT,

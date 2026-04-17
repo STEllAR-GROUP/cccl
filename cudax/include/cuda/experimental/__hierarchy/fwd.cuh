@@ -21,50 +21,90 @@
 #  pragma system_header
 #endif // no system header
 
+// Q: Do we want to enable this by default, or do we want the user to define some macro to get the interoperability with
+//    cooperative groups?
+#if __has_include(<cooperative_groups.h>)
+#  define _CCCL_HAS_COOPERATIVE_GROUPS() 1
+#else // ^^^ has cooperative groups ^^^ / vvv no cooperative groups vvv
+#  define _CCCL_HAS_COOPERATIVE_GROUPS() 0
+#endif // ^^^ no cooperative groups ^^^
+
+#include <cuda/__fwd/hierarchy.h>
+#include <cuda/std/__fwd/extents.h>
+
 #include <cuda/std/__cccl/prologue.h>
+
+#if !defined(_CCCL_DOXYGEN_INVOKED)
 
 namespace cuda::experimental
 {
-// hierarchy group kinds
+using __implicit_hierarchy_t =
+  hierarchy<thread_level,
+            hierarchy_level_desc<grid_level, ::cuda::std::dims<3, unsigned>>,
+            hierarchy_level_desc<cluster_level, ::cuda::std::dims<3, unsigned>>,
+            hierarchy_level_desc<block_level, ::cuda::std::dims<3, unsigned>>>;
 
-class __this_hierarchy_group_kind
-{};
+// this groups
 
-// hierarchy group base
-
-template <class _Level, class _Hierarchy, class _Kind>
-class __hierarchy_group_base;
 template <class _Level, class _Hierarchy>
-using __this_hierarchy_group_base = __hierarchy_group_base<_Level, _Hierarchy, __this_hierarchy_group_kind>;
+class __this_group_base;
 
-// hierarchy groups
+template <class _Hierarchy>
+class this_thread;
+template <class _Hierarchy>
+class this_warp;
+template <class _Hierarchy>
+class this_block;
+template <class _Hierarchy>
+class this_cluster;
+template <class _Hierarchy>
+class this_grid;
 
-template <class _Hierarchy, class _Kind>
+// other groups
+
+template <class _Level, class _Mapping, class _Hierarchy, class _Synchronizer>
 class thread_group;
-template <class _Hierarchy, class _Kind>
+template <class _Level, class _Mapping, class _Hierarchy, class _Synchronizer>
 class warp_group;
-template <class _Hierarchy, class _Kind>
+template <class _Level, class _Mapping, class _Hierarchy, class _Synchronizer>
 class block_group;
-template <class _Hierarchy, class _Kind>
+template <class _Level, class _Mapping, class _Hierarchy, class _Synchronizer>
 class cluster_group;
-template <class _Hierarchy, class _Kind>
-class grid_group;
+
+// mappings
+
+template <::cuda::std::size_t _Np>
+class group_by;
+
+// synchronizers
+
+template <class _Unit, class _Level, class _Mapping>
+class __syncwarp_synchronizer;
+template <class _Unit, class _Level, class _Mapping>
+class __barrier_synchronizer;
 
 // traits
 
 template <class _Tp>
 inline constexpr bool __is_this_hierarchy_group_v = false;
 template <class _Hierarchy>
-inline constexpr bool __is_this_hierarchy_group_v<thread_group<_Hierarchy, __this_hierarchy_group_kind>> = true;
+inline constexpr bool __is_this_hierarchy_group_v<this_thread<_Hierarchy>> = true;
 template <class _Hierarchy>
-inline constexpr bool __is_this_hierarchy_group_v<warp_group<_Hierarchy, __this_hierarchy_group_kind>> = true;
+inline constexpr bool __is_this_hierarchy_group_v<this_warp<_Hierarchy>> = true;
 template <class _Hierarchy>
-inline constexpr bool __is_this_hierarchy_group_v<block_group<_Hierarchy, __this_hierarchy_group_kind>> = true;
+inline constexpr bool __is_this_hierarchy_group_v<this_block<_Hierarchy>> = true;
 template <class _Hierarchy>
-inline constexpr bool __is_this_hierarchy_group_v<cluster_group<_Hierarchy, __this_hierarchy_group_kind>> = true;
+inline constexpr bool __is_this_hierarchy_group_v<this_cluster<_Hierarchy>> = true;
 template <class _Hierarchy>
-inline constexpr bool __is_this_hierarchy_group_v<grid_group<_Hierarchy, __this_hierarchy_group_kind>> = true;
+inline constexpr bool __is_this_hierarchy_group_v<this_grid<_Hierarchy>> = true;
+
+template <class _Tp>
+inline constexpr bool __is_barrier_synchronizer = false;
+template <class _Unit, class _Level, class _Mapping>
+inline constexpr bool __is_barrier_synchronizer<__barrier_synchronizer<_Unit, _Level, _Mapping>> = true;
 } // namespace cuda::experimental
+
+#endif // !_CCCL_DOXYGEN_INVOKED
 
 #include <cuda/std/__cccl/epilogue.h>
 

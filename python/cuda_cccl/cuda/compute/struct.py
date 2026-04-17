@@ -55,6 +55,13 @@ def gpu_struct(
     # At this point, field_dict must be a dict
     assert isinstance(field_dict, dict)
 
+    # Validate field names are valid Python identifiers
+    for key in field_dict:
+        if not isinstance(key, str) or not key.isidentifier():
+            raise ValueError(
+                f"gpu_struct field name {key!r} is not a valid Python identifier"
+            )
+
     # Normalize fields for storage on the struct class
     field_spec = {}
     for key, val in field_dict.items():
@@ -144,7 +151,7 @@ def _coerce_value(field_type, value: Any) -> Any:
         return field_type.type(value)
 
     if isinstance(field_type, type) and issubclass(field_type, np.generic):
-        return field_type(value)
+        return field_type(value)  # type: ignore[call-arg]
 
     if isinstance(value, tuple):
         return field_type(*value)
