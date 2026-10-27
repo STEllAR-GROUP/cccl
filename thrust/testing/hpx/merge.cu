@@ -8,14 +8,45 @@ void TestMerge(ExecutionPolicy exec)
 {
   using Vector = thrust::device_vector<int>;
 
-  const Vector a{0, 2, 4}, b{0, 3, 3, 4};
-  const Vector ref{0, 0, 2, 3, 3, 4, 4};
+  // Test 1: merge
+  {
+    const Vector a{0, 2, 4}, b{0, 3, 3, 4};
+    const Vector ref{0, 0, 2, 3, 3, 4, 4};
 
-  Vector result(7);
-  const auto end = thrust::merge(exec, a.begin(), a.end(), b.begin(), b.end(), result.begin());
+    Vector result(7);
+    const auto end = thrust::merge(exec, a.begin(), a.end(), b.begin(), b.end(), result.begin());
 
-  ASSERT_EQUAL_QUIET(result.end(), end);
-  ASSERT_EQUAL(ref, result);
+    ASSERT_EQUAL_QUIET(result.end(), end);
+    ASSERT_EQUAL(ref, result);
+  }
+
+  // Test 2: merge_by_key
+  {
+    const Vector a_key{0, 2, 4}, a_val{10, 20, 30};
+    const Vector b_key{0, 3, 3, 4}, b_val{40, 50, 60, 70};
+
+    Vector res_key(7);
+    Vector res_val(7);
+
+    auto res = thrust::merge_by_key(
+      exec,
+      a_key.begin(),
+      a_key.end(),
+      b_key.begin(),
+      b_key.end(),
+      a_val.begin(),
+      b_val.begin(),
+      res_key.begin(),
+      res_val.begin());
+
+    ASSERT_EQUAL_QUIET(res_key.end(), res.first);
+    ASSERT_EQUAL_QUIET(res_val.end(), res.second);
+
+    const Vector ref_key{0, 0, 2, 3, 3, 4, 4};
+    const Vector ref_val{10, 40, 20, 50, 60, 30, 70};
+    ASSERT_EQUAL(res_key, ref_key);
+    ASSERT_EQUAL(res_val, ref_val);
+  }
 }
 
 void TestMergePar()

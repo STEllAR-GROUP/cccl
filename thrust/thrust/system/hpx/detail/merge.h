@@ -17,9 +17,13 @@
 #elif defined(_CCCL_IMPLICIT_SYSTEM_HEADER_MSVC)
 #  pragma system_header
 #endif // no system header
+#include <thrust/system/detail/generic/merge.h>
 #include <thrust/system/hpx/detail/contiguous_iterator.h>
 #include <thrust/system/hpx/detail/execution_policy.h>
 #include <thrust/system/hpx/detail/function.h>
+
+#include <cuda/std/__functional/operations.h>
+#include <cuda/std/__utility/pair.h>
 
 #include <hpx/execution_base/traits/is_executor_parameters.hpp>
 #include <hpx/init.hpp>
@@ -181,6 +185,71 @@ merge(execution_policy<ExecutionPolicy>& exec [[maybe_unused]],
     return ::hpx::merge(first1, last1, first2, last2, result, wrapped_comp);
   }
 }
+
+template <typename ExecutionPolicy,
+          typename InputIterator1,
+          typename InputIterator2,
+          typename InputIterator3,
+          typename InputIterator4,
+          typename OutputIterator1,
+          typename OutputIterator2,
+          typename StrictWeakOrdering>
+::cuda::std::pair<OutputIterator1, OutputIterator2> merge_by_key(
+  execution_policy<ExecutionPolicy>& exec,
+  InputIterator1 keys_first1,
+  InputIterator1 keys_last1,
+  InputIterator2 keys_first2,
+  InputIterator2 keys_last2,
+  InputIterator3 values_first1,
+  InputIterator4 values_first2,
+  OutputIterator1 keys_result,
+  OutputIterator2 values_result,
+  StrictWeakOrdering comp)
+{
+  return thrust::system::detail::generic::merge_by_key(
+    exec,
+    keys_first1,
+    keys_last1,
+    keys_first2,
+    keys_last2,
+    values_first1,
+    values_first2,
+    keys_result,
+    values_result,
+    comp);
+}
+
+template <typename ExecutionPolicy,
+          typename InputIterator1,
+          typename InputIterator2,
+          typename InputIterator3,
+          typename InputIterator4,
+          typename OutputIterator1,
+          typename OutputIterator2>
+::cuda::std::pair<OutputIterator1, OutputIterator2> merge_by_key(
+  execution_policy<ExecutionPolicy>& exec,
+  InputIterator1 keys_first1,
+  InputIterator1 keys_last1,
+  InputIterator2 keys_first2,
+  InputIterator2 keys_last2,
+  InputIterator3 values_first1,
+  InputIterator4 values_first2,
+  OutputIterator1 keys_result,
+  OutputIterator2 values_result)
+{
+  using key_type = thrust::detail::it_value_t<InputIterator1>;
+  return thrust::system::detail::generic::merge_by_key(
+    exec,
+    keys_first1,
+    keys_last1,
+    keys_first2,
+    keys_last2,
+    values_first1,
+    values_first2,
+    keys_result,
+    values_result,
+    ::cuda::std::less<key_type>());
+}
 } // end namespace system::hpx::detail
 
 THRUST_NAMESPACE_END
@@ -189,6 +258,3 @@ template <>
 struct hpx::execution::experimental::is_executor_parameters<thrust::system::hpx::detail::log_space_step>
     : std::true_type
 {};
-
-// this system inherits merge_by_key
-#include <thrust/system/cpp/detail/merge.h>
